@@ -12,15 +12,11 @@ namespace HealthReporter.Models
 {
     class ClientRepository
     {
-        public static string getInsertSql()
-        {
-            return "CREATE TABLE Client (id INT, firstName TEXT, lastName TEXT);";
-        }
-
         public void InsertClient(Client client)
         {
             var connection = DatabaseUtility.getConnection();
-            var res = connection.InsertSql("INSERT INTO Client (id, firstName, lastName) values(@id, @firstName, @lastName)", client);
+            client.id = System.Guid.NewGuid().ToByteArray();
+            var res = connection.InsertSql("INSERT INTO clients (id, firstName, lastName) values(@id, @firstName, @lastName)", client);
         }
     }
 

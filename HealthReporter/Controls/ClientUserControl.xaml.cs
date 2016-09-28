@@ -29,7 +29,7 @@ namespace HealthReporter.Controls
             InitializeComponent();
             DatabaseUtility.checkDb();
             IList<Client> clients = DatabaseUtility.getConnection().QuerySql<Client>(
-                "SELECT * FROM Client");
+                "SELECT * FROM clients");
 
             dataGrid.ItemsSource = clients;
         }
