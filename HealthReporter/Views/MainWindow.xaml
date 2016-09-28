@@ -6,14 +6,9 @@
         xmlns:local="clr-namespace:HealthReporter"
         mc:Ignorable="d"
         Title="MainWindow" Height="550" Width="525">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="245*"/>
-            <ColumnDefinition Width="272*"/>
-        </Grid.ColumnDefinitions>
-        <Button x:Name="button" Content="Nupp" HorizontalAlignment="Left" Margin="6,130,0,0" VerticalAlignment="Top" Width="75" Click="buttonClick" Grid.Column="1"/>
-        <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="216,90,0,0" TextWrapping="Wrap" Text="Some text" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
-        <DataGrid x:Name="dataGrid" HorizontalAlignment="Left" Margin="116,188,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2" Height="281" Width="316"/>
-
+    <Grid Name="grid1">
+        <Button x:Name="btnShowClients" Content="Clients" Click="btn_Clients" HorizontalAlignment="Left" Margin="177,55,0,0" VerticalAlignment="Top" Width="76"/>
+        <Button x:Name="btnShowTests" Content="Tests" Click="btn_Tests" HorizontalAlignment="Left" Margin="274,55,0,0" VerticalAlignment="Top" Width="75"/>
+        <StackPanel Name="stkTest" Margin="20,93,21,22"/>
     </Grid>
 </Window>

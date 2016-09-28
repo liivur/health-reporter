@@ -1,0 +1,13 @@
+﻿<UserControl x:Class="HealthReporter.Controls.TestsUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:HealthReporter.Controls"
+             mc:Ignorable="d" Height="350" Width="350">
+    <Border BorderBrush="Black" BorderThickness="2">
+        <Grid>
+            <Label Content="Siia tuleb testide osa" Name="Label1"/>
+        </Grid>
+    </Border>
+</UserControl>
