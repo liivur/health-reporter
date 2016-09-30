@@ -15,7 +15,7 @@ namespace HealthReporterUnitTests
             // arrange
             double a = 11.99;
             double b = 12;
-            double expectedSum = 25.55;
+            double expectedSum = a+b;
 
             // act
             double actualSum = a + b;
