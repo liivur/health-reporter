@@ -4,7 +4,7 @@ before_build:
 build:
   verbosity: minimal
 after_build:
-- cmd: 7z a myapp.zip %APPVEYOR_BUILD_FOLDER%\HealthReporter\bin\Debug\*.dll
+- cmd: 7z a myapp.zip %APPVEYOR_BUILD_FOLDER%\HealthReporter\bin\Debug\*
 artifacts:
 - path: myapp.zip
   name: Myapp
