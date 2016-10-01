@@ -27,5 +27,6 @@ namespace HealthReporter.Models
         public string lastName { get; set; }
     }
 
+    // comment for appveyor
     
 }
