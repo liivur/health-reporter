@@ -3,3 +3,19 @@ before_build:
 - cmd: nuget restore
 build:
   verbosity: minimal
+after_build:
+- cmd: >-
+    7z a debug.zip %APPVEYOR_BUILD_FOLDER%\HealthReporter\bin\Debug\*
+    7z a release.zip %APPVEYOR_BUILD_FOLDER%\HealthReporter\bin\Release\*
+artifacts:
+- path: debug.zip
+  name: debug
+- path: release.zip
+  name: release
+deploy:
+- provider: FTP
+  host: web.zone.ee
+  protocol: ftp
+  username: health-reporter
+  password:
+    secure: rPPevRwz2hIsQcRSogu3fA==
