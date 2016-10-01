@@ -2,9 +2,10 @@ version: 1.0.{build}
 before_build:
 - cmd: nuget restore
 build:
-  verbosity: minimal
+  project: /
+  verbosity: detailed
 after_build:
- cmd: >-
+- cmd: >-
     7z a debug.zip %APPVEYOR_BUILD_FOLDER%\HealthReporter\bin\Debug\*
 
     7z a release.zip %APPVEYOR_BUILD_FOLDER%\HealthReporter\bin\Release\*
