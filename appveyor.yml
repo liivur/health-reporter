@@ -6,6 +6,7 @@ build:
 artifacts:
 - path: HealthReporter/bin/Debug/*
   name: healthreporter
+  type: zip
 deploy:
 - provider: FTP
   host: web.zone.ee
