@@ -3,11 +3,11 @@ version: 1.0.{build}
 matrix:
     # first group
     - after_build:
-      - cmd: 7z a debug.zip %APPVEYOR_BUILD_FOLDER%\HealthReporter\bin\Debug\*
+      cmd: 7z a debug.zip %APPVEYOR_BUILD_FOLDER%\HealthReporter\bin\Debug\*
 
     # second group
     - after_build:
-      - cmd: 7z a debug.zip %APPVEYOR_BUILD_FOLDER%\HealthReporter\bin\Release\*
+      cmd: 7z a debug.zip %APPVEYOR_BUILD_FOLDER%\HealthReporter\bin\Release\*
 
 configuration:
 - Debug
