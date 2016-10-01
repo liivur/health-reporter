@@ -1,8 +1,10 @@
 version: 1.0.{build}
+configuration:
+- Debug
+- Release
 before_build:
 - cmd: nuget restore
 build:
-  project: /
   verbosity: detailed
 after_build:
 - cmd: >-
