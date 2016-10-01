@@ -1,19 +1,12 @@
 version: 1.0.{build}
-configuration:
-- Debug
-- Release
+configuration: Release
 before_build:
 - cmd: nuget restore
 build:
   verbosity: detailed
 after_build:
-- cmd: >-
-    7z a debug.zip %APPVEYOR_BUILD_FOLDER%\HealthReporter\bin\Debug\*
-
-    7z a release.zip %APPVEYOR_BUILD_FOLDER%\HealthReporter\bin\Release\*
+- cmd: 7z a release.zip %APPVEYOR_BUILD_FOLDER%\HealthReporter\bin\Release\*
 artifacts:
-- path: debug.zip
-  name: debug
 - path: release.zip
   name: release
 deploy:
