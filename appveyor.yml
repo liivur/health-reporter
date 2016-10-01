@@ -1,5 +1,13 @@
 version: 1.0.{build}
-before_build:
-- cmd: nuget restore
 build:
   verbosity: minimal
+artifacts:
+- path: HealthReporter/bin/*
+  name: healthreporter
+deploy:
+- provider: FTP
+  host: web.zone.ee
+  protocol: ftp
+  username: veebiprojekt
+  password:
+    secure: rPPevRwz2hIsQcRSogu3fA==
