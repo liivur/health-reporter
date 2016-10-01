@@ -1,12 +1,13 @@
-version: 1.0.{build},
+version: 1.0.{build}
 before_build:
 - cmd: nuget restore
 build:
   verbosity: minimal
+after_build:
+- cmd: 7z a myapp.zip %APPVEYOR_BUILD_FOLDER%\HealthReporter\bin\Debug\*.dll
 artifacts:
-- path: HealthReporter/bin/Debug/*
-  name: healthreporter
-  type: zip
+- path: myapp.zip
+  name: Myapp
 deploy:
 - provider: FTP
   host: web.zone.ee
