@@ -4,7 +4,7 @@ before_build:
 build:
   verbosity: minimal
 artifacts:
-- path: HealthReporter/bin/*
+- path: HealthReporter/bin/Debug/*
   name: healthreporter
 deploy:
 - provider: FTP
