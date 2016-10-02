@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HealthReporter.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,6 +27,20 @@ namespace HealthReporter.Controls
         {
             InitializeComponent();
             this._parent = parent;
+
+            var repo = new TestRepository();
+            IList<Test> tests = repo.FindAll();
+
+            dataGrid.ItemsSource = tests;
+        }
+
+
+        private void btn_AddNewTest(object sender, RoutedEventArgs e)
+        {
+            AddNewTestControl obj = new AddNewTestControl(this._parent);
+            this._parent.stkTest.Children.Clear();
+            this._parent.stkTest.Children.Add(obj);
+
         }
     }
 }

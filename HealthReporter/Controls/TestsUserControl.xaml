@@ -7,7 +7,8 @@
              mc:Ignorable="d" Height="350" Width="350">
     <Border BorderBrush="Black" BorderThickness="2">
         <Grid>
-            <Label Content="Siia tuleb testide osa" Name="Label1"/>
+            <Button x:Name="addTest" Content="Add new test" HorizontalAlignment="Left" Margin="218,10,0,0" VerticalAlignment="Top" Width="98" Click="btn_AddNewTest" />
+            <DataGrid x:Name="dataGrid" HorizontalAlignment="Left" Margin="34,51,0,0" VerticalAlignment="Top" Height="263" Width="282"/>
         </Grid>
     </Border>
 </UserControl>

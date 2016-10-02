@@ -1,0 +1,20 @@
+﻿<UserControl x:Class="HealthReporter.Controls.AddNewTestControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:HealthReporter.Controls"
+             mc:Ignorable="d" d:DesignHeight="350" d:DesignWidth="350">
+    <Border BorderBrush="Black" BorderThickness="2">
+        <Grid>
+            <TextBlock x:Name="nameLabel" HorizontalAlignment="Left" Margin="58,73,0,0" TextWrapping="Wrap" Text="name" VerticalAlignment="Top"/>
+            <TextBox x:Name="name" HorizontalAlignment="Left" Height="23" Margin="144,72,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" />
+            <TextBlock x:Name="descriptionLabel" HorizontalAlignment="Left" Margin="58,109,0,0" TextWrapping="Wrap" Text="description" VerticalAlignment="Top"/>
+            <TextBox x:Name="description" HorizontalAlignment="Left" Height="23" Margin="144,108,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+            <TextBlock x:Name="categoryLabel" HorizontalAlignment="Left" Margin="58,212,0,0" TextWrapping="Wrap" Text="Category" VerticalAlignment="Top"/>
+            <ComboBox x:Name="categorySelector" DisplayMemberPath="name" SelectedValuePath="id" HorizontalAlignment="Left" Margin="144,209,0,0" VerticalAlignment="Top" Width="120"/>
+            <Button x:Name="createTest" Content="Create" HorizontalAlignment="Left" Margin="250,290,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="0.329,-0.053" Click="btn_CreateNewTest"/>
+            <Button x:Name="back" Content="back" HorizontalAlignment="Left" Margin="161,291,0,0" VerticalAlignment="Top" Width="75" Click="btn_Back"/>
+        </Grid>
+    </Border>
+</UserControl>
