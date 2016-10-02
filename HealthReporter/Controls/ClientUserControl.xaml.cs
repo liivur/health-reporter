@@ -29,9 +29,9 @@ namespace HealthReporter.Controls
         {
             InitializeComponent();
             this._parent = parent;
-            DatabaseUtility.checkDb();
-            IList<Client> clients = DatabaseUtility.getConnection().QuerySql<Client>(
-                "SELECT * FROM clients");
+
+            var repo = new ClientRepository();
+            IList<Client> clients = repo.FindAll();
 
             dataGrid.ItemsSource = clients;
         }

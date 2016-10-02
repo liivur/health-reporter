@@ -40,14 +40,11 @@ namespace HealthReporter.Controls
 
         private void btn_CreateNewClient(object sender, RoutedEventArgs e)
         {
-            //TODO: add validation also.
-
-            var connection = DatabaseUtility.getConnection();
-            
+            //TODO: add validation also.            
             var client = new Client() { firstName = this.firstName.Text, lastName = this.lastName.Text };
 
             var repo = new ClientRepository();
-            repo.InsertClient(client);
+            repo.Insert(client);
 
             this._parent.stkTest.Children.Clear();
             ClientUserControl obj = new ClientUserControl(this._parent);

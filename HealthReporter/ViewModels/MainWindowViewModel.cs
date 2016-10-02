@@ -28,6 +28,7 @@ namespace HealthReporter
         public MainWindow()
         {
             InitializeComponent();
+            DatabaseUtility.checkDb();
             ClientUserControl obj = new ClientUserControl(this);
             stkTest.Children.Add(obj);
         } 
