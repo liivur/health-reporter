@@ -23,10 +23,12 @@ namespace HealthReporter.Controls
     /// </summary>
     public partial class ClientUserControl : UserControl
     { 
+        private MainWindow _parent;
 
-        public ClientUserControl()
+        public ClientUserControl(MainWindow parent)
         {
             InitializeComponent();
+            this._parent = parent;
             DatabaseUtility.checkDb();
             IList<Client> clients = DatabaseUtility.getConnection().QuerySql<Client>(
                 "SELECT * FROM clients");
@@ -37,9 +39,9 @@ namespace HealthReporter.Controls
 
         private void btn_AddNewClient(object sender, RoutedEventArgs e)
         {
-            AddNewClientControl obj = new AddNewClientControl();
-            MainWindow._window1.stkTest.Children.Clear();
-            MainWindow._window1.stkTest.Children.Add(obj);
+            AddNewClientControl obj = new AddNewClientControl(this._parent);
+            this._parent.stkTest.Children.Clear();
+            this._parent.stkTest.Children.Add(obj);
 
         }
     }

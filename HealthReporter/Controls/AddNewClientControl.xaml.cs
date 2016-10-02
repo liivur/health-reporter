@@ -23,18 +23,19 @@ namespace HealthReporter.Controls
     /// </summary>
     public partial class AddNewClientControl : UserControl
     {
-        private int _counter = 1;
+        private MainWindow _parent;
 
-        public AddNewClientControl()
+        public AddNewClientControl(MainWindow parent)
         {
-            InitializeComponent(); 
+            InitializeComponent();
+            this._parent = parent;
         }
 
         private void btn_Back(object sender, RoutedEventArgs e)
-        {                        
-            MainWindow._window1.stkTest.Children.Clear();
-            ClientUserControl obj = new ClientUserControl();
-            MainWindow._window1.stkTest.Children.Add(obj);
+        {
+            this._parent.stkTest.Children.Clear();
+            ClientUserControl obj = new ClientUserControl(this._parent);
+            this._parent.stkTest.Children.Add(obj);
         }
 
         private void btn_CreateNewClient(object sender, RoutedEventArgs e)
@@ -43,15 +44,14 @@ namespace HealthReporter.Controls
 
             var connection = DatabaseUtility.getConnection();
             
-            var client = new Client() { id = BitConverter.GetBytes(_counter), firstName = this.firstName.Text, lastName = this.lastName.Text };
+            var client = new Client() { firstName = this.firstName.Text, lastName = this.lastName.Text };
 
             var repo = new ClientRepository();
             repo.InsertClient(client);
-            _counter++;
 
-            MainWindow._window1.stkTest.Children.Clear();
-            ClientUserControl obj = new ClientUserControl();
-            MainWindow._window1.stkTest.Children.Add(obj);
+            this._parent.stkTest.Children.Clear();
+            ClientUserControl obj = new ClientUserControl(this._parent);
+            this._parent.stkTest.Children.Add(obj);
 
         }
 

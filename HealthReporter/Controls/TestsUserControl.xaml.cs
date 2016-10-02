@@ -20,9 +20,12 @@ namespace HealthReporter.Controls
     /// </summary>
     public partial class TestsUserControl : UserControl
     {
-        public TestsUserControl()
+        private MainWindow _parent;
+
+        public TestsUserControl(MainWindow parent)
         {
             InitializeComponent();
+            this._parent = parent;
         }
     }
 }

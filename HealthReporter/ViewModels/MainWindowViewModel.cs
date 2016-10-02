@@ -25,21 +25,16 @@ namespace HealthReporter
     /// </summary>
     public partial class MainWindow : Window
     {
-
         public MainWindow()
         {
             InitializeComponent();
-            _window1 = this;
-            ClientUserControl obj = new ClientUserControl();
+            ClientUserControl obj = new ClientUserControl(this);
             stkTest.Children.Add(obj);
-        }
-
-        public static MainWindow _window1 = new MainWindow();
- 
+        } 
 
         private void btn_Clients(object sender, RoutedEventArgs e)
         {
-            ClientUserControl obj = new ClientUserControl();
+            ClientUserControl obj = new ClientUserControl(this);
             stkTest.Children.Clear();
             stkTest.Children.Add(obj);
             
@@ -47,44 +42,9 @@ namespace HealthReporter
 
         private void btn_Tests(object sender, RoutedEventArgs e)
         {
-            TestsUserControl obj = new TestsUserControl();
+            TestsUserControl obj = new TestsUserControl(this);
             stkTest.Children.Clear();
             stkTest.Children.Add(obj);
         }
-
-        //private int _counter = 1;
-
-        //public MainWindow()
-        //{
-        //    InitializeComponent();
-        //    DatabaseUtility.checkDb();
-        //    IList<Client> clients = DatabaseUtility.getConnection().QuerySql<Client>(
-        //        "SELECT * FROM Client");
-
-        //    dataGrid.ItemsSource = clients;
-        //}
-
-        //private void buttonClick(object sender, RoutedEventArgs e)
-        //{
-        //    textBlock.Text = "Vajutasid";
-        //    var connection = DatabaseUtility.getConnection();
-
-        //    var client = new Client() { id = BitConverter.GetBytes(_counter), firstName = "Troeg's Mad Elf", lastName = "Something" };
-
-        //    var repo = new ClientRepository();
-        //    repo.InsertClient(client);
-        //    _counter++;
-
-        //    //IList<Client> beer = DatabaseUtility.getConnection().QuerySql<Client>(
-        //    //    "SELECT * FROM Client WHERE firstName = @Name",
-        //    //    new { Name = "Troeg's Mad Elf" });
-
-        //    IList<Client> beer = DatabaseUtility.getConnection().QuerySql<Client>(
-        //        "SELECT * FROM Client");
-
-        //    dataGrid.ItemsSource = beer;
-        //}
-
-
     }
 }
