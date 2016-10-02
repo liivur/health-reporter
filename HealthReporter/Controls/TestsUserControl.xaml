@@ -4,11 +4,28 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:HealthReporter.Controls"
-             mc:Ignorable="d" Height="350" Width="350">
+             mc:Ignorable="d" Height="350" Width="640">
     <Border BorderBrush="Black" BorderThickness="2">
-        <Grid>
-            <Button x:Name="addTest" Content="Add new test" HorizontalAlignment="Left" Margin="218,10,0,0" VerticalAlignment="Top" Width="98" Click="btn_AddNewTest" />
-            <DataGrid x:Name="dataGrid" HorizontalAlignment="Left" Margin="34,51,0,0" VerticalAlignment="Top" Height="263" Width="282"/>
+        <Grid ShowGridLines="False" Margin="0,0,0,0">
+            <TextBlock x:Name="noOfTests" HorizontalAlignment="Left" Margin="337,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188" Width="13"/>
+            <TextBlock x:Name="Text0" HorizontalAlignment="Left" Margin="244,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188" Width="93" Text="Number of tests:"/>
+            <Button x:Name="button1" Content="Add new Test" HorizontalAlignment="Left" Margin="538,0,0,0" VerticalAlignment="Top" Width="98" Click="btn_AddNewTest" />
+            <DataGrid x:Name="catsDataGrid" IsReadOnly="True" GridLinesVisibility="None" HeadersVisibility="Column" AutoGenerateColumns="False" Margin="0,45,532,0" SelectionChanged="catsDataGrid_SelectionChanged" Background="{x:Null}" BorderBrush="{x:Null}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Category" Binding="{Binding name}" Width="*"/>
+                </DataGrid.Columns>
+            </DataGrid>
+            <DataGrid x:Name="testsDataGrid" IsReadOnly="True"  HeadersVisibility="Column" AutoGenerateColumns="False" Margin="104,45,363,0" SelectionChanged="testsDataGrid_SelectionChanged" Background="{x:Null}" GridLinesVisibility="None" BorderBrush="{x:Null}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Tests" Binding="{Binding name}" Width="*"/>
+                </DataGrid.Columns>
+            </DataGrid>
+            <TextBlock x:Name="Text1" HorizontalAlignment="Left" Margin="289,26,0,0" TextWrapping="Wrap" Text="Name" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188"/>
+            <TextBlock x:Name="Text2" HorizontalAlignment="Left" Margin="516,26,0,0" TextWrapping="Wrap" Text="Units" VerticalAlignment="Top" RenderTransformOrigin="-0.48,0.627"/>
+            <TextBlock x:Name="Text3" HorizontalAlignment="Left" Margin="580,26,0,0" TextWrapping="Wrap" Text="Decimals" VerticalAlignment="Top" RenderTransformOrigin="0.146,1.25"/>
+            <TextBox x:Name="testName" HorizontalAlignment="Left" IsReadOnly="True" Height="23" Margin="289,47,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="209"/>
+            <TextBox x:Name="units" HorizontalAlignment="Left" IsReadOnly="True" Height="23" Margin="516,47,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="39" RenderTransformOrigin="0.179,0.522"/>
+            <TextBox x:Name="decimals" HorizontalAlignment="Left" IsReadOnly="True" Height="23" Margin="580,47,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="39" RenderTransformOrigin="0.692,0.217"/>
         </Grid>
     </Border>
 </UserControl>
