@@ -4,24 +4,27 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:HealthReporter.Controls"
-             mc:Ignorable="d" Height="350" Width="350">
+             mc:Ignorable="d" Height="350" Width="600">
     <Border BorderBrush="Black" BorderThickness="2">
         <Grid>
-            <TextBox x:Name="firstName" HorizontalAlignment="Left" Height="23" Margin="144,72,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" />
-            <TextBox x:Name="lastName" HorizontalAlignment="Left" Height="23" Margin="144,108,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
-            <TextBox x:Name="textBox" HorizontalAlignment="Left" Height="23" Margin="145,143,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
-            <TextBox x:Name="textBox1" HorizontalAlignment="Left" Height="23" Margin="144,175,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
-            <TextBlock x:Name="Text1" HorizontalAlignment="Left" Margin="58,73,0,0" TextWrapping="Wrap" Text="First Name" VerticalAlignment="Top"/>
-            <TextBlock x:Name="Text2" HorizontalAlignment="Left" Margin="58,109,0,0" TextWrapping="Wrap" Text="Last Name" VerticalAlignment="Top"/>
-            <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="58,145,0,0" TextWrapping="Wrap" Text="Group name" VerticalAlignment="Top"/>
-            <TextBlock x:Name="textBlock1" HorizontalAlignment="Left" Margin="59,179,0,0" TextWrapping="Wrap" Text="Email" VerticalAlignment="Top"/>
-            <TextBlock x:Name="textBlock2" HorizontalAlignment="Left" Margin="58,212,0,0" TextWrapping="Wrap" Text="Gender" VerticalAlignment="Top"/>
-            <TextBlock x:Name="textBlock3" HorizontalAlignment="Left" Margin="58,243,0,0" TextWrapping="Wrap" Text="Date of Birth" VerticalAlignment="Top" RenderTransformOrigin="0.18,0.25"/>
-            <TextBlock x:Name="textBlock4" HorizontalAlignment="Left" Margin="124,24,0,0" TextWrapping="Wrap" Text="New Client" VerticalAlignment="Top"/>
-            <ComboBox x:Name="comboBox" HorizontalAlignment="Left" Margin="144,209,0,0" VerticalAlignment="Top" Width="120"/>
-            <DatePicker HorizontalAlignment="Left" Margin="144,239,0,0" VerticalAlignment="Top" Width="120"/>
-            <Button x:Name="button1" Content="Create" HorizontalAlignment="Left" Margin="250,290,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="0.329,-0.053" Click="btn_CreateNewClient"/>
-            <Button x:Name="button" Content="back" HorizontalAlignment="Left" Margin="161,291,0,0" VerticalAlignment="Top" Width="75" Click="btn_Back"/>
+            <TextBox x:Name="firstName" HorizontalAlignment="Left" Height="23" Margin="144,96,0,0" TextWrapping="Wrap" Text="{Binding Id, Mode=TwoWay, ValidatesOnDataErrors=True,NotifyOnValidationError=True}"   VerticalAlignment="Top" Width="120" />
+            <TextBox x:Name="lastName" HorizontalAlignment="Left" Height="23" Margin="144,144,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+            <TextBox x:Name="groupId" HorizontalAlignment="Left" Height="23" Margin="144,192,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+            <TextBox x:Name="email" HorizontalAlignment="Left" Height="23" Margin="404,92,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+            <TextBlock x:Name="Text1" HorizontalAlignment="Left" Margin="68,99,0,0" TextWrapping="Wrap" Text="First Name" VerticalAlignment="Top"/>
+            <TextBlock x:Name="Text2" HorizontalAlignment="Left" Margin="68,144,0,0" TextWrapping="Wrap" Text="Last Name" VerticalAlignment="Top"/>
+            <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="68,192,0,0" TextWrapping="Wrap" Text="Group name" VerticalAlignment="Top"/>
+            <TextBlock x:Name="textBlock1" HorizontalAlignment="Left" Margin="326,96,0,0" TextWrapping="Wrap" Text="Email" VerticalAlignment="Top"/>
+            <TextBlock x:Name="textBlock2" HorizontalAlignment="Left" Margin="325,147,0,0" TextWrapping="Wrap" Text="Gender" VerticalAlignment="Top"/>
+            <TextBlock x:Name="textBlock3" HorizontalAlignment="Left" Margin="324,195,0,0" TextWrapping="Wrap" Text="Date of Birth" VerticalAlignment="Top" RenderTransformOrigin="0.18,0.25"/>
+            <TextBlock x:Name="textBlock4" HorizontalAlignment="Left" Margin="278,32,0,0" TextWrapping="Wrap" Text="New Client" VerticalAlignment="Top"/>
+            <ComboBox SelectedValuePath="Tag" x:Name="gender" HorizontalAlignment="Left" Margin="404,141,0,0" VerticalAlignment="Top" Width="120">
+                <ComboBoxItem Content="Female" Tag="0"/>
+                <ComboBoxItem Content="Male" Tag="1"/>
+            </ComboBox>
+            <DatePicker x:Name="birthDate" HorizontalAlignment="Left" Margin="404,191,0,0" VerticalAlignment="Top" Width="120"  DisplayDate="2016-09-29" SelectedDateFormat="Short" IsTodayHighlighted="False"/>
+            <Button x:Name="button1" Content="Create" HorizontalAlignment="Left" Margin="430,280,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="0.329,-0.053" Click="btn_CreateNewClient"/>
+            <Button x:Name="button" Content="Back" HorizontalAlignment="Left" Margin="340,280,0,0" VerticalAlignment="Top" Width="75" Click="btn_Back"/>
         </Grid>
     </Border>
 </UserControl>

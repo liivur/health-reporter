@@ -16,7 +16,7 @@ namespace HealthReporter.Models
         {
             var connection = DatabaseUtility.getConnection();
             client.id = System.Guid.NewGuid().ToByteArray();
-            var res = connection.InsertSql("INSERT INTO clients (id, firstName, lastName) values(@id, @firstName, @lastName)", client);
+            var res = connection.InsertSql("INSERT INTO clients (id, firstName, lastName, groupId, email, gender) values(@id, @firstName, @lastName, @groupId, @email, @gender)", client);
         }
 
         public IList<Client> FindAll()
@@ -30,6 +30,11 @@ namespace HealthReporter.Models
         public byte[] id { get; set; }
         public string firstName { get; set; }
         public string lastName { get; set; }
+        public int groupId { get; set; }
+        public string email { get; set; }
+        public string gender { get; set; }
+        public string updated { get; set; }
+        public string uploaded { get; set; }
     }
 
     

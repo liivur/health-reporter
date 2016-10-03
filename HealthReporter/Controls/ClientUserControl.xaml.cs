@@ -44,5 +44,10 @@ namespace HealthReporter.Controls
             this._parent.stkTest.Children.Add(obj);
 
         }
+
+        private void btn_Delete(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

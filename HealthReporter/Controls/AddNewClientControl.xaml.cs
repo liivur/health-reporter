@@ -41,7 +41,7 @@ namespace HealthReporter.Controls
         private void btn_CreateNewClient(object sender, RoutedEventArgs e)
         {
             //TODO: add validation also.            
-            var client = new Client() { firstName = this.firstName.Text, lastName = this.lastName.Text };
+            var client = new Client() { firstName = this.firstName.Text, lastName = this.lastName.Text, groupId = int.Parse(this.groupId.Text), email = this.email.Text, gender = this.gender.SelectedValue.ToString() };
 
             var repo = new ClientRepository();
             repo.Insert(client);
