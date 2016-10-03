@@ -10,12 +10,17 @@ namespace HealthReporter.Models
         {
             var connection = DatabaseUtility.getConnection();
             test.id = System.Guid.NewGuid().ToByteArray();
-            var res = connection.InsertSql("INSERT INTO tests (id, categoryId, name, description, units, weight, formulaF, formulaM, position, uploaded) values(@id, @categoryId, @name, @description, @units, @weight, @formulaF, @formulaM, @position, @uploaded)", test);
+            var res = connection.InsertSql("INSERT INTO tests (id, categoryId, name, description, units, decimals, weight, formulaF, formulaM, position, uploaded) values(@id, @categoryId, @name, @description, @units, @decimals, @weight, @formulaF, @formulaM, @position, @uploaded)", test);
         }
 
         public IList<Test> FindAll()
         {
             return DatabaseUtility.getConnection().QuerySql<Test>("SELECT * FROM tests");
+        }
+
+        public IList<Test> GetTestsByCategory(TestCategory cat)
+        {
+            return DatabaseUtility.getConnection().QuerySql<Test>("SELECT * FROM tests WHERE categoryId = @id", cat);
         }
     }
 
