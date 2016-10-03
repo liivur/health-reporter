@@ -49,5 +49,11 @@ namespace HealthReporter.Controls
         {
 
         }
+
+        private void btn_Update(object sender, RoutedEventArgs e)
+        {
+
+        }
+
     }
 }
