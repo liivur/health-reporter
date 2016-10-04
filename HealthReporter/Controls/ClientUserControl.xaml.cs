@@ -24,6 +24,8 @@ namespace HealthReporter.Controls
     public partial class ClientUserControl : UserControl
     { 
         private MainWindow _parent;
+        
+
 
         public ClientUserControl(MainWindow parent)
         {
@@ -32,6 +34,9 @@ namespace HealthReporter.Controls
 
             var repo = new ClientRepository();
             IList<Client> clients = repo.FindAll();
+
+            string calTotal = "Total : " + clients.Count;
+            total.Text = calTotal;
 
             dataGrid.ItemsSource = clients;
         }
@@ -47,13 +52,54 @@ namespace HealthReporter.Controls
 
         private void btn_Delete(object sender, RoutedEventArgs e)
         {
+            if(dataGrid.SelectedItem != null)
+            {
+                MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Are you sure you want to delete this?", "Delete Confirmation", System.Windows.MessageBoxButton.YesNo);
+                if (messageBoxResult == MessageBoxResult.Yes)
+                {
+                    Client client = (Client)dataGrid.SelectedItem;
+                    var repo = new ClientRepository();
+                    repo.Delete(client);
 
+                    //Updating table
+                    IList<Client> newTable = repo.FindAll();
+                    dataGrid.ItemsSource = newTable;
+                }
+               
+            }
         }
 
         private void btn_Update(object sender, RoutedEventArgs e)
         {
+           Client client = (Client)dataGrid.SelectedItem;
+           
+            UpdateClientControl obj = new UpdateClientControl(this._parent);
+
+            this._parent.stkTest.Children.Clear();
+            this._parent.stkTest.Children.Add(obj);
+
+            //Initializing fields
+            obj.firstName.Text = client.firstName;
+            obj.lastName.Text = client.lastName;
+            obj.groupId.Text = client.groupId.ToString();
+            obj.email.Text = client.email.ToString();
+            obj.gender.SelectedIndex = int.Parse(client.gender);
 
         }
+
+        private void btn_Search(object sender, RoutedEventArgs e)
+        {
+            string searchBy = search.Text;
+
+            var repo = new ClientRepository();
+            IList<Client> clients = repo.FindSearchResult(searchBy);
+
+
+            dataGrid.ItemsSource = clients;
+
+
+        }
+        
 
     }
 }

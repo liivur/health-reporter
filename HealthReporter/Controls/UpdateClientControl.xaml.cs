@@ -1,6 +1,4 @@
 ﻿using HealthReporter.Models;
-using HealthReporter.Utilities;
-using Insight.Database;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -19,17 +18,17 @@ using System.Windows.Shapes;
 namespace HealthReporter.Controls
 {
     /// <summary>
-    /// Interaction logic for AddNewClientControl.xaml
+    /// Interaction logic for EditClientControl.xaml
     /// </summary>
-    public partial class AddNewClientControl : UserControl
+    public partial class UpdateClientControl : UserControl
     {
+     
         private MainWindow _parent;
-
-
-        public AddNewClientControl(MainWindow parent)
+        
+        public UpdateClientControl(MainWindow _parent) 
         {
             InitializeComponent();
-            this._parent = parent;
+            this._parent = _parent;
         }
 
         private void btn_Back(object sender, RoutedEventArgs e)
@@ -38,16 +37,16 @@ namespace HealthReporter.Controls
             ClientUserControl obj = new ClientUserControl(this._parent);
             this._parent.stkTest.Children.Add(obj);
         }
-
-        private void btn_CreateNewClient(object sender, RoutedEventArgs e)
+        
+        private void btn_Update(object sender, RoutedEventArgs e)
         {
-            //TODO: add validation also.      
             try
             {
+                //TODO: add validation also.            
                 var client = new Client() { firstName = this.firstName.Text, lastName = this.lastName.Text, groupId = int.Parse(this.groupId.Text), email = this.email.Text, gender = this.gender.SelectedValue.ToString() };
 
                 var repo = new ClientRepository();
-                repo.Insert(client);
+                repo.Update(client);
 
                 this._parent.stkTest.Children.Clear();
                 ClientUserControl obj = new ClientUserControl(this._parent);
@@ -58,8 +57,8 @@ namespace HealthReporter.Controls
                 MessageBox.Show(ex.Message, "Message");
             }
 
-        }
 
+        }
 
     }
 }

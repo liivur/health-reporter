@@ -8,8 +8,16 @@
     <Border BorderBrush="Black" BorderThickness="2">
         <Grid>
             <Button x:Name="button1" Content="Add new client" HorizontalAlignment="Left" Margin="465,10,0,0" VerticalAlignment="Top" Width="98" Click="btn_AddNewClient" />
-            <DataGrid x:Name="dataGrid" HorizontalAlignment="Left" Margin="34,51,0,0" VerticalAlignment="Top" Height="263" Width="537">
+            <DataGrid AutoGenerateColumns="False" x:Name="dataGrid" HorizontalAlignment="Left" Margin="34,71,0,0" VerticalAlignment="Top" Height="243" Width="543">
                 <DataGrid.Columns>
+                    <DataGridTextColumn Header="id" Binding="{Binding id}" />
+                    <DataGridTextColumn Header="firstName" Binding="{Binding firstName}" />
+                    <DataGridTextColumn Header="lastName" Binding="{Binding lastName}" />
+                    <DataGridTextColumn Header="groupId" Binding="{Binding groupId}" />
+                    <DataGridTextColumn Header="email" Binding="{Binding email}" />
+                    <DataGridTextColumn Header="gender" Binding="{Binding gender}" />
+                    <DataGridTextColumn Header="updated" Binding="{Binding updated}" />
+                    <DataGridTextColumn Header="uploaded" Binding="{Binding uploaded}" />
                     <DataGridTemplateColumn>
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
@@ -26,6 +34,10 @@
                     </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
+            <TextBlock x:Name="total" HorizontalAlignment="Left" Margin="278,10,0,0" TextWrapping="Wrap"  VerticalAlignment="Top"/>
+            <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="64,40,0,0" TextWrapping="Wrap" Text="Search Clients" VerticalAlignment="Top"/>
+            <TextBox x:Name="search" HorizontalAlignment="Left" Height="23" Margin="41,17,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+            <Button x:Name="button" HorizontalAlignment="Left" Content="Go" Margin="167,20,0,0" VerticalAlignment="Top" Width="21" Height="20" Click="btn_Search"/>
         </Grid>
     </Border>
 </UserControl>

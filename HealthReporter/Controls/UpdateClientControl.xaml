@@ -1,0 +1,30 @@
+﻿<UserControl x:Class="HealthReporter.Controls.UpdateClientControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:HealthReporter.Controls"
+              mc:Ignorable="d" Height="350" Width="600">
+    <Border BorderBrush="Black" BorderThickness="2">
+        <Grid>
+            <TextBox x:Name="firstName" HorizontalAlignment="Left" Height="23" Margin="144,96,0,0" TextWrapping="Wrap" Text=""   VerticalAlignment="Top" Width="120" />
+            <TextBox x:Name="lastName" HorizontalAlignment="Left" Height="23" Margin="144,144,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+            <TextBox x:Name="groupId" HorizontalAlignment="Left" Height="23" Margin="144,192,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+            <TextBox x:Name="email" HorizontalAlignment="Left" Height="23" Margin="404,92,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+            <TextBlock x:Name="Text1" HorizontalAlignment="Left" Margin="68,99,0,0" TextWrapping="Wrap" Text="First Name" VerticalAlignment="Top"/>
+            <TextBlock x:Name="Text2" HorizontalAlignment="Left" Margin="68,144,0,0" TextWrapping="Wrap" Text="Last Name" VerticalAlignment="Top"/>
+            <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="68,192,0,0" TextWrapping="Wrap" Text="Group name" VerticalAlignment="Top"/>
+            <TextBlock x:Name="textBlock1" HorizontalAlignment="Left" Margin="326,96,0,0" TextWrapping="Wrap" Text="Email" VerticalAlignment="Top"/>
+            <TextBlock x:Name="textBlock2" HorizontalAlignment="Left" Margin="325,147,0,0" TextWrapping="Wrap" Text="Gender" VerticalAlignment="Top"/>
+            <TextBlock x:Name="textBlock3" HorizontalAlignment="Left" Margin="324,195,0,0" TextWrapping="Wrap" Text="Date of Birth" VerticalAlignment="Top" RenderTransformOrigin="0.18,0.25"/>
+            <TextBlock x:Name="textBlock4" HorizontalAlignment="Left" Margin="278,32,0,0" TextWrapping="Wrap" Text="Update Client" VerticalAlignment="Top"/>
+            <ComboBox SelectedValuePath="Tag" x:Name="gender" HorizontalAlignment="Left" Margin="404,141,0,0" VerticalAlignment="Top" Width="120">
+                <ComboBoxItem Content="Female" Tag="0"/>
+                <ComboBoxItem Content="Male" Tag="1"/>
+            </ComboBox>
+            <DatePicker x:Name="birthDate" HorizontalAlignment="Left" Margin="404,191,0,0" VerticalAlignment="Top" Width="120"  DisplayDate="2016-09-29" SelectedDateFormat="Short" IsTodayHighlighted="False"/>
+            <Button x:Name="button1" Content="Update" HorizontalAlignment="Left" Margin="430,280,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="0.329,-0.053" Click="btn_Update" />
+            <Button x:Name="button" Content="Back" HorizontalAlignment="Left" Margin="340,280,0,0" VerticalAlignment="Top" Width="75" Click="btn_Back" />
+        </Grid>
+    </Border>
+</UserControl>
