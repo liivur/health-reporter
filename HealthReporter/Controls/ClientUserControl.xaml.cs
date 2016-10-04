@@ -64,6 +64,10 @@ namespace HealthReporter.Controls
                     //Updating table
                     IList<Client> newTable = repo.FindAll();
                     dataGrid.ItemsSource = newTable;
+
+                    //Updating total
+                    string calTotal = "Total : " + newTable.Count;
+                    total.Text = calTotal;
                 }
                
             }
