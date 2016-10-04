@@ -56,11 +56,20 @@ namespace HealthReporter.Controls
 
         private void btn_MenRatings(object sender, RoutedEventArgs e)
         {
+            var button = sender as Button;
+            IList<Rating> ratings = (IList<Rating>)button.CommandParameter;
         }
 
         private void btn_WomenRatings(object sender, RoutedEventArgs e)
         {
+            var button = sender as Button;
+            IList<Rating> ratings = (IList<Rating>)button.CommandParameter;
+
+            
+
+
         }
+
 
         private void catsDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e) //is called when a catecory is selected
         {
@@ -115,42 +124,47 @@ namespace HealthReporter.Controls
 
         private void updateTest(Test test)
         {
-
             testName.Text = test.name;
             units.Text = test.units;
             decimalsSelector.SelectedItem = test.decimals;
 
             var repo = new RatingRepository();
-            IList<Rating> testRatings = repo.getTestRatings(test);
 
-            List<int> ages = new List<int>();
-            foreach (var rating in testRatings)
-            {
-                if (!ages.Contains(rating.age)) ages.Add(rating.age);
-            }
-            ages.Sort();
-
-            List<string> ageIntervals = getAgeIntervals(ages);
-            
-            agesControl.ItemsSource = ageIntervals;
-
-            //TODO: show ratings, rating words, desc, connect buttons etc
-
-
+            IList<Rating> ages = repo.getAges(test); 
+            agesControl.ItemsSource = ages;
         }
 
-        private List<string> getAgeIntervals(IList<int> ages)
+        //updates ratings, ratings word and description columns
+        private void btn_AgeButtons(object sender, RoutedEventArgs e)
         {
-            List<string> intervals = new List<string>();
-            for (int i=0; i < ages.Count; i++){
-                string str = "";
-                if (i == ages.Count - 1) str = ages[i] + "+";
-               
-                else str = ages[i] + "-" + (ages[i + 1]-1);
-                
-                intervals.Add(str);
+            var button = sender as Button;
+            Rating rating = (Rating)button.CommandParameter;
+
+            //get other ratings of the same age
+            var repo = new RatingRepository();
+            IList<Rating> sameAgeRatings = repo.getSameAgeRatings(rating);
+
+            //get rating labels
+            var rep = new RatingLabelRepository();
+            List<RatingLabel> labels = new List<RatingLabel>();
+            foreach(var rat in sameAgeRatings)
+            {
+                labels.AddRange(rep.getLabel(rat));
             }
-            return intervals;
+
+            RatingWordDatagrid.ItemsSource = labels;
+            DescriptiondDatagrid.ItemsSource = labels; //not tested
+
+            if ((bool)menRadio.IsChecked) //bind score column to men/women scores
+            {
+                RatingColumn.Binding = new Binding("normM");
+                ratingsDatagrid.ItemsSource = sameAgeRatings;
+            }
+            else if ((bool)womenRadio.IsChecked)
+            {
+                RatingColumn.Binding = new Binding("normF");
+                ratingsDatagrid.ItemsSource = sameAgeRatings;
+            }
         }
     }
 }

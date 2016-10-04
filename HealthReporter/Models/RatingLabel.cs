@@ -20,6 +20,10 @@ namespace HealthReporter.Models
         {
             return DatabaseUtility.getConnection().QuerySql<RatingLabel>("SELECT * FROM rating_labels");
         }
+        public IList<RatingLabel> getLabel(Rating rating)
+        {
+            return DatabaseUtility.getConnection().QuerySql<RatingLabel>("SELECT * FROM rating_labels where id = @labelId", rating);
+        }
     }
 
     class RatingLabel

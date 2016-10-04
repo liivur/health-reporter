@@ -11,8 +11,8 @@
             <TextBlock x:Name="Text0" HorizontalAlignment="Left" Margin="244,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188" Width="93" Text="Number of tests:"/>
             <TextBlock x:Name="ratings" FontWeight="Bold" HorizontalAlignment="Left" Margin="289,88,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188" Width="48" Text="Ratings"/>
             <Button x:Name="button1" Content="Add new Test" HorizontalAlignment="Left" Margin="538,0,0,0" VerticalAlignment="Top" Width="98" Click="btn_AddNewTest" />
-            <Button x:Name="menButton" Content="Men" HorizontalAlignment="Left" Margin="516,88,0,0" VerticalAlignment="Top" Width="42" Click="btn_MenRatings"/>
-            <Button x:Name="womenButton" Content="Women" HorizontalAlignment="Left" Margin="560,88,0,0" VerticalAlignment="Top" Width="59" Click="btn_WomenRatings"/>
+            <RadioButton x:Name="menRadio" GroupName="Gender" Content="Men" Margin="496,84,93,244"/>
+            <RadioButton x:Name="womenRadio" GroupName="Gender" Content="Women" Margin="556,84,10,242" IsChecked="True"/>
             <DataGrid x:Name="catsDataGrid" SelectionMode="Single" IsReadOnly="True" GridLinesVisibility="None" HeadersVisibility="Column" AutoGenerateColumns="False" Margin="0,45,532,0" SelectionChanged="catsDataGrid_SelectionChanged" Background="{x:Null}" BorderBrush="{x:Null}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Category" Binding="{Binding name}" Width="*"/>
@@ -25,28 +25,28 @@
             </DataGrid>
             <DataGrid x:Name="ratingsDatagrid" IsReadOnly="True"  HeadersVisibility="Column" AutoGenerateColumns="False" Margin="289,141,288,82" SelectionChanged="testsDataGrid_SelectionChanged" Background="{x:Null}" GridLinesVisibility="None" BorderBrush="{x:Null}">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Score" Binding="{Binding normF}" Width="*"/>
+                    <DataGridTextColumn x:Name="RatingColumn" Header="Score" Width="*"/>
                 </DataGrid.Columns>
             </DataGrid>
             <DataGrid x:Name="RatingWordDatagrid" IsReadOnly="True"  HeadersVisibility="Column" AutoGenerateColumns="False" Margin="348,141,209,82" SelectionChanged="testsDataGrid_SelectionChanged" Background="{x:Null}" GridLinesVisibility="None" BorderBrush="{x:Null}">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Meaning" Binding="{Binding sc}" Width="*"/>
+                    <DataGridTextColumn Header="Meaning" Binding="{Binding name}" Width="*"/>
                 </DataGrid.Columns>
             </DataGrid>
             <DataGrid x:Name="DescriptiondDatagrid" IsReadOnly="True"  HeadersVisibility="Column" AutoGenerateColumns="False" Margin="427,141,49,82" SelectionChanged="testsDataGrid_SelectionChanged" Background="{x:Null}" GridLinesVisibility="None" BorderBrush="{x:Null}">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Description" Binding="{Binding sc}" Width="*"/>
+                    <DataGridTextColumn Header="Description" Binding="{Binding description}" Width="*"/>
                 </DataGrid.Columns>
             </DataGrid>
-            <ItemsControl x:Name="agesControl" ItemsSource="{Binding}" Margin="289,113,17,205">
+            <ItemsControl x:Name="agesControl" Margin="289,113,0,205">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <WrapPanel />
+                        <UniformGrid Columns="7" />
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Button Content="{Binding}" Margin="0,0,5,5" />
+                        <Button x:Name="agesButton" Content="{Binding age}" CommandParameter="{Binding}" Margin="0,0,5,5" Click="btn_AgeButtons"/>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
