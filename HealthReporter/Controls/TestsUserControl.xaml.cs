@@ -37,11 +37,13 @@ namespace HealthReporter.Controls
             IList<TestCategory> categories = DatabaseUtility.getConnection().QuerySql<TestCategory>(
                 "SELECT id, name FROM test_categories WHERE parentId IS NULL"); //NULL == main category
 
-
             var repo = new TestRepository();
-            IList < Test > tests = repo.FindAll();
+            IList <Test> tests = repo.FindAll();
             noOfTests.Text = tests.Count.ToString();
+
             catsDataGrid.ItemsSource = categories;
+
+            decimalsSelector.ItemsSource = new List<int> {-2,-1,0,1,2};
         }
 
 
@@ -50,8 +52,16 @@ namespace HealthReporter.Controls
             AddNewTestControl obj = new AddNewTestControl(this._parent);
             this._parent.stkTest.Children.Clear();
             this._parent.stkTest.Children.Add(obj);
-
         }
+
+        private void btn_MenRatings(object sender, RoutedEventArgs e)
+        {
+        }
+
+        private void btn_WomenRatings(object sender, RoutedEventArgs e)
+        {
+        }
+
         private void catsDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e) //is called when a catecory is selected
         {
             var grid = sender as DataGrid;
@@ -75,45 +85,72 @@ namespace HealthReporter.Controls
                 Test test = (Test)selected[0];
                 updateTest(test);
             }
-
         }
 
-        private void updateTestsColumn(TestCategory cat)
+
+        private void updateTestsColumn(TestCategory cat) //cat is a main category
         {
-            DatabaseUtility.checkDb();
-            var connection = DatabaseUtility.getConnection();
+            var rep = new TestCategoryRepository();
 
             //get subcategories
-            IList<Test> subCats = connection.QuerySql<Test>("SELECT id, name FROM test_categories WHERE parentId = @id", cat);
+            IList<TestCategory> subCats = rep.GetCategoryByParent(cat);
 
             //get tests of subcategories
+            var repo = new TestRepository();
+
             List<Test> cat_tests = new List<Test>();
             foreach (var category in subCats)
             {
-                IList<Test> tests = connection.QuerySql<Test>("SELECT id, name FROM tests WHERE categoryId = @id", category);
+                IList<Test> tests = repo.GetTestsByCategory(category);
                 cat_tests.AddRange(tests);
             }
 
-            //if subCats is empty then the main category is a subcategory
-            if (cat_tests.Count == 0)
+            //if subCats is empty then check if there are any tests where test.parentId == cat.id, for example Questionnaires doesn't have sub categories
+            if (subCats.Count == 0)
             {
-                cat_tests = (List<Test>)connection.QuerySql<Test>("SELECT id, name FROM tests WHERE categoryId = @id", cat);
+                cat_tests = (List<Test>)repo.GetTestsByCategory(cat);
             }
-
             testsDataGrid.ItemsSource = cat_tests;
         }
 
         private void updateTest(Test test)
         {
-            DatabaseUtility.checkDb();
-            var connection = DatabaseUtility.getConnection();
-            IList<Test> tests = connection.QuerySql<Test>("SELECT * FROM tests WHERE id = @id", test);
 
-            Test t = tests[0];
+            testName.Text = test.name;
+            units.Text = test.units;
+            decimalsSelector.SelectedItem = test.decimals;
 
-            testName.Text = t.name;
-            units.Text = t.units;
-            decimals.Text = t.decimals.ToString();
+            var repo = new RatingRepository();
+            IList<Rating> testRatings = repo.getTestRatings(test);
+
+            List<int> ages = new List<int>();
+            foreach (var rating in testRatings)
+            {
+                if (!ages.Contains(rating.age)) ages.Add(rating.age);
+            }
+            ages.Sort();
+
+            List<string> ageIntervals = getAgeIntervals(ages);
+            
+            agesControl.ItemsSource = ageIntervals;
+
+            //TODO: show ratings, rating words, desc, connect buttons etc
+
+
+        }
+
+        private List<string> getAgeIntervals(IList<int> ages)
+        {
+            List<string> intervals = new List<string>();
+            for (int i=0; i < ages.Count; i++){
+                string str = "";
+                if (i == ages.Count - 1) str = ages[i] + "+";
+               
+                else str = ages[i] + "-" + (ages[i + 1]-1);
+                
+                intervals.Add(str);
+            }
+            return intervals;
         }
     }
 }

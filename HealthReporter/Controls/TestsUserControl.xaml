@@ -9,8 +9,11 @@
         <Grid ShowGridLines="False" Margin="0,0,0,0">
             <TextBlock x:Name="noOfTests" HorizontalAlignment="Left" Margin="337,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188" Width="13"/>
             <TextBlock x:Name="Text0" HorizontalAlignment="Left" Margin="244,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188" Width="93" Text="Number of tests:"/>
+            <TextBlock x:Name="ratings" FontWeight="Bold" HorizontalAlignment="Left" Margin="289,88,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188" Width="48" Text="Ratings"/>
             <Button x:Name="button1" Content="Add new Test" HorizontalAlignment="Left" Margin="538,0,0,0" VerticalAlignment="Top" Width="98" Click="btn_AddNewTest" />
-            <DataGrid x:Name="catsDataGrid" IsReadOnly="True" GridLinesVisibility="None" HeadersVisibility="Column" AutoGenerateColumns="False" Margin="0,45,532,0" SelectionChanged="catsDataGrid_SelectionChanged" Background="{x:Null}" BorderBrush="{x:Null}">
+            <Button x:Name="menButton" Content="Men" HorizontalAlignment="Left" Margin="516,88,0,0" VerticalAlignment="Top" Width="42" Click="btn_MenRatings"/>
+            <Button x:Name="womenButton" Content="Women" HorizontalAlignment="Left" Margin="560,88,0,0" VerticalAlignment="Top" Width="59" Click="btn_WomenRatings"/>
+            <DataGrid x:Name="catsDataGrid" SelectionMode="Single" IsReadOnly="True" GridLinesVisibility="None" HeadersVisibility="Column" AutoGenerateColumns="False" Margin="0,45,532,0" SelectionChanged="catsDataGrid_SelectionChanged" Background="{x:Null}" BorderBrush="{x:Null}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Category" Binding="{Binding name}" Width="*"/>
                 </DataGrid.Columns>
@@ -20,12 +23,39 @@
                     <DataGridTextColumn Header="Tests" Binding="{Binding name}" Width="*"/>
                 </DataGrid.Columns>
             </DataGrid>
+            <DataGrid x:Name="ratingsDatagrid" IsReadOnly="True"  HeadersVisibility="Column" AutoGenerateColumns="False" Margin="289,141,288,82" SelectionChanged="testsDataGrid_SelectionChanged" Background="{x:Null}" GridLinesVisibility="None" BorderBrush="{x:Null}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Score" Binding="{Binding normF}" Width="*"/>
+                </DataGrid.Columns>
+            </DataGrid>
+            <DataGrid x:Name="RatingWordDatagrid" IsReadOnly="True"  HeadersVisibility="Column" AutoGenerateColumns="False" Margin="348,141,209,82" SelectionChanged="testsDataGrid_SelectionChanged" Background="{x:Null}" GridLinesVisibility="None" BorderBrush="{x:Null}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Meaning" Binding="{Binding sc}" Width="*"/>
+                </DataGrid.Columns>
+            </DataGrid>
+            <DataGrid x:Name="DescriptiondDatagrid" IsReadOnly="True"  HeadersVisibility="Column" AutoGenerateColumns="False" Margin="427,141,49,82" SelectionChanged="testsDataGrid_SelectionChanged" Background="{x:Null}" GridLinesVisibility="None" BorderBrush="{x:Null}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Description" Binding="{Binding sc}" Width="*"/>
+                </DataGrid.Columns>
+            </DataGrid>
+            <ItemsControl x:Name="agesControl" ItemsSource="{Binding}" Margin="289,113,17,205">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Button Content="{Binding}" Margin="0,0,5,5" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
             <TextBlock x:Name="Text1" HorizontalAlignment="Left" Margin="289,26,0,0" TextWrapping="Wrap" Text="Name" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188"/>
             <TextBlock x:Name="Text2" HorizontalAlignment="Left" Margin="516,26,0,0" TextWrapping="Wrap" Text="Units" VerticalAlignment="Top" RenderTransformOrigin="-0.48,0.627"/>
-            <TextBlock x:Name="Text3" HorizontalAlignment="Left" Margin="580,26,0,0" TextWrapping="Wrap" Text="Decimals" VerticalAlignment="Top" RenderTransformOrigin="0.146,1.25"/>
+            <TextBlock x:Name="Text3" HorizontalAlignment="Left" Margin="575,26,0,0" TextWrapping="Wrap" Text="Decimals" VerticalAlignment="Top" RenderTransformOrigin="0.146,1.25"/>
             <TextBox x:Name="testName" HorizontalAlignment="Left" IsReadOnly="True" Height="23" Margin="289,47,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="209"/>
             <TextBox x:Name="units" HorizontalAlignment="Left" IsReadOnly="True" Height="23" Margin="516,47,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="39" RenderTransformOrigin="0.179,0.522"/>
-            <TextBox x:Name="decimals" HorizontalAlignment="Left" IsReadOnly="True" Height="23" Margin="580,47,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="39" RenderTransformOrigin="0.692,0.217"/>
+            <ComboBox x:Name="decimalsSelector" IsEnabled="False" HorizontalAlignment="Left" Margin="575,48,0,0" VerticalAlignment="Top" Width="44"/>
         </Grid>
     </Border>
 </UserControl>
