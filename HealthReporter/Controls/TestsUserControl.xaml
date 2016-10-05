@@ -23,19 +23,15 @@
                     <DataGridTextColumn Header="Tests" Binding="{Binding name}" Width="*"/>
                 </DataGrid.Columns>
             </DataGrid>
-            <DataGrid x:Name="ratingsDatagrid" IsReadOnly="True"  HeadersVisibility="Column" AutoGenerateColumns="False" Margin="289,141,288,82" SelectionChanged="testsDataGrid_SelectionChanged" Background="{x:Null}" GridLinesVisibility="None" BorderBrush="{x:Null}">
+            <DataGrid x:Name="ratingsDatagrid" IsReadOnly="True"  HeadersVisibility="Column" AutoGenerateColumns="False" Margin="289,141,288,103" SelectionChanged="testsDataGrid_SelectionChanged" Background="{x:Null}" GridLinesVisibility="None" BorderBrush="{x:Null}">
                 <DataGrid.Columns>
                     <DataGridTextColumn x:Name="RatingColumn" Header="Score" Width="*"/>
                 </DataGrid.Columns>
             </DataGrid>
-            <DataGrid x:Name="RatingWordDatagrid" IsReadOnly="True"  HeadersVisibility="Column" AutoGenerateColumns="False" Margin="348,141,209,82" SelectionChanged="testsDataGrid_SelectionChanged" Background="{x:Null}" GridLinesVisibility="None" BorderBrush="{x:Null}">
+            <DataGrid x:Name="LabelandDescDatagrid" IsReadOnly="True"  HeadersVisibility="Column" AutoGenerateColumns="False" Margin="348,141,93,103" SelectionChanged="testsDataGrid_SelectionChanged" Background="{x:Null}" GridLinesVisibility="None" BorderBrush="{x:Null}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Meaning" Binding="{Binding name}" Width="*"/>
-                </DataGrid.Columns>
-            </DataGrid>
-            <DataGrid x:Name="DescriptiondDatagrid" IsReadOnly="True"  HeadersVisibility="Column" AutoGenerateColumns="False" Margin="427,141,49,82" SelectionChanged="testsDataGrid_SelectionChanged" Background="{x:Null}" GridLinesVisibility="None" BorderBrush="{x:Null}">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Description" Binding="{Binding description}" Width="*"/>
+                    <DataGridTextColumn Header="Description" Binding="{Binding interpretation}" Width="*"/>
                 </DataGrid.Columns>
             </DataGrid>
             <ItemsControl x:Name="agesControl" Margin="289,113,0,205">
@@ -56,6 +52,12 @@
             <TextBox x:Name="testName" HorizontalAlignment="Left" IsReadOnly="True" Height="23" Margin="289,47,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="209"/>
             <TextBox x:Name="units" HorizontalAlignment="Left" IsReadOnly="True" Height="23" Margin="516,47,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="39" RenderTransformOrigin="0.179,0.522"/>
             <ComboBox x:Name="decimalsSelector" IsEnabled="False" HorizontalAlignment="Left" Margin="575,48,0,0" VerticalAlignment="Top" Width="44"/>
+            <TextBox x:Name="TestDescriptionText" HorizontalAlignment="Left" IsReadOnly="True" Height="23" Margin="289,313,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="283"/>
+            <RadioButton x:Name="menFormulaRadio" GroupName="FormulaGender" Content="Men" Margin="458,249,131,79" Checked="FormulaRadio_Checked"/>
+            <RadioButton x:Name="womenFormulaRadio" GroupName="FormulaGender" Content="Women" Margin="510,249,64,79" Checked="FormulaRadio_Checked"/>
+            <TextBox x:Name="FormulaText" HorizontalAlignment="Left" IsReadOnly="True" Height="23" Margin="289,269,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="283"/>
+            <TextBlock FontWeight="Bold" HorizontalAlignment="Left" Margin="289,253,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188" Width="48" Height="16"><Run Text="Formula"/><LineBreak/><Run/></TextBlock>
+            <TextBlock HorizontalAlignment="Left" Margin="289,297,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188" Width="79" Height="16"><Run Text="Descriptio"/><Run Text="n"/><LineBreak/><Run/></TextBlock>
         </Grid>
     </Border>
 </UserControl>

@@ -33,17 +33,18 @@ namespace HealthReporter.Controls
             InitializeComponent();
             this._parent = parent;
 
+
             DatabaseUtility.checkDb();
             IList<TestCategory> categories = DatabaseUtility.getConnection().QuerySql<TestCategory>(
                 "SELECT id, name FROM test_categories WHERE parentId IS NULL"); //NULL == main category
 
             var repo = new TestRepository();
-            IList <Test> tests = repo.FindAll();
+            IList<Test> tests = repo.FindAll();
             noOfTests.Text = tests.Count.ToString();
 
             catsDataGrid.ItemsSource = categories;
 
-            decimalsSelector.ItemsSource = new List<int> {-2,-1,0,1,2};
+            decimalsSelector.ItemsSource = new List<int> { -2, -1, 0, 1, 2 };
         }
 
 
@@ -52,22 +53,6 @@ namespace HealthReporter.Controls
             AddNewTestControl obj = new AddNewTestControl(this._parent);
             this._parent.stkTest.Children.Clear();
             this._parent.stkTest.Children.Add(obj);
-        }
-
-        private void btn_MenRatings(object sender, RoutedEventArgs e)
-        {
-            var button = sender as Button;
-            IList<Rating> ratings = (IList<Rating>)button.CommandParameter;
-        }
-
-        private void btn_WomenRatings(object sender, RoutedEventArgs e)
-        {
-            var button = sender as Button;
-            IList<Rating> ratings = (IList<Rating>)button.CommandParameter;
-
-            
-
-
         }
 
 
@@ -79,7 +64,6 @@ namespace HealthReporter.Controls
             if (selected.Count > 0)
             {
                 TestCategory category = (TestCategory)selected[0];
-
                 updateTestsColumn(category);
             }
         }
@@ -122,19 +106,23 @@ namespace HealthReporter.Controls
             testsDataGrid.ItemsSource = cat_tests;
         }
 
+        //updates test fields, adds ages buttons
         private void updateTest(Test test)
         {
             testName.Text = test.name;
             units.Text = test.units;
             decimalsSelector.SelectedItem = test.decimals;
+            TestDescriptionText.Text = test.description;
+            menFormulaRadio.CommandParameter = test;
+            womenFormulaRadio.CommandParameter = test;
 
             var repo = new RatingRepository();
 
-            IList<Rating> ages = repo.getAges(test); 
+            IList<Rating> ages = repo.getAges(test);
             agesControl.ItemsSource = ages;
         }
 
-        //updates ratings, ratings word and description columns
+        //updates ratings, ratings word and description columns when an age is clicked
         private void btn_AgeButtons(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;
@@ -144,27 +132,49 @@ namespace HealthReporter.Controls
             var repo = new RatingRepository();
             IList<Rating> sameAgeRatings = repo.getSameAgeRatings(rating);
 
-            //get rating labels
+            //get rating labels (name, interpretation)
             var rep = new RatingLabelRepository();
             List<RatingLabel> labels = new List<RatingLabel>();
-            foreach(var rat in sameAgeRatings)
+
+            foreach (var rat in sameAgeRatings)
             {
                 labels.AddRange(rep.getLabel(rat));
             }
 
-            RatingWordDatagrid.ItemsSource = labels;
-            DescriptiondDatagrid.ItemsSource = labels; //not tested
-
-            if ((bool)menRadio.IsChecked) //bind score column to men/women scores
+            //bind score column to men/women scores
+            if ((bool)menRadio.IsChecked)
             {
                 RatingColumn.Binding = new Binding("normM");
-                ratingsDatagrid.ItemsSource = sameAgeRatings;
             }
             else if ((bool)womenRadio.IsChecked)
             {
                 RatingColumn.Binding = new Binding("normF");
-                ratingsDatagrid.ItemsSource = sameAgeRatings;
             }
+            ratingsDatagrid.ItemsSource = sameAgeRatings;
+            LabelandDescDatagrid.ItemsSource = labels;
+        }
+
+        private void FormulaRadio_Checked(object sender, RoutedEventArgs e) //is called when a radio button to show man/woman formula is checked
+        {
+            var button = sender as RadioButton;
+
+            if (button.CommandParameter == null) return;
+            Trace.Write("yo");
+            var gender = button.Content.ToString();
+
+            if (gender == "Men")
+            {
+                FormulaText.Text = ((Test)button.CommandParameter).formulaM;
+            }
+            else if (gender == "Women")
+            {
+                FormulaText.Text = ((Test)button.CommandParameter).formulaF;
+            }
+        }
+
+        private void menRadio_Copy1_Checked(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
