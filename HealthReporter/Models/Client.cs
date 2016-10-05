@@ -36,7 +36,7 @@ namespace HealthReporter.Models
         {
             var connection = DatabaseUtility.getConnection();
             
-            var res = connection.InsertSql("UPDATE clients set firstName='" + client.firstName + "', lastName='"+client.lastName + "' , updated = CURRENT_TIMESTAMP WHERE email='" + client.email + "'", client);
+            var res = connection.InsertSql("UPDATE clients set firstName='" + client.firstName + "', lastName='"+client.lastName + "' , groupId = '"+client.groupId+"', gender = '"+client.gender+"' , updated = CURRENT_TIMESTAMP WHERE email='" + client.email + "'", client);
 
 
            // firstName, lastName, groupId, email, gender) values(@id, @firstName, @lastName, @groupId, @email, @gender)", client);

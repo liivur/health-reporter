@@ -10,7 +10,7 @@
             <Button x:Name="button1" Content="Add new client" HorizontalAlignment="Left" Margin="465,10,0,0" VerticalAlignment="Top" Width="98" Click="btn_AddNewClient" />
             <DataGrid AutoGenerateColumns="False" x:Name="dataGrid" HorizontalAlignment="Left" Margin="34,71,0,0" VerticalAlignment="Top" Height="243" Width="543">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="id" Binding="{Binding id}" />
+                    <DataGridTextColumn Header="id" Visibility="Hidden" Binding="{Binding id}" />
                     <DataGridTextColumn Header="firstName" Binding="{Binding firstName}" />
                     <DataGridTextColumn Header="lastName" Binding="{Binding lastName}" />
                     <DataGridTextColumn Header="groupId" Binding="{Binding groupId}" />
