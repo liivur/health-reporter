@@ -11,13 +11,13 @@
             <DataGrid AutoGenerateColumns="False" x:Name="dataGrid" HorizontalAlignment="Left" Margin="34,71,0,0" VerticalAlignment="Top" Height="243" Width="543">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="id" Visibility="Hidden" Binding="{Binding id}" />
-                    <DataGridTextColumn Header="firstName" Binding="{Binding firstName}" />
-                    <DataGridTextColumn Header="lastName" Binding="{Binding lastName}" />
-                    <DataGridTextColumn Header="groupId" Binding="{Binding groupId}" />
-                    <DataGridTextColumn Header="email" Binding="{Binding email}" />
-                    <DataGridTextColumn Header="gender" Binding="{Binding gender}" />
-                    <DataGridTextColumn Header="updated" Binding="{Binding updated}" />
-                    <DataGridTextColumn Header="uploaded" Binding="{Binding uploaded}" />
+                    <DataGridTextColumn Header="First Name" Binding="{Binding firstName}" />
+                    <DataGridTextColumn Header="Last Name" Binding="{Binding lastName}" />
+                    <DataGridTextColumn Header="Group Name" Binding="{Binding groupName}" />
+                    <DataGridTextColumn Header="Email" Binding="{Binding email}" />
+                    <DataGridTextColumn Header="Gender" Binding="{Binding gender}" />
+                    <DataGridTextColumn Header="Date of Birth" Binding="{Binding birthDate}" />
+                    <DataGridTextColumn Header="Updated" Visibility="Hidden" Binding="{Binding updated}" />
                     <DataGridTemplateColumn>
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>

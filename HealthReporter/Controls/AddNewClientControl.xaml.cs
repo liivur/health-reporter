@@ -3,8 +3,10 @@ using HealthReporter.Utilities;
 using Insight.Database;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -21,15 +23,21 @@ namespace HealthReporter.Controls
     /// <summary>
     /// Interaction logic for AddNewClientControl.xaml
     /// </summary>
-    public partial class AddNewClientControl : UserControl
+    public partial class AddNewClientControl : UserControl, INotifyPropertyChanged
     {
         private MainWindow _parent;
-
+       
 
         public AddNewClientControl(MainWindow parent)
         {
             InitializeComponent();
+            this.grid.DataContext = new Client { };
+            //firstName.DataContext = new Client { firstName = " " };
+            // lastName.DataContext = new Client { lastName = " " };
             this._parent = parent;
+            
+
+           
         }
 
         private void btn_Back(object sender, RoutedEventArgs e)
@@ -41,24 +49,76 @@ namespace HealthReporter.Controls
 
         private void btn_CreateNewClient(object sender, RoutedEventArgs e)
         {
-            //TODO: add validation also.      
-            try
+            if (String.IsNullOrWhiteSpace(this.firstName.Text) || String.IsNullOrWhiteSpace(this.lastName.Text) ||
+                String.IsNullOrWhiteSpace(this.gender.Text) || String.IsNullOrWhiteSpace(this.birthDate.Text)||
+                (!String.IsNullOrWhiteSpace(this.email.Text)&&!Regex.IsMatch(this.email.Text, @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$")))
             {
-                var client = new Client() { firstName = this.firstName.Text, lastName = this.lastName.Text, groupId = int.Parse(this.groupId.Text), email = this.email.Text, gender = this.gender.SelectedValue.ToString() };
-
-                var repo = new ClientRepository();
-                repo.Insert(client);
-
-                this._parent.stkTest.Children.Clear();
-                ClientUserControl obj = new ClientUserControl(this._parent);
-                this._parent.stkTest.Children.Add(obj);
+                MessageBox.Show("You forgot to enter required fields or there is something wrong with your input.", "Message");
             }
-            catch (Exception ex)
+            else
             {
-                MessageBox.Show(ex.Message, "Message");
-            }
+                //TODO: add validation also.      
+                try
+                {
 
+
+                    DateTime enteredDate = Convert.ToDateTime(birthDate.SelectedDate.ToString());
+
+
+                    // DateTime newDate= new DateTime(enteredDate.Year, enteredDate.Month, enteredDate.Day, enteredDate.Hour, enteredDate.Minute, enteredDate.Second);
+
+
+
+
+                    var client = new Client()
+                    {
+                        firstName = this.firstName.Text,
+                        lastName = this.lastName.Text,
+                        groupName = this.group.Text,
+                        email = this.email.Text,
+                        gender = this.gender.SelectedValue.ToString(),
+                        birthDate = String.Format("{0:yyyy-MM-dd}", enteredDate)
+                    };
+
+
+                    if (client.IsValid)
+                    {
+
+                        var repo = new ClientRepository();
+                        repo.Insert(client);
+
+                        this._parent.stkTest.Children.Clear();
+                        ClientUserControl obj = new ClientUserControl(this._parent);
+                        this._parent.stkTest.Children.Add(obj);
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Message");
+                }
+
+            }
         }
+
+  
+      
+
+        #region INotifyPropertyChanged Members
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void OnPropertyChanged(string propertyName)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+
+            if (handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+        #endregion
 
 
     }

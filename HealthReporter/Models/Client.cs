@@ -7,6 +7,8 @@ using System.Data.SqlClient;
 using Insight.Database;
 using HealthReporter.Utilities;
 using System.Data.SQLite;
+using System.ComponentModel;
+using System.Text.RegularExpressions;
 
 namespace HealthReporter.Models
 {
@@ -16,7 +18,7 @@ namespace HealthReporter.Models
         {
             var connection = DatabaseUtility.getConnection();
             client.id = System.Guid.NewGuid().ToByteArray();
-            var res = connection.InsertSql("INSERT INTO clients (id, firstName, lastName, groupId, email, gender) values(@id, @firstName, @lastName, @groupId, @email, @gender)", client);
+            var res = connection.InsertSql("INSERT INTO clients (id, firstName, lastName, groupName, email, gender, birthDate) values(@id, @firstName, @lastName, @groupName, @email, @gender,@birthDate)", client);
         }
 
         public IList<Client> FindAll()
@@ -26,39 +28,253 @@ namespace HealthReporter.Models
 
         public void Delete(Client client)
         {
-            var connection = DatabaseUtility.getConnection();         
-
-            var res = connection.InsertSql("DELETE from clients where firstName='" + client.firstName + "'", client);
+            var connection = DatabaseUtility.getConnection();
+            
+            var res = connection.InsertSql("DELETE from clients where id=@id", client);
   
         }
+
+        internal IList<Client> SelectClient(byte[] id)
+        {
+            return DatabaseUtility.getConnection().QuerySql<Client>("SELECT * FROM clients WHERE id='" + id + "'");
+        }
+
+       
 
         public void Update(Client client)
         {
             var connection = DatabaseUtility.getConnection();
             
-            var res = connection.InsertSql("UPDATE clients set firstName='" + client.firstName + "', lastName='"+client.lastName + "' , groupId = '"+client.groupId+"', gender = '"+client.gender+"' , updated = CURRENT_TIMESTAMP WHERE email='" + client.email + "'", client);
+            var res = connection.InsertSql("UPDATE clients set firstName='" + client.firstName + "', lastName='"+client.lastName + "' , groupName = '" + client.groupName+"', email='"+client.email+"', gender = '"+client.gender+"' , birthDate= '"+client.birthDate+"', updated = CURRENT_TIMESTAMP WHERE id=@id", client);
 
 
-           // firstName, lastName, groupId, email, gender) values(@id, @firstName, @lastName, @groupId, @email, @gender)", client);
+          
         }
 
         internal IList<Client> FindSearchResult(string searchBy)
         {
-            return DatabaseUtility.getConnection().QuerySql<Client>("SELECT * FROM clients WHERE firstname LIKE '%"+searchBy+ "%' OR lastName LIKE'%" + searchBy + "%' OR groupID LIKE '%" + searchBy + "%'");
+            return DatabaseUtility.getConnection().QuerySql<Client>("SELECT * FROM clients WHERE firstname LIKE '%"+searchBy+ "%' OR lastName LIKE'%" + searchBy + "%' OR groupName LIKE '%" + searchBy + "%'");
         }
     }
 
-    class Client
+    public class Client: INotifyPropertyChanged, IDataErrorInfo
     {
+        
         public byte[] id { get; set; }
-        public string firstName { get; set; }
-        public string lastName { get; set; }
-        public int groupId { get; set; }
-        public string email { get; set; }
-        public string gender { get; set; }
         public string updated { get; set; }
         public string uploaded { get; set; }
+        public string groupName { get; set; }
+        private string _firstName;
+        private string _lastName;
+        private string _email;
+        private string _birthDate;
+        private string _gender;
+
+        
+
+        public string firstName
+        {
+            get
+            {
+                return _firstName;
+            }
+            set
+            {
+                _firstName = value;
+                OnPropertyChanged("firstName");
+            }
+        }
+
+        public string lastName
+        {
+            get
+            {
+                return _lastName;
+            }
+            set
+            {
+                _lastName = value;
+                OnPropertyChanged("lastName");
+            }
+        }
+        public string email {
+            get
+            {
+                return _email;
+            }
+            set
+            {
+                _email = value;
+                OnPropertyChanged("email");
+            }
+        }
+        public string gender {
+            get
+            {
+                return _gender;
+            }
+            set
+            {
+                _gender = value;
+                OnPropertyChanged("gender");
+            }
+        }
+        public string birthDate {
+            get
+            {
+                return _birthDate;
+            }
+             set
+            {
+                _birthDate = value;
+                OnPropertyChanged("birthDate");
+            }
+        }
+
+        #region INotifyPropertyChanged Members
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void OnPropertyChanged(string propertyName)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+
+            if (handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+        #endregion
+
+        #region IDataErrorInfo Members
+        string IDataErrorInfo.Error
+        {
+            get
+            {
+                return null;
+            }
+        }
+
+
+
+        string IDataErrorInfo.this[string propertyName]
+        {
+            get
+            {
+                return GetValidationError(propertyName);
+            }
+        }
+
+
+        #endregion
+
+        #region Validation
+
+        static readonly string[] ValidatedProperties =
+       {
+            "firstName", "lastName","email", "gender", "birthDate"
+        };
+
+        public bool IsValid
+        {
+            get
+            {
+                foreach (string property in ValidatedProperties)
+                {
+                    if (GetValidationError(property) != null)
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
+        }
+
+        string GetValidationError(string propertyName)
+        {
+            string error = null;
+
+            switch (propertyName)
+            {
+                case "firstName":
+                    error = ValidateClientFirstName();
+                    break;
+                case "lastName":
+                    error = ValidateClientLastName();
+                    break;
+                case "email":
+                    error = ValidateClientEmail();
+                    break;
+                case "gender":
+                    error = ValidateClientGender();
+                    break;
+                case "birthDate":
+                    error = ValidateBirthDate();
+                    break;
+            }
+            return error;
+        }
+
+        private string ValidateClientFirstName()
+         {
+            if (String.IsNullOrWhiteSpace(firstName))
+            {
+                return "Client first name can not be empty.";
+            }
+            else
+            {
+                return null;
+            }
+        }
+        private string ValidateClientLastName()
+        {
+            if (String.IsNullOrWhiteSpace(lastName))
+            {
+                return "Client last name can not be empty.";
+            }
+            else
+            {
+                return null;
+            }
+        }
+        private string ValidateClientEmail()
+        {
+            
+             if (!String.IsNullOrWhiteSpace(email) && !Regex.IsMatch(email, @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$"))
+            {
+                return "Email format is wrong";
+            }
+            else
+            {
+                return null;
+            }
+        }
+        private string ValidateClientGender()
+        {
+            if (String.IsNullOrWhiteSpace(gender))
+            {
+                return "Client gender can not be empty.";
+            }
+            else
+            {
+                return null;
+            }
+        }
+        private string ValidateBirthDate()
+        {
+            if (String.IsNullOrWhiteSpace(birthDate))
+            {
+                return "Date of birth can not be empty.";
+            }
+            else
+            {
+                return null;
+            }
+        }
+        #endregion
+
     }
 
-    
+
 }

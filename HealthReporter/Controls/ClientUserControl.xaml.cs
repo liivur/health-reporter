@@ -24,7 +24,7 @@ namespace HealthReporter.Controls
     public partial class ClientUserControl : UserControl
     { 
         private MainWindow _parent;
-        
+        private Client _client;
 
 
         public ClientUserControl(MainWindow parent)
@@ -39,6 +39,7 @@ namespace HealthReporter.Controls
             total.Text = calTotal;
 
             dataGrid.ItemsSource = clients;
+            
         }
 
 
@@ -76,18 +77,19 @@ namespace HealthReporter.Controls
         private void btn_Update(object sender, RoutedEventArgs e)
         {
            Client client = (Client)dataGrid.SelectedItem;
-           
-            UpdateClientControl obj = new UpdateClientControl(this._parent);
+            this._client = client;
+            UpdateClientControl obj = new UpdateClientControl(this._parent, client);
 
-            this._parent.stkTest.Children.Clear();
-            this._parent.stkTest.Children.Add(obj);
+            _parent.stkTest.Children.Clear();
+            _parent.stkTest.Children.Add(obj);
 
             //Initializing fields
             obj.firstName.Text = client.firstName;
             obj.lastName.Text = client.lastName;
-            obj.groupId.Text = client.groupId.ToString();
+            obj.group.Text = client.groupName;
             obj.email.Text = client.email.ToString();
             obj.gender.SelectedIndex = int.Parse(client.gender);
+            //obj.birthDate.SelectedDate = client.birthDate;
 
         }
 
