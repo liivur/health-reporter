@@ -55,6 +55,18 @@ namespace HealthReporter.Controls
             this._parent.stkTest.Children.Add(obj);
         }
 
+        private void btn_AddNewCategory(object sender, RoutedEventArgs e)
+        {
+            TestCategory category = (TestCategory)catsDataGrid.SelectedItem;
+            byte[] parentId = null;
+            if (category != null)
+            {
+                parentId = category.id;
+            }
+            AddNewTestCategoryControl obj = new AddNewTestCategoryControl(this._parent, parentId);
+            this._parent.stkTest.Children.Clear();
+            this._parent.stkTest.Children.Add(obj);
+        }
 
         private void catsDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e) //is called when a catecory is selected
         {

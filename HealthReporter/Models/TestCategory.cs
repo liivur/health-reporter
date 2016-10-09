@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Insight.Database;
 using HealthReporter.Utilities;
+using System;
 
 namespace HealthReporter.Models
 {
@@ -18,14 +19,30 @@ namespace HealthReporter.Models
             return DatabaseUtility.getConnection().QuerySql<TestCategory>("SELECT * FROM test_categories");
         }
 
+        public IList<TestCategory> FindRootCategories()
+        {
+            return DatabaseUtility.getConnection().QuerySql<TestCategory>("SELECT * FROM test_categories WHERE parentId IS NULL");
+        }
+
         public IList<TestCategory> GetCategoryByParent(TestCategory cat)
         {
             return DatabaseUtility.getConnection().QuerySql<TestCategory>("SELECT * FROM test_categories WHERE parentId = @id", cat);
         }
     }
 
-    class TestCategory
+    class TestCategory : IHasPrimaryKey
     {
+        public byte[] GetPrimaryKey()
+        {
+            return this.id;
+        }
+
+        public string IdAsString()
+        {
+            string hex = BitConverter.ToString(this.id);
+            return hex.Replace("-", "");
+        }
+
         public byte[] id { get; set; }
         public byte[] parentId { get; set; }
         public string name { get; set; }

@@ -109,6 +109,9 @@
     <Compile Include="Controls\AddNewClientControl.xaml.cs">
       <DependentUpon>AddNewClientControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\AddNewTestCategoryControl.xaml.cs">
+      <DependentUpon>AddNewTestCategoryControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\AddNewTestControl.xaml.cs">
       <DependentUpon>AddNewTestControl.xaml</DependentUpon>
     </Compile>
@@ -127,10 +130,15 @@
     <Compile Include="Models\Test.cs" />
     <Compile Include="Models\TestCategory.cs" />
     <Compile Include="Utilities\DatabaseUtility.cs" />
+    <Compile Include="Utilities\Helpers.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Page Include="Controls\AddNewClientControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\AddNewTestCategoryControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\AddNewTestControl.xaml">
       <SubType>Designer</SubType>
