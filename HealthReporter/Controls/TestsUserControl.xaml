@@ -10,7 +10,8 @@
             <TextBlock x:Name="noOfTests" HorizontalAlignment="Left" Margin="337,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188" Width="13"/>
             <TextBlock x:Name="Text0" HorizontalAlignment="Left" Margin="244,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188" Width="93" Text="Number of tests:"/>
             <TextBlock x:Name="ratings" FontWeight="Bold" HorizontalAlignment="Left" Margin="289,88,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188" Width="48" Text="Ratings"/>
-            <Button x:Name="button1" Content="Add new Test" HorizontalAlignment="Left" Margin="538,0,0,0" VerticalAlignment="Top" Width="98" Click="btn_AddNewTest" />
+            <Button x:Name="addTestButton" Content="Add new Test" HorizontalAlignment="Left" Margin="538,0,0,0" VerticalAlignment="Top" Width="98" Click="btn_AddNewTest" />
+            <Button x:Name="addCategoryButton" Content="Add new Category" HorizontalAlignment="Left" Margin="418,0,0,0" VerticalAlignment="Top" Width="108" Click="btn_AddNewCategory" />
             <RadioButton x:Name="menRadio" GroupName="Gender" Content="Men" Margin="496,84,93,244"/>
             <RadioButton x:Name="womenRadio" GroupName="Gender" Content="Women" Margin="556,84,10,242" IsChecked="True"/>
             <DataGrid x:Name="catsDataGrid" SelectionMode="Single" IsReadOnly="True" GridLinesVisibility="None" HeadersVisibility="Column" AutoGenerateColumns="False" Margin="0,45,532,0" SelectionChanged="catsDataGrid_SelectionChanged" Background="{x:Null}" BorderBrush="{x:Null}">
