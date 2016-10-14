@@ -12,7 +12,7 @@ namespace HealthReporter.Models
         public void Insert(RatingLabel label)
         {
             var connection = DatabaseUtility.getConnection();
-            label.id = System.Guid.NewGuid().ToByteArray();
+            //label.id = System.Guid.NewGuid().ToByteArray();
             var res = connection.InsertSql("INSERT INTO rating_labels (id, name, interpretation, rating, uploaded) values(@id, @name, @interpretation, @rating, @uploaded)", label);
         }
 

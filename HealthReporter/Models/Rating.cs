@@ -26,11 +26,19 @@ namespace HealthReporter.Models
         }
         public IList<Rating> getAges(Test test) 
         {
-            return DatabaseUtility.getConnection().QuerySql<Rating>("SELECT* FROM ratings INNER JOIN tests ON ratings.testId = @id AND tests.name = @name GROUP BY age", test);
+            return DatabaseUtility.getConnection().QuerySql<Rating>("SELECT* FROM ratings WHERE ratings.testId = @id GROUP BY age", test);
         }
         public IList<Rating> getSameAgeRatings(Rating rating)
         {
-            return DatabaseUtility.getConnection().QuerySql<Rating>("SELECT* FROM ratings WHERE age=@age", rating);
+            return DatabaseUtility.getConnection().QuerySql<Rating>("SELECT* FROM ratings WHERE age=@age AND testId=@testId", rating);
+        }
+        public void removeRatingsByAge(Test test, int age)
+        {
+          // DatabaseUtility.getConnection().QuerySql<Rating>("DELETE FROM ratings WHERE testId=@id AND age = ??", test);
+        }
+        public void removeRatingsByTest(Test test)
+        {
+            DatabaseUtility.getConnection().QuerySql<Rating>("DELETE FROM ratings WHERE testId=@id", test);
         }
     }
 

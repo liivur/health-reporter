@@ -19,6 +19,11 @@ namespace HealthReporter.Models
             return DatabaseUtility.getConnection().QuerySql<TestCategory>("SELECT * FROM test_categories");
         }
 
+        public IList<TestCategory> GetCategoryByTest(Test test)
+        {
+            return DatabaseUtility.getConnection().QuerySql<TestCategory>("SELECT * FROM test_categories WHERE id=@categoryId", test);
+        }
+
         public IList<TestCategory> FindRootCategories()
         {
             return DatabaseUtility.getConnection().QuerySql<TestCategory>("SELECT * FROM test_categories WHERE parentId IS NULL");

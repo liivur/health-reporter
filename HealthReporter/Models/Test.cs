@@ -9,7 +9,7 @@ namespace HealthReporter.Models
         public void Insert(Test test)
         {
             var connection = DatabaseUtility.getConnection();
-            test.id = System.Guid.NewGuid().ToByteArray();
+            //test.id = System.Guid.NewGuid().ToByteArray();
             var res = connection.InsertSql("INSERT INTO tests (id, categoryId, name, description, units, decimals, weight, formulaF, formulaM, position, uploaded) values(@id, @categoryId, @name, @description, @units, @decimals, @weight, @formulaF, @formulaM, @position, @uploaded)", test);
         }
 
