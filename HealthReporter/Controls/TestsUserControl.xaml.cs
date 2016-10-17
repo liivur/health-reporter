@@ -49,9 +49,11 @@ namespace HealthReporter.Controls
             TestDescriptionText.DataContext = newTest;
             addNewRating.CommandParameter = newTest;
             Cancel.CommandParameter = newTest;
+            categorySelector.SelectedIndex = 0;
+            decimalsSelector.SelectedIndex = 2;
 
             var obsAges = new System.Collections.ObjectModel.ObservableCollection<AgeInterval>();
-            obsAges.Add(new AgeInterval() { interval = "??" });
+            obsAges.Add(new AgeInterval() { interval = "0-" });
             agesControl.ItemsSource = obsAges;
 
             ClearAndEnableFields();
@@ -160,10 +162,13 @@ namespace HealthReporter.Controls
             agesControl.ItemsSource = ageIntervals;
 
             //select first
-            ContentPresenter c = (ContentPresenter)agesControl.ItemContainerGenerator.ContainerFromItem(agesControl.Items[0]);
-            c.ApplyTemplate();
-            RadioButton rb = c.ContentTemplate.FindName("AgeRadio", c) as RadioButton;
-            rb.IsChecked = true;
+            if (agesControl.Items.Count >= 1)
+            {
+                ContentPresenter c = (ContentPresenter)agesControl.ItemContainerGenerator.ContainerFromItem(agesControl.Items[0]);
+                c.ApplyTemplate();
+                RadioButton rb = c.ContentTemplate.FindName("AgeRadio", c) as RadioButton;
+                rb.IsChecked = true;
+            }
 
             //show subcategory
             var catRep = new TestCategoryRepository();
@@ -192,7 +197,7 @@ namespace HealthReporter.Controls
                     int nextAge = ((Rating)ages[i + 1]).age;
                     intervals.Add(new AgeInterval() { interval = age + "-" + (nextAge - 1), rating = rating });
                 }
-                else intervals.Add(new AgeInterval() { interval = age + "-", rating = rating });
+                else intervals.Add(new AgeInterval() { interval = age + "+", rating = rating });
             }
             return intervals;
         }
@@ -260,21 +265,28 @@ namespace HealthReporter.Controls
             Test newTest = (Test)button.CommandParameter;
 
             //saves last ratingtable
-            SaveLastRating(newTest);
+            int nextAge = SaveLastRating(newTest);
+
+            if (nextAge == -1)
+            {
+                EnableLastRadioWriting();
+                return;
+            }
+
+            var repo = new RatingRepository();
+            Rating r = new Rating() { age = nextAge};
+            r.testId = newTest.id;
+            repo.Insert(r);
 
             //gets all ageintervals as observable
             IList<AgeInterval> ageIntervals = getAgeIntervals(newTest);
             var obsAges = new System.Collections.ObjectModel.ObservableCollection<AgeInterval>(ageIntervals);
-
-            //adds new age
-            AgeInterval rat = new AgeInterval() { interval = "??" };
-            obsAges.Add(rat);
             agesControl.ItemsSource = obsAges;
             EnableLastRadioWriting();
         }
 
         //saves current ratings and binds to age radiobutton
-        private void SaveLastRating(Test newTest)
+        private int SaveLastRating(Test newTest)
         {
             //get button that is selected
             string ageStr = "";
@@ -295,14 +307,29 @@ namespace HealthReporter.Controls
                 }
             }
             //check if age is in correct format
-            int age;
+            int age = 0;
+            int nextAge = 0;
+            try
+            {
                 string lowerBoundary = ageStr.Split('-')[0];
+                string upperBoundary = ageStr.Split('-')[1];
                 Int32.TryParse(lowerBoundary, out age);
-                if(!Int32.TryParse(lowerBoundary, out age))
+                if (!Int32.TryParse(lowerBoundary, out age) || !Int32.TryParse(upperBoundary, out nextAge))
                 {
-                MessageBox.Show("Please insert age.", "Confirmation");
-                return;
+                    MessageBox.Show("Please insert age.", "Confirmation");
+                    return -1;
                 }
+            }
+            catch(IndexOutOfRangeException)
+            {
+                string lowerBoundary = ageStr.Split('+')[0];
+                Int32.TryParse(lowerBoundary, out age);
+                if (!Int32.TryParse(lowerBoundary, out age))
+                {
+                    MessageBox.Show("Please insert age.", "Confirmation");
+                    return -1;
+                }
+            }
 
             //get ratings and ratinglabels connected with that age from the datagrids
             IList ratings = ratingsDatagrid.Items;
@@ -330,7 +357,7 @@ namespace HealthReporter.Controls
             if (ratingList.Count == 0)
             {
                 MessageBox.Show("Rating table is empty.", "Confirmation");
-                return;
+                return -1;
             }
             removeOldRatings(newTest, ((Rating)ratingList[0]).age); //checks if there are any ratings with given testId and age and removes them from db
 
@@ -340,6 +367,7 @@ namespace HealthReporter.Controls
             {
                 repo.Insert(rati);
             }
+  
             var rep = new RatingLabelRepository();
             foreach(RatingLabel lab in ratingLabelList)
             {
@@ -352,6 +380,9 @@ namespace HealthReporter.Controls
             AgeInterval rat = new AgeInterval() { interval = ((AgeInterval)checkedRb.CommandParameter).interval, rating = ratingList[0]};
             obsAges.Add(rat);
             agesControl.ItemsSource = obsAges;
+
+            if (nextAge == 0) return -1;
+            return nextAge + 1;
             }
 
         //save new test into db
@@ -370,6 +401,12 @@ namespace HealthReporter.Controls
 
             DisableFields();
             MessageBox.Show("Saved", "Confirmation");
+
+            //select first
+            ContentPresenter c = (ContentPresenter)agesControl.ItemContainerGenerator.ContainerFromItem(agesControl.Items[0]);
+            c.ApplyTemplate();
+            RadioButton rb = c.ContentTemplate.FindName("AgeRadio", c) as RadioButton;
+            rb.IsChecked = true;
         }
 
         private void removeOldRatings(Test test, int age)
@@ -381,9 +418,9 @@ namespace HealthReporter.Controls
                 //removes ratings with given testId and age
                 if (a.age == age)
                 {
-                    //repo.removeRatings(test, age);
+                    repo.removeRatingsByAge(test, age);
+                    break;
                 }
-                break;
             }
         }
         private void ClearRatingAndLabel()
@@ -414,6 +451,27 @@ namespace HealthReporter.Controls
         {
         }
 
+        private void btn_DeleteTest(object sender, RoutedEventArgs e)
+        {
+            Test test = (Test)testName.DataContext;
+            if(test != null) {
+                var testRepo = new TestRepository();
+                testRepo.Delete(test);
+
+                var labRepo = new RatingLabelRepository();
+                labRepo.Delete(test);
+
+                var ratRepo = new RatingRepository();
+                ratRepo.Delete(test);
+
+                int i = catsDataGrid.SelectedIndex;
+                catsDataGrid.SelectedIndex = -1;
+                catsDataGrid.SelectedIndex = i;
+
+
+            }
+        }
+
         private void ClearAndEnableFields()
         {
             ClearRatingAndLabel();
@@ -430,7 +488,7 @@ namespace HealthReporter.Controls
             TestDescriptionText.IsReadOnly = false;
             SaveTest.Visibility = System.Windows.Visibility.Visible;
             addNewRating.Visibility = System.Windows.Visibility.Visible;
-            removeRating.Visibility = System.Windows.Visibility.Visible;
+            //removeRating.Visibility = System.Windows.Visibility.Visible;
             Cancel.Visibility = System.Windows.Visibility.Visible;
         }
 

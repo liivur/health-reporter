@@ -10,8 +10,8 @@
             <TextBlock x:Name="noOfTests" HorizontalAlignment="Left" Margin="337,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188" Width="13"/>
             <TextBlock x:Name="Text0" HorizontalAlignment="Left" Margin="244,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188" Width="93" Text="Number of tests:"/>
             <TextBlock x:Name="ratings" FontWeight="Bold" HorizontalAlignment="Left" Margin="289,100,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188" Width="48" Text="Ratings"/>
-            <Button x:Name="addTestButton" Content="Add new Test" HorizontalAlignment="Left" Margin="538,0,0,0" VerticalAlignment="Top" Width="98" Click="btn_AddNewTest" />
-            <Button x:Name="addCategoryButton" Content="Add new Category" HorizontalAlignment="Left" Margin="418,0,0,0" VerticalAlignment="Top" Width="108" Click="btn_AddNewCategory" />
+            <Button x:Name="addTestButton" Content="New test" HorizontalAlignment="Left" Margin="575,0,0,0" VerticalAlignment="Top" Width="61" Click="btn_AddNewTest" />
+            <Button x:Name="addCategoryButton" Content="Add new Category" HorizontalAlignment="Left" Margin="383,0,0,0" VerticalAlignment="Top" Width="108" Click="btn_AddNewCategory" />
             <RadioButton x:Name="menRadio" GroupName="Gender" Content="Men" Margin="496,84,93,244" Checked="GenderRadio_Checked"/>
             <RadioButton x:Name="womenRadio" GroupName="Gender" Content="Women" Margin="556,84,10,242" IsChecked="True" Checked="GenderRadio_Checked"/>
             <DataGrid x:Name="catsDataGrid" SelectionMode="Single" IsReadOnly="True" GridLinesVisibility="None" HeadersVisibility="Column" AutoGenerateColumns="False" Margin="0,45,532,0" SelectionChanged="catsDataGrid_SelectionChanged" Background="{x:Null}" BorderBrush="{x:Null}">
@@ -67,6 +67,7 @@
             <ComboBox x:Name="categorySelector"  IsEnabled="False" DisplayMemberPath="name" SelectedValuePath="id" HorizontalAlignment="Left" Margin="363,79,0,0" VerticalAlignment="Top" Width="116" Height="21"/>
             <Button x:Name="SaveTest" Content="Save" HorizontalAlignment="Left" Margin="575,326,0,0"  VerticalAlignment="Top" Width="38" RenderTransformOrigin="0.706,8.4" Click="btn_SaveTest" Visibility="Visible" />
             <Button x:Name="Cancel" Content="X" HorizontalAlignment="Left" Margin="613,326,0,0" VerticalAlignment="Top" Width="23" Click="btn_Cancel" />
+            <Button x:Name="deleteTestButton" Content="Delete test" HorizontalAlignment="Left" Margin="496,0,0,0" VerticalAlignment="Top" Width="74" Click="btn_DeleteTest" />
         </Grid>
     </Border>
 </UserControl>

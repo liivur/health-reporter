@@ -16,6 +16,11 @@ namespace HealthReporter.Models
             var res = connection.InsertSql("INSERT INTO rating_labels (id, name, interpretation, rating, uploaded) values(@id, @name, @interpretation, @rating, @uploaded)", label);
         }
 
+        public void Delete(Test test)
+        {
+            var res = DatabaseUtility.getConnection().InsertSql("DELETE FROM rating_labels WHERE id in (SELECT labelId FROM ratings WHERE ratings.labelId = rating_labels.id and testId=@id)", test);
+        }
+
         public IList<RatingLabel> FindAll()
         {
             return DatabaseUtility.getConnection().QuerySql<RatingLabel>("SELECT * FROM rating_labels");

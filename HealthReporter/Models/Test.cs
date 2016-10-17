@@ -13,6 +13,11 @@ namespace HealthReporter.Models
             var res = connection.InsertSql("INSERT INTO tests (id, categoryId, name, description, units, decimals, weight, formulaF, formulaM, position, uploaded) values(@id, @categoryId, @name, @description, @units, @decimals, @weight, @formulaF, @formulaM, @position, @uploaded)", test);
         }
 
+        public void Delete(Test test)
+        {
+            var res = DatabaseUtility.getConnection().InsertSql("DELETE from tests where id=@id", test);
+        }
+
         public IList<Test> FindAll()
         {
             return DatabaseUtility.getConnection().QuerySql<Test>("SELECT * FROM tests");

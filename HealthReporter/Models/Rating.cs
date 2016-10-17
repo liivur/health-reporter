@@ -15,6 +15,11 @@ namespace HealthReporter.Models
             var res = connection.InsertSql("INSERT INTO ratings (testId, labelId, age, normF, normM, updated, uploaded) values(@testId, @labelId, @age, @normF, @normM, @updated, @uploaded)", rating);
         }
 
+        public void Delete(Test test)
+        {
+            var res = DatabaseUtility.getConnection().InsertSql("DELETE from ratings where testId=@id", test);
+        }
+
         public IList<Rating> FindAll()
         {
             return DatabaseUtility.getConnection().QuerySql<Rating>("SELECT * FROM ratings");
@@ -34,7 +39,7 @@ namespace HealthReporter.Models
         }
         public void removeRatingsByAge(Test test, int age)
         {
-          // DatabaseUtility.getConnection().QuerySql<Rating>("DELETE FROM ratings WHERE testId=@id AND age = ??", test);
+           DatabaseUtility.getConnection().QuerySql<Rating>("DELETE FROM ratings WHERE testId=@id AND age ="+age.ToString(), test);
         }
         public void removeRatingsByTest(Test test)
         {
