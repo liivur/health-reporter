@@ -37,7 +37,7 @@
                     <DataGridTextColumn Header="Group Name" Binding="{Binding groupName}" />
                     <DataGridTextColumn Header="Email" Binding="{Binding email}" />
                     <DataGridTextColumn Header="Gender" Binding="{Binding gender}" />
-                    <DataGridTextColumn Header="Date of Birth" Binding="{Binding birthDate}" />
+                    <DataGridTextColumn Header="Age" Binding="{Binding age}" />
                     <DataGridTextColumn Header="Updated" Visibility="Hidden" Binding="{Binding updated}" />
                     <DataGridTemplateColumn>
                         <DataGridTemplateColumn.CellTemplate>
@@ -54,7 +54,7 @@
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
                     <DataGridTemplateColumn>
-                        <DataGridTemplateColumn.CellTemplate>
+                        <DataGridTemplateColumn.CellTemplate >
                             <DataTemplate>
                                 <Button Click="btn_Delete" BorderBrush="#FFA2B2BD"  Background="White">
                                     <Button.Resources>

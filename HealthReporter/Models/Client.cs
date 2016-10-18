@@ -69,8 +69,9 @@ namespace HealthReporter.Models
         private string _email;
         private string _birthDate;
         private string _gender;
+        private string _age;
 
-        
+
 
         public string firstName
         {
@@ -130,6 +131,24 @@ namespace HealthReporter.Models
                 OnPropertyChanged("birthDate");
             }
         }
+
+        public string age
+        {
+            get
+            {
+                var today = DateTime.Today;
+                DateTime birthday = DateTime.Parse(this.birthDate);
+                var age = today.Year - birthday.Year;
+                if (birthday > today.AddYears(-age)) age--;
+                this._age = age.ToString();
+                return _age;
+            }
+           
+        }
+
+
+
+
 
         #region INotifyPropertyChanged Members
 

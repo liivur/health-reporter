@@ -43,6 +43,7 @@ namespace HealthReporter.Controls
 
         }
 
+        
 
         private void btn_AddNewClient(object sender, RoutedEventArgs e)
         {
