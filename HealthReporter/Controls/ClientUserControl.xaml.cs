@@ -35,7 +35,7 @@ namespace HealthReporter.Controls
             var repo = new ClientRepository();
             IList<Client> clients = repo.FindAll();
 
-            string calTotal = "Total : " + clients.Count;
+            string calTotal =  clients.Count + " Clients";
             total.Text = calTotal;
 
             dataGrid.ItemsSource = clients;

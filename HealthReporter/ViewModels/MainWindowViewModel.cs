@@ -31,6 +31,7 @@ namespace HealthReporter
             DatabaseUtility.checkDb();
             ClientUserControl obj = new ClientUserControl(this);
             stkTest.Children.Add(obj);
+            btnShowClients.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFF0F0F0"));
         } 
 
         private void btn_Clients(object sender, RoutedEventArgs e)
@@ -38,7 +39,8 @@ namespace HealthReporter
             ClientUserControl obj = new ClientUserControl(this);
             stkTest.Children.Clear();
             stkTest.Children.Add(obj);
-            
+            btnShowClients.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFF0F0F0"));
+            btnShowTests.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
         }
 
         private void btn_Tests(object sender, RoutedEventArgs e)
@@ -46,6 +48,8 @@ namespace HealthReporter
             TestsUserControl obj = new TestsUserControl(this);
             stkTest.Children.Clear();
             stkTest.Children.Add(obj);
+            btnShowTests.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFF0F0F0"));
+            btnShowClients.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
         }
     }
 }
