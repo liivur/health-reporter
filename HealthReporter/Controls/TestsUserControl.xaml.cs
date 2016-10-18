@@ -406,11 +406,23 @@ namespace HealthReporter.Controls
             DisableFields();
             MessageBox.Show("Saved", "Confirmation");
 
+            IList<Test> tests = repo.FindAll();
+            noOfTests.Text = tests.Count.ToString();
+
             //select first
             ContentPresenter c = (ContentPresenter)agesControl.ItemContainerGenerator.ContainerFromItem(agesControl.Items[0]);
             c.ApplyTemplate();
             RadioButton rb = c.ContentTemplate.FindName("AgeRadio", c) as RadioButton;
             rb.IsChecked = true;
+
+            int i = catsDataGrid.SelectedIndex;
+            catsDataGrid.SelectedIndex = -1;
+            catsDataGrid.SelectedIndex = i;
+
+            ClearFields();
+            ClearRatingAndLabel();
+            testsDataGrid.SelectedIndex = -1;
+            agesControl.ItemsSource = null;
         }
 
         private void removeOldRatings(Test test, int age)
@@ -471,6 +483,13 @@ namespace HealthReporter.Controls
                 int i = catsDataGrid.SelectedIndex;
                 catsDataGrid.SelectedIndex = -1;
                 catsDataGrid.SelectedIndex = i;
+
+                ClearFields();
+                agesControl.ItemsSource = null;
+                ClearRatingAndLabel();
+
+                IList<Test> tests = testRepo.FindAll();
+                noOfTests.Text = tests.Count.ToString();
             }
         }
         private void btn_UpdateTest(object sender, RoutedEventArgs e)
@@ -557,6 +576,7 @@ namespace HealthReporter.Controls
             addNewRating.Visibility = System.Windows.Visibility.Hidden;
             removeRating.Visibility = System.Windows.Visibility.Hidden;
             Cancel.Visibility = System.Windows.Visibility.Hidden;
+            updateButton.Visibility = Visibility.Hidden;
         }
 
         class AgeInterval

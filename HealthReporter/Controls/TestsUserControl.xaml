@@ -28,7 +28,7 @@
     </UserControl.Resources>
     <Border BorderBrush="Gray" BorderThickness="1">
         <Grid ShowGridLines="False" Margin="0,0,0,0">
-            <TextBlock x:Name="noOfTests" HorizontalAlignment="Left" Margin="355,62,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188" Width="11"/>
+            <TextBlock x:Name="noOfTests" HorizontalAlignment="Left" Margin="344,62,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188" Width="22"/>
             <TextBlock x:Name="Text0" HorizontalAlignment="Left" Margin="366,63,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188" Width="93" Text="Tests"/>
             <TextBlock x:Name="ratings" FontWeight="Bold" HorizontalAlignment="Left" Margin="289,179,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188" Width="48" Text="Ratings"/>
             <Button x:Name="addTestButton" Template="{StaticResource ButtonStyle}" Content="+" HorizontalAlignment="Left" Margin="587,20,0,0" VerticalAlignment="Top" Width="40" Click="btn_AddNewTest" Height="40" BorderBrush="#FFA2B2BD"  Background="White" FontWeight="Bold" FontSize="20" />
@@ -117,7 +117,7 @@
             <TextBlock HorizontalAlignment="Left" Margin="289,152,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188"><Run Text="Subcategory"/><Run Text=":"/></TextBlock>
             <ComboBox x:Name="categorySelector"  IsEnabled="False" DisplayMemberPath="name" SelectedValuePath="id" HorizontalAlignment="Left" Margin="370,150,0,0" VerticalAlignment="Top" Width="163" Height="21"/>
             <Button x:Name="SaveTest" Content="Save" HorizontalAlignment="Left" Margin="579,453,0,0"  VerticalAlignment="Top" Width="38" RenderTransformOrigin="0.706,8.4" Click="btn_SaveTest" Visibility="Visible" />
-            
+
             <Button x:Name="Cancel" Content="X" HorizontalAlignment="Left" Margin="628,453,0,0" VerticalAlignment="Top" Width="23" Click="btn_Cancel" />
             <Button x:Name="deleteTestButton" Content="Delete test" HorizontalAlignment="Left" Margin="492,453,0,0" VerticalAlignment="Top" Width="74" Click="btn_DeleteTest" Background="White" >
                 <Button.Resources>
