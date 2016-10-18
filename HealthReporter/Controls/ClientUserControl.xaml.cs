@@ -39,9 +39,17 @@ namespace HealthReporter.Controls
             total.Text = calTotal;
 
             dataGrid.ItemsSource = clients;
+
+            //Setting tabel column width equally
+            Loaded += (s, e) => dataGrid.Columns[1].Width =new DataGridLength(1, DataGridLengthUnitType.Star);
+            Loaded += (s, e) => dataGrid.Columns[2].Width = new DataGridLength(1, DataGridLengthUnitType.Star);
+            Loaded += (s, e) => dataGrid.Columns[3].Width = new DataGridLength(1, DataGridLengthUnitType.Star);
+            Loaded += (s, e) => dataGrid.Columns[4].Width = new DataGridLength(1, DataGridLengthUnitType.Star);
+
             btnShowClients.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFF0F0F0"));
 
         }
+
 
         
 
