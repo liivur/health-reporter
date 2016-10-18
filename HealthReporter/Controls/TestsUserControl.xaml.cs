@@ -59,7 +59,8 @@ namespace HealthReporter.Controls
             obsAges.Add(new AgeInterval() { interval = "0-" });
             agesControl.ItemsSource = obsAges;
 
-            ClearAndEnableFields();
+            ClearFields();
+            EnableFields();
         }
 
         private void btn_AddNewCategory(object sender, RoutedEventArgs e)
@@ -470,15 +471,47 @@ namespace HealthReporter.Controls
                 int i = catsDataGrid.SelectedIndex;
                 catsDataGrid.SelectedIndex = -1;
                 catsDataGrid.SelectedIndex = i;
-
-
             }
         }
+        private void btn_UpdateTest(object sender, RoutedEventArgs e)
+        {
+            updateTestButton.Visibility = Visibility.Hidden;
+            updateButton.Visibility = Visibility.Visible;
+            EnableFields();
+            SaveTest.Visibility = Visibility.Hidden;
+            Cancel.Visibility =  Visibility.Hidden;
+            EnableLastRadioWriting();
+        }
 
-        private void ClearAndEnableFields()
+        private void btn_Update(object sender, RoutedEventArgs e)
+        {
+            Test test = (Test)testName.DataContext;
+            test.categoryId = ((TestCategory)this.categorySelector.SelectedItem).id;
+            test.decimals = (int)this.decimalsSelector.SelectedItem;
+
+            SaveLastRating(test);
+
+            var repo = new TestRepository();
+            repo.Update(test);
+
+            DisableFields();
+            MessageBox.Show("Updated", "Confirmation");
+            updateTestButton.Visibility = Visibility.Visible;
+            updateButton.Visibility = Visibility.Hidden;
+
+
+
+            //select first
+            ContentPresenter c = (ContentPresenter)agesControl.ItemContainerGenerator.ContainerFromItem(agesControl.Items[0]);
+            c.ApplyTemplate();
+            RadioButton rb = c.ContentTemplate.FindName("AgeRadio", c) as RadioButton;
+            rb.IsChecked = true;
+        }
+
+        private void ClearFields()
         {
             ClearRatingAndLabel();
-            EnableLastRadioWriting();    
+            EnableLastRadioWriting();
             testName.Text = "";
             testName.IsReadOnly = false;
             units.Text = "";
@@ -489,9 +522,23 @@ namespace HealthReporter.Controls
             FormulaText.IsReadOnly = false;
             TestDescriptionText.Text = "";
             TestDescriptionText.IsReadOnly = false;
+        }
+
+        private void EnableFields()
+        {
+            testName.IsReadOnly = false;
+            units.IsReadOnly = false;
+            decimalsSelector.IsEnabled = true;
+            categorySelector.IsEnabled = true;
+            FormulaText.IsReadOnly = false;
+            TestDescriptionText.IsReadOnly = false;
+            ratingsDatagrid.CanUserAddRows = true;
+            ratingsDatagrid.IsReadOnly = false;
+            LabelandDescDatagrid.IsReadOnly = false;
+            LabelandDescDatagrid.CanUserAddRows = true;
             SaveTest.Visibility = System.Windows.Visibility.Visible;
             addNewRating.Visibility = System.Windows.Visibility.Visible;
-            //removeRating.Visibility = System.Windows.Visibility.Visible;
+            removeRating.Visibility = System.Windows.Visibility.Visible;
             Cancel.Visibility = System.Windows.Visibility.Visible;
         }
 

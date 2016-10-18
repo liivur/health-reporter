@@ -27,6 +27,11 @@ namespace HealthReporter.Models
         {
             return DatabaseUtility.getConnection().QuerySql<Test>("SELECT * FROM tests WHERE categoryId = @id", cat);
         }
+
+        public void Update(Test test)
+        {
+            DatabaseUtility.getConnection().QuerySql<Test>("UPDATE tests SET categoryId=@categoryId, name=@name, description=@description, units=@units, decimals=@decimals, weight=@weight, formulaF=@formulaF, formulaM=@formulaM WHERE id=@id", test);
+        }
     }
 
     class Test
