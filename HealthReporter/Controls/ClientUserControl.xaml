@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:HealthReporter.Controls"
-             mc:Ignorable="d" Height="350" Width="600">
+             mc:Ignorable="d" Height="485" Width="680">
     <UserControl.Resources>
         <ControlTemplate x:Key="ButtonStyle" TargetType="{x:Type Button}">
             <Border x:Name="button" CornerRadius="100" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}">
@@ -28,8 +28,8 @@
     </UserControl.Resources>
     <Border BorderBrush="Gray" BorderThickness="1">
         <Grid>
-            <Button Template="{StaticResource ButtonStyle}" x:Name="button1" Content="+" HorizontalAlignment="Left" Margin="503,11,0,0" VerticalAlignment="Top" Width="40" Click="btn_AddNewClient" Height="40" BorderBrush="#FFA2B2BD"  Background="White" FontWeight="Bold" FontSize="20"/>
-            <DataGrid AutoGenerateColumns="False" x:Name="dataGrid" HorizontalAlignment="Left" Margin="34,75,0,0" VerticalAlignment="Top" Height="239" Width="543">
+            <Button Template="{StaticResource ButtonStyle}" x:Name="button1" Content="+" HorizontalAlignment="Left" Margin="587,20,0,0" VerticalAlignment="Top" Width="40" Click="btn_AddNewClient" Height="40" BorderBrush="#FFA2B2BD"  Background="White" FontWeight="Bold" FontSize="20"/>
+            <DataGrid AutoGenerateColumns="False" x:Name="dataGrid" HorizontalAlignment="Left" Margin="34,93,0,0" VerticalAlignment="Top" Height="360" Width="611">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="id" Visibility="Hidden" Binding="{Binding id}" />
                     <DataGridTextColumn Header="First Name" Binding="{Binding firstName}" />
@@ -48,7 +48,8 @@
                                             <Setter Property="CornerRadius" Value="4"/>
                                         </Style>
                                     </Button.Resources>
-                                    -</Button>
+                                    -
+                                </Button>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
@@ -61,29 +62,44 @@
                                             <Setter Property="CornerRadius" Value="4"/>
                                         </Style>
                                     </Button.Resources>
-                                    X</Button>
+                                    X
+                                </Button>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
-            <TextBlock x:Name="total" HorizontalAlignment="Left" Margin="276,10,0,0" TextWrapping="Wrap"  VerticalAlignment="Top"/>
-            <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="64,48,0,0" TextWrapping="Wrap" Text="Search Clients" VerticalAlignment="Top"/>
-            <TextBox x:Name="search" HorizontalAlignment="Left" Height="23" Margin="41,20,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="132">
+            <TextBlock x:Name="total" HorizontalAlignment="Left" Margin="347,63,0,0" TextWrapping="Wrap"  VerticalAlignment="Top"/>
+            <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="49,55,0,0" TextWrapping="Wrap" Text="Search Clients" VerticalAlignment="Top"/>
+            <TextBox x:Name="search" HorizontalAlignment="Left" Height="23" Margin="34,27,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="104">
                 <TextBox.Resources>
                     <Style TargetType="{x:Type Border}">
                         <Setter Property="CornerRadius" Value="4"/>
                     </Style>
                 </TextBox.Resources>
             </TextBox>
-            <Button x:Name="button" HorizontalAlignment="Left" Content="Go" Margin="178,20,0,0" VerticalAlignment="Top" Width="39" Height="23" Click="btn_Search" BorderBrush="#FFA2B2BD" Background="White" >
+            <Button x:Name="button" HorizontalAlignment="Left" Content="Go" Margin="147,26,0,0" VerticalAlignment="Top" Width="39" Height="23" Click="btn_Search" BorderBrush="#FFA2B2BD" Background="White" >
                 <Button.Resources>
                     <Style TargetType="{x:Type Border}">
                         <Setter Property="CornerRadius" Value="4"/>
                     </Style>
                 </Button.Resources>
             </Button>
-            <TextBlock x:Name="textBlock1" HorizontalAlignment="Left" Margin="494,53,0,0" TextWrapping="Wrap" Text="New Client" VerticalAlignment="Top" Width="63"/>
+            <TextBlock x:Name="textBlock1" HorizontalAlignment="Left" Margin="578,63,0,0" TextWrapping="Wrap" Text="New Client" VerticalAlignment="Top" Width="63"/>
+            <Button x:Name="btnShowClients" Content="Clients" Click="btn_Clients" HorizontalAlignment="Left" Margin="268,22,0,0"  VerticalAlignment="Top" Width="97" BorderBrush="#FFA2B2BD" Height="33" Background="White" RenderTransformOrigin="0.632,-0.808">
+                <Button.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="CornerRadius" Value="4"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+            <Button x:Name="btnShowTests" Content="Tests" Click="btn_Tests" HorizontalAlignment="Left" Margin="374,22,0,0" VerticalAlignment="Top" Width="86" BorderBrush="#FFA2B2BD" Height="33" Background="White">
+                <Button.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="CornerRadius" Value="4"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
         </Grid>
     </Border>
 </UserControl>

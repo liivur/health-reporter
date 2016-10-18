@@ -4,38 +4,65 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:HealthReporter.Controls"
-             mc:Ignorable="d" Height="350" Width="640">
-    <Border BorderBrush="Black" BorderThickness="2">
+             mc:Ignorable="d" Height="485" Width="680">
+    <UserControl.Resources>
+        <ControlTemplate x:Key="ButtonStyle" TargetType="{x:Type Button}">
+            <Border x:Name="button" CornerRadius="100" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}">
+                <ContentPresenter x:Name="content" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="BorderBrush" TargetName="button" Value="#FFC2C5C7"/>
+                    <Setter Property="Background" TargetName="button" Value="#FFF0F0F0"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="BorderBrush" TargetName="button" Value="#FFC2C5C7"/>
+                    <Setter Property="Background" TargetName="button" Value="#FFF0F0F0"/>
+                </Trigger>
+                <Trigger Property="IsFocused" Value="True">
+                    <Setter Property="BorderBrush" TargetName="button" Value="#FFC2C5C7"/>
+                    <Setter Property="Background" TargetName="button" Value="#FFF0F0F0"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+    </UserControl.Resources>
+    <Border BorderBrush="Gray" BorderThickness="1">
         <Grid ShowGridLines="False" Margin="0,0,0,0">
-            <TextBlock x:Name="noOfTests" HorizontalAlignment="Left" Margin="337,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188" Width="13"/>
-            <TextBlock x:Name="Text0" HorizontalAlignment="Left" Margin="244,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188" Width="93" Text="Number of tests:"/>
-            <TextBlock x:Name="ratings" FontWeight="Bold" HorizontalAlignment="Left" Margin="289,100,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188" Width="48" Text="Ratings"/>
-            <Button x:Name="addTestButton" Content="New test" HorizontalAlignment="Left" Margin="575,0,0,0" VerticalAlignment="Top" Width="61" Click="btn_AddNewTest" />
-            <Button x:Name="addCategoryButton" Content="Add new Category" HorizontalAlignment="Left" Margin="383,0,0,0" VerticalAlignment="Top" Width="108" Click="btn_AddNewCategory" />
-            <RadioButton x:Name="menRadio" GroupName="Gender" Content="Men" Margin="496,84,93,244" Checked="GenderRadio_Checked"/>
-            <RadioButton x:Name="womenRadio" GroupName="Gender" Content="Women" Margin="556,84,10,242" IsChecked="True" Checked="GenderRadio_Checked"/>
-            <DataGrid x:Name="catsDataGrid" SelectionMode="Single" IsReadOnly="True" GridLinesVisibility="None" HeadersVisibility="Column" AutoGenerateColumns="False" Margin="0,45,532,0" SelectionChanged="catsDataGrid_SelectionChanged" Background="{x:Null}" BorderBrush="{x:Null}">
+            <TextBlock x:Name="noOfTests" HorizontalAlignment="Left" Margin="355,62,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188" Width="11"/>
+            <TextBlock x:Name="Text0" HorizontalAlignment="Left" Margin="366,63,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188" Width="93" Text="Tests"/>
+            <TextBlock x:Name="ratings" FontWeight="Bold" HorizontalAlignment="Left" Margin="289,179,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188" Width="48" Text="Ratings"/>
+            <Button x:Name="addTestButton" Template="{StaticResource ButtonStyle}" Content="+" HorizontalAlignment="Left" Margin="587,20,0,0" VerticalAlignment="Top" Width="40" Click="btn_AddNewTest" Height="40" BorderBrush="#FFA2B2BD"  Background="White" FontWeight="Bold" FontSize="20" />
+            <Button x:Name="addCategoryButton" Content="Add New Category" HorizontalAlignment="Left" Margin="29,33,0,0" VerticalAlignment="Top" Width="108" Click="btn_AddNewCategory" Background="White" >
+                <Button.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="CornerRadius" Value="4"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+            <RadioButton x:Name="menRadio" GroupName="Gender" Content="Men" Margin="530,180,93,281" Checked="GenderRadio_Checked"/>
+            <RadioButton x:Name="womenRadio" GroupName="Gender" Content="Women" Margin="584,181,20,283" IsChecked="True" Checked="GenderRadio_Checked"/>
+            <DataGrid x:Name="catsDataGrid" SelectionMode="Single" IsReadOnly="True" GridLinesVisibility="None" HeadersVisibility="Column" AutoGenerateColumns="False" Margin="0,93,541,0" SelectionChanged="catsDataGrid_SelectionChanged" Background="{x:Null}" BorderBrush="{x:Null}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Category" Binding="{Binding name}" Width="*"/>
                 </DataGrid.Columns>
             </DataGrid>
-            <DataGrid x:Name="testsDataGrid" IsReadOnly="True"  HeadersVisibility="Column" AutoGenerateColumns="False" Margin="104,45,363,0" SelectionChanged="testsDataGrid_SelectionChanged" Background="{x:Null}" GridLinesVisibility="None" BorderBrush="{x:Null}">
+            <DataGrid x:Name="testsDataGrid" IsReadOnly="True"  HeadersVisibility="Column" AutoGenerateColumns="False" Margin="137,93,399,0" SelectionChanged="testsDataGrid_SelectionChanged" Background="{x:Null}" GridLinesVisibility="None" BorderBrush="{x:Null}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Tests" Binding="{Binding name}" Width="*"/>
                 </DataGrid.Columns>
             </DataGrid>
-            <DataGrid x:Name="ratingsDatagrid" IsReadOnly="True"  HeadersVisibility="Column" AutoGenerateColumns="False" Margin="284,142,299,102" Background="{x:Null}" GridLinesVisibility="Horizontal" BorderBrush="{x:Null}">
+            <DataGrid x:Name="ratingsDatagrid" IsReadOnly="True"  HeadersVisibility="Column" AutoGenerateColumns="False" Margin="284,224,315,136" Background="{x:Null}" GridLinesVisibility="Horizontal" BorderBrush="{x:Null}">
                 <DataGrid.Columns>
                     <DataGridTextColumn x:Name="RatingColumn" Binding="{Binding normF}" Header="Score" Width="*"/>
                 </DataGrid.Columns>
             </DataGrid>
-            <DataGrid x:Name="LabelandDescDatagrid" IsReadOnly="True"  HeadersVisibility="Column" AutoGenerateColumns="False" Margin="337,142,64,102" Background="{x:Null}" GridLinesVisibility="Horizontal" BorderBrush="{x:Null}" RenderTransformOrigin="0.443,0.49">
+            <DataGrid x:Name="LabelandDescDatagrid" IsReadOnly="True"  HeadersVisibility="Column" AutoGenerateColumns="False" Margin="363,224,27,136" Background="{x:Null}" GridLinesVisibility="Horizontal" BorderBrush="{x:Null}" RenderTransformOrigin="0.443,0.49">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Meaning" Binding="{Binding name}" Width="*"/>
                     <DataGridTextColumn Header="Description" Binding="{Binding interpretation}" Width="*"/>
                 </DataGrid.Columns>
             </DataGrid>
-            <ItemsControl x:Name="agesControl" Margin="289,121,0,205"  HorizontalAlignment="Left" Width="297">
+            <ItemsControl x:Name="agesControl" Margin="289,198,0,263"  HorizontalAlignment="Left" Width="362">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <UniformGrid Columns="5" />
@@ -49,25 +76,70 @@
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
-            <TextBlock x:Name="Text1" HorizontalAlignment="Left" Margin="289,26,0,0" TextWrapping="Wrap" Text="Name" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188"/>
-            <TextBlock x:Name="Text2" HorizontalAlignment="Left" Margin="516,26,0,0" TextWrapping="Wrap" Text="Units" VerticalAlignment="Top" RenderTransformOrigin="-0.48,0.627"/>
-            <TextBlock x:Name="Text3" HorizontalAlignment="Left" Margin="575,26,0,0" TextWrapping="Wrap" Text="Decimals" VerticalAlignment="Top" RenderTransformOrigin="0.146,1.25"/>
-            <TextBox x:Name="testName" HorizontalAlignment="Left" IsReadOnly="True" Height="23" Margin="289,47,0,0" TextWrapping="Wrap" Text="{Binding name}" VerticalAlignment="Top" Width="209"/>
-            <TextBox x:Name="units" HorizontalAlignment="Left" IsReadOnly="True" Height="23" Margin="516,47,0,0" TextWrapping="Wrap" Text="{Binding units}" VerticalAlignment="Top" Width="39" RenderTransformOrigin="0.179,0.522"/>
-            <ComboBox x:Name="decimalsSelector" IsEnabled="False" HorizontalAlignment="Left" Margin="575,48,0,0" VerticalAlignment="Top" Width="44"/>
-            <TextBox x:Name="TestDescriptionText" HorizontalAlignment="Left" IsReadOnly="True" Height="23" Margin="289,313,0,0" TextWrapping="Wrap" Text="{Binding description}" VerticalAlignment="Top" Width="283"/>
-            <RadioButton x:Name="menFormulaRadio" GroupName="FormulaGender" Content="Men" Margin="458,249,131,79" Checked="FormulaRadio_Checked"/>
-            <RadioButton x:Name="womenFormulaRadio" GroupName="FormulaGender" Content="Women" IsChecked="True" Margin="510,249,64,79" Checked="FormulaRadio_Checked"/>
-            <TextBox x:Name="FormulaText" HorizontalAlignment="Left" IsReadOnly="True" Height="23" Margin="289,267,0,0" TextWrapping="Wrap" Text="{Binding formulaF}" VerticalAlignment="Top" Width="283"/>
-            <TextBlock FontWeight="Bold" HorizontalAlignment="Left" Margin="289,253,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188" Width="48" Height="16"><Run Text="Formula"/><LineBreak/><Run/></TextBlock>
-            <TextBlock HorizontalAlignment="Left" Margin="289,297,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188" Width="79" Height="16"><Run Text="Descriptio"/><Run Text="n"/><LineBreak/><Run/></TextBlock>
+            <TextBlock x:Name="Text1" HorizontalAlignment="Left" Margin="289,98,0,0" TextWrapping="Wrap" Text="Name" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188"/>
+            <TextBlock x:Name="Text2" HorizontalAlignment="Left" Margin="548,100,0,0" TextWrapping="Wrap" Text="Units" VerticalAlignment="Top" RenderTransformOrigin="-0.48,0.627"/>
+            <TextBlock x:Name="Text3" HorizontalAlignment="Left" Margin="605,100,0,0" TextWrapping="Wrap" Text="Decimals" VerticalAlignment="Top" RenderTransformOrigin="0.146,1.25"/>
+            <TextBox x:Name="testName" HorizontalAlignment="Left" IsReadOnly="True" Height="23" Margin="289,120,0,0" TextWrapping="Wrap" Text="{Binding name}" VerticalAlignment="Top" Width="244">
+                <TextBox.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="CornerRadius" Value="4"/>
+                    </Style>
+                </TextBox.Resources>
+            </TextBox>
+            <TextBox x:Name="units" HorizontalAlignment="Left" IsReadOnly="True" Height="23" Margin="547,119,0,0" TextWrapping="Wrap" Text="{Binding units}" VerticalAlignment="Top" Width="48" RenderTransformOrigin="0.179,0.522">
+                <TextBox.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="CornerRadius" Value="4"/>
+                    </Style>
+                </TextBox.Resources>
+            </TextBox>
+            <ComboBox x:Name="decimalsSelector" IsEnabled="False" HorizontalAlignment="Left" Margin="607,120,0,0" VerticalAlignment="Top" Width="44" RenderTransformOrigin="1.076,0.676"/>
+            <TextBox x:Name="TestDescriptionText" HorizontalAlignment="Left" IsReadOnly="True" Height="23" Margin="289,422,0,0" TextWrapping="Wrap" Text="{Binding description}" VerticalAlignment="Top" Width="362">
+                <TextBox.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="CornerRadius" Value="4"/>
+                    </Style>
+                </TextBox.Resources>
+            </TextBox>
+            <RadioButton x:Name="menFormulaRadio" GroupName="FormulaGender" Content="Men" Margin="528,353,97,109" Checked="FormulaRadio_Checked" RenderTransformOrigin="0.498,0.001"/>
+            <RadioButton x:Name="womenFormulaRadio" GroupName="FormulaGender" Content="Women" IsChecked="True" Margin="586,352,21,110" Checked="FormulaRadio_Checked"/>
+            <TextBox x:Name="FormulaText" HorizontalAlignment="Left" IsReadOnly="True" Height="23" Margin="289,374,0,0" TextWrapping="Wrap" Text="{Binding formulaF}" VerticalAlignment="Top" Width="362">
+                <TextBox.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="CornerRadius" Value="4"/>
+                    </Style>
+                </TextBox.Resources>
+            </TextBox>
+            <TextBlock FontWeight="Bold" HorizontalAlignment="Left" Margin="289,352,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188" Width="48" Height="16"><Run Text="Formula"/><LineBreak/><Run/></TextBlock>
+            <TextBlock HorizontalAlignment="Left" Margin="289,400,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188" Width="79" Height="16"><Run Text="Descriptio"/><Run Text="n"/><LineBreak/><Run/></TextBlock>
             <Button x:Name="addNewRating" Content="+" HorizontalAlignment="Left" Margin="596,224,0,0" VerticalAlignment="Top" Width="17" Click="btn_AddNewRating"  Visibility="Hidden" />
             <Button x:Name="removeRating" Content="-" HorizontalAlignment="Left" Margin="613,224,0,0" VerticalAlignment="Top" Width="17"  Click="btn_RemoveRating"  Visibility="Hidden" />
-            <TextBlock HorizontalAlignment="Left" Margin="289,79,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188"><Run Text="Subcategory"/><Run Text=":"/></TextBlock>
-            <ComboBox x:Name="categorySelector"  IsEnabled="False" DisplayMemberPath="name" SelectedValuePath="id" HorizontalAlignment="Left" Margin="363,79,0,0" VerticalAlignment="Top" Width="116" Height="21"/>
-            <Button x:Name="SaveTest" Content="Save" HorizontalAlignment="Left" Margin="575,326,0,0"  VerticalAlignment="Top" Width="38" RenderTransformOrigin="0.706,8.4" Click="btn_SaveTest" Visibility="Visible" />
-            <Button x:Name="Cancel" Content="X" HorizontalAlignment="Left" Margin="613,326,0,0" VerticalAlignment="Top" Width="23" Click="btn_Cancel" />
-            <Button x:Name="deleteTestButton" Content="Delete test" HorizontalAlignment="Left" Margin="496,0,0,0" VerticalAlignment="Top" Width="74" Click="btn_DeleteTest" />
+            <TextBlock HorizontalAlignment="Left" Margin="289,152,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188"><Run Text="Subcategory"/><Run Text=":"/></TextBlock>
+            <ComboBox x:Name="categorySelector"  IsEnabled="False" DisplayMemberPath="name" SelectedValuePath="id" HorizontalAlignment="Left" Margin="370,150,0,0" VerticalAlignment="Top" Width="163" Height="21"/>
+            <Button x:Name="SaveTest" Content="Save" HorizontalAlignment="Left" Margin="579,453,0,0"  VerticalAlignment="Top" Width="38" RenderTransformOrigin="0.706,8.4" Click="btn_SaveTest" Visibility="Visible" />
+            <Button x:Name="Cancel" Content="X" HorizontalAlignment="Left" Margin="628,453,0,0" VerticalAlignment="Top" Width="23" Click="btn_Cancel" />
+            <Button x:Name="deleteTestButton" Content="Delete test" HorizontalAlignment="Left" Margin="492,453,0,0" VerticalAlignment="Top" Width="74" Click="btn_DeleteTest" Background="White" >
+                <Button.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="CornerRadius" Value="4"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+            <Button x:Name="btnShowClients" Content="Clients" Click="btn_Clients" HorizontalAlignment="Left" Margin="268,22,0,0"  VerticalAlignment="Top" Width="97" BorderBrush="#FFA2B2BD" Height="33" Background="White" RenderTransformOrigin="0.632,-0.808">
+                <Button.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="CornerRadius" Value="4"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+            <Button x:Name="btnShowTests" Content="Tests" Click="btn_Tests" HorizontalAlignment="Left" Margin="374,22,0,0" VerticalAlignment="Top" Width="86" BorderBrush="#FFA2B2BD" Height="33" Background="White">
+                <Button.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="CornerRadius" Value="4"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+            <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="584,63,0,0" TextWrapping="Wrap" Text="New Test" VerticalAlignment="Top"/>
         </Grid>
     </Border>
 </UserControl>

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HealthReporter"
         mc:Ignorable="d"
-        Title="MainWindow" Height="550" Width="700">
+        Title="MainWindow" Height="560" Width="750">
     <Window.Resources>
         <ControlTemplate x:Key="ButtonStyle" TargetType="{x:Type Button}">
             <Border x:Name="button" CornerRadius="8" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}">
@@ -28,8 +28,6 @@
         </ControlTemplate>
     </Window.Resources>
     <Grid Name="grid1">
-        <Button x:Name="btnShowClients" Content="Clients" Template="{StaticResource ButtonStyle}" Click="btn_Clients" HorizontalAlignment="Left" Margin="248,55,0,0"  VerticalAlignment="Top" Width="97" BorderBrush="#FFA2B2BD" Height="33" Background="White"/>
-        <Button x:Name="btnShowTests" Content="Tests" Template="{StaticResource ButtonStyle}" Click="btn_Tests" HorizontalAlignment="Left" Margin="354,55,0,0" VerticalAlignment="Top" Width="86" BorderBrush="#FFA2B2BD" Height="33" Background="White"/>
-        <StackPanel Name="stkTest" Margin="20,106,21,22"/>
+        <StackPanel Name="stkTest" Margin="20,10,21,22"/>
     </Grid>
 </Window>

@@ -39,7 +39,8 @@ namespace HealthReporter.Controls
             total.Text = calTotal;
 
             dataGrid.ItemsSource = clients;
-            
+            btnShowClients.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFF0F0F0"));
+
         }
 
 
@@ -105,7 +106,24 @@ namespace HealthReporter.Controls
 
 
         }
-        
 
+        private void btn_Clients(object sender, RoutedEventArgs e)
+        {
+            ClientUserControl obj = new ClientUserControl(_parent);
+            _parent.stkTest.Children.Clear();
+            _parent.stkTest.Children.Add(obj);
+            btnShowClients.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFF0F0F0"));
+            btnShowTests.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+
+        }
+
+        private void btn_Tests(object sender, RoutedEventArgs e)
+        {
+            TestsUserControl obj = new TestsUserControl(_parent);
+            _parent.stkTest.Children.Clear();
+            _parent.stkTest.Children.Add(obj);
+            btnShowTests.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFF0F0F0"));
+            btnShowClients.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+        }
     }
 }

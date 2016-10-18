@@ -4,15 +4,28 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:HealthReporter.Controls"
-             mc:Ignorable="d" Height="150" Width="300">
-    <Border BorderBrush="Black" BorderThickness="2">
+             mc:Ignorable="d" Height="485" Width="680">
+    <Border BorderBrush="Gray" BorderThickness="1">
         <Grid>
-            <TextBlock x:Name="nameLabel" HorizontalAlignment="Left" Margin="33,18,0,0" TextWrapping="Wrap" Text="name" VerticalAlignment="Top"/>
-            <TextBox x:Name="name" HorizontalAlignment="Left" Height="23" Margin="105,18,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" />
-            <TextBlock x:Name="parentLabel" HorizontalAlignment="Left" Margin="33,58,0,0" TextWrapping="Wrap" Text="parent" VerticalAlignment="Top"/>
-            <ComboBox x:Name="parentSelector" DisplayMemberPath="name" SelectedValuePath="id" HorizontalAlignment="Left" Margin="105,58,0,0" VerticalAlignment="Top" Width="120"/>
-            <Button x:Name="createCategory" Content="Create" HorizontalAlignment="Left" Margin="202,104,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="0.329,-0.053" Click="btn_CreateNewTestCategory"/>
-            <Button x:Name="back" Content="back" HorizontalAlignment="Left" Margin="105,104,0,0" VerticalAlignment="Top" Width="75" Click="btn_Back"/>
+            <TextBlock x:Name="textBlock4" HorizontalAlignment="Left" Margin="278,32,0,0" TextWrapping="Wrap" Text="New Test Category" VerticalAlignment="Top" FontWeight="Bold" Height="23" Width="138" FontSize="14"/>
+            <TextBlock x:Name="nameLabel" HorizontalAlignment="Left" Margin="263,107,0,0" TextWrapping="Wrap" Text="Name" VerticalAlignment="Top"/>
+            <TextBox x:Name="name" HorizontalAlignment="Left" Height="23" Margin="325,106,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" />
+            <TextBlock x:Name="parentLabel" HorizontalAlignment="Left" Margin="263,147,0,0" TextWrapping="Wrap" Text="Parent" VerticalAlignment="Top" RenderTransformOrigin="0.783,0.564"/>
+            <ComboBox x:Name="parentSelector" DisplayMemberPath="name" SelectedValuePath="id" HorizontalAlignment="Left" Margin="325,147,0,0" VerticalAlignment="Top" Width="120"/>
+            <Button x:Name="createCategory" Content="Create"  HorizontalAlignment="Left" Margin="513,315,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="0.329,-0.053" Click="btn_CreateNewTestCategory" Background="White">
+                <Button.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="CornerRadius" Value="4"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+            <Button x:Name="back" Content="back" HorizontalAlignment="Left" Margin="427,315,0,0" VerticalAlignment="Top" Width="75" Click="btn_Back" BorderBrush="#FFA2B2BD"  Background="White">
+                <Button.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="CornerRadius" Value="4"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
         </Grid>
     </Border>
 </UserControl>
