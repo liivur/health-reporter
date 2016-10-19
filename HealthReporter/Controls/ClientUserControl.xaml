@@ -29,7 +29,7 @@
     <Border>
         <Grid>
             <Button Template="{StaticResource ButtonStyle}" x:Name="button1" Content="+" HorizontalAlignment="Left" Margin="587,20,0,0" VerticalAlignment="Top" Width="40" Click="btn_AddNewClient" Height="40" BorderBrush="#FFA2B2BD"  Background="White" FontWeight="Bold" FontSize="20"/>
-            <DataGrid AutoGenerateColumns="False" x:Name="dataGrid" HorizontalAlignment="Left" Margin="34,93,0,0" VerticalAlignment="Top" Height="360" Width="611" DataGridCell.GotFocus="clickedOnRow" CanUserAddRows="False">
+            <DataGrid AutoGenerateColumns="False" x:Name="dataGrid" HorizontalAlignment="Left" Margin="34,93,0,0" VerticalAlignment="Top" Height="360" Width="611"  CanUserAddRows="False">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="id" Visibility="Hidden" Binding="{Binding id}" />
                     <DataGridTextColumn Header="First Name" Binding="{Binding firstName}" />
