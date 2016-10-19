@@ -400,7 +400,8 @@ namespace HealthReporter.Controls
             var button = sender as Button;
             Test test = (Test)button.CommandParameter;
 
-            SaveLastRating(test);
+            int j = SaveLastRating(test);
+            if (j == -1) { return; }
 
             test.categoryId = ((TestCategory)this.categorySelector.SelectedItem).id;
             test.decimals = (int)this.decimalsSelector.SelectedItem;
