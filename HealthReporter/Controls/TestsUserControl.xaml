@@ -116,9 +116,22 @@
             <Button x:Name="removeRating" Content="-" HorizontalAlignment="Left" Margin="613,224,0,0" VerticalAlignment="Top" Width="17"  Click="btn_RemoveRating"  Visibility="Hidden" />
             <TextBlock HorizontalAlignment="Left" Margin="289,152,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188"><Run Text="Subcategory"/><Run Text=":"/></TextBlock>
             <ComboBox x:Name="categorySelector"  IsEnabled="False" DisplayMemberPath="name" SelectedValuePath="id" HorizontalAlignment="Left" Margin="370,150,0,0" VerticalAlignment="Top" Width="163" Height="21"/>
-            <Button x:Name="SaveTest" Content="Save" HorizontalAlignment="Left" Margin="563,453,0,0"  VerticalAlignment="Top" Width="38" RenderTransformOrigin="0.706,8.4" Click="btn_SaveTest" Visibility="Visible" />
+            <Button x:Name="SaveTest" Content="Save" HorizontalAlignment="Left" Margin="563,453,0,0"  VerticalAlignment="Top" Width="38" RenderTransformOrigin="0.706,8.4" Click="btn_SaveTest" Visibility="Visible" Background="White" >
+                <Button.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="CornerRadius" Value="4"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
 
-            <Button x:Name="Cancel" Content="Cancel" HorizontalAlignment="Left" Margin="605,453,0,0" VerticalAlignment="Top" Width="46" Click="btn_Cancel" />
+            <Button x:Name="Cancel" Content="Cancel" HorizontalAlignment="Left" Margin="605,453,0,0" VerticalAlignment="Top" Width="46" Click="btn_Cancel" Background="White">
+                <Button.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="CornerRadius" Value="4"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+           
             <Button x:Name="deleteTestButton" Content="Delete test" HorizontalAlignment="Left" Margin="492,453,0,0" VerticalAlignment="Top" Width="74" Click="btn_DeleteTest" Background="White" >
                 <Button.Resources>
                     <Style TargetType="{x:Type Border}">
@@ -152,7 +165,7 @@
                 </Button.Resources>
             </Button>
             <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="584,63,0,0" TextWrapping="Wrap" Text="New Test" VerticalAlignment="Top"/>
-            <Button x:Name="updateTestButton" Content="Update test" HorizontalAlignment="Left" Margin="413,453,0,0" VerticalAlignment="Top" Width="74" Click="btn_UpdateTest" Background="White" >
+            <Button x:Name="updateTestButton" Content="Update test" HorizontalAlignment="Left" Margin="575,453,0,0" VerticalAlignment="Top" Width="74" Click="btn_UpdateTest" Background="White" >
                 <Button.Resources>
                     <Style TargetType="{x:Type Border}">
                         <Setter Property="CornerRadius" Value="4"/>
@@ -170,7 +183,13 @@
                     </Style>
                 </Button.Style>
             </Button>
-            <Button x:Name="updateButton" Content="Update" HorizontalAlignment="Left" Margin="415,453,0,0"  VerticalAlignment="Top" Width="45" RenderTransformOrigin="0.706,8.4" Click="btn_Update" Visibility="Hidden" />
+            <Button x:Name="updateButton" Content="Update" HorizontalAlignment="Left" Margin="575,453,0,0"  VerticalAlignment="Top" Width="45" RenderTransformOrigin="0.706,8.4" Click="btn_Update" Visibility="Hidden" Background="White">
+                <Button.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="CornerRadius" Value="4"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
         </Grid>
     </Border>
 </UserControl>

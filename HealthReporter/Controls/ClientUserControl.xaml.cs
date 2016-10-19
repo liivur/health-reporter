@@ -38,7 +38,7 @@ namespace HealthReporter.Controls
             string calTotal =  clients.Count + " Clients";
             total.Text = calTotal;
 
-            dataGrid.ItemsSource = clients;
+            dataGrid.ItemsSource = clients;           
 
             //Setting tabel column width equally
             Loaded += (s, e) => dataGrid.Columns[1].Width =new DataGridLength(1, DataGridLengthUnitType.Star);
@@ -134,5 +134,21 @@ namespace HealthReporter.Controls
             btnShowTests.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFF0F0F0"));
             btnShowClients.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
         }
+        private void clickedOnRow(object sender, RoutedEventArgs e)
+        {
+            if (dataGrid.SelectedItem != null)
+            {
+                Client client = (Client)dataGrid.SelectedItem;
+
+                ClientAppraisalHistoryControl obj = new ClientAppraisalHistoryControl(_parent, client);
+                _parent.stkTest.Children.Clear();
+                _parent.stkTest.Children.Add(obj);
+            }
+            else
+            {
+                return;
+            }
+        }
+       
     }
 }

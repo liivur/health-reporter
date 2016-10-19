@@ -61,6 +61,9 @@ namespace HealthReporter.Controls
 
             ClearFields();
             EnableFields();
+            deleteTestButton.Visibility = System.Windows.Visibility.Hidden;
+            updateTestButton.Visibility = System.Windows.Visibility.Hidden;
+
         }
 
         private void btn_AddNewCategory(object sender, RoutedEventArgs e)
@@ -89,6 +92,8 @@ namespace HealthReporter.Controls
             agesControl.ItemsSource = null;
             catsDataGrid.SelectedIndex = -1;
             testsDataGrid.SelectedIndex = -1;
+            deleteTestButton.Visibility = System.Windows.Visibility.Visible;
+            updateTestButton.Visibility = System.Windows.Visibility.Visible;
         }
 
         private void catsDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e) //is called when a catecory is selected
@@ -423,6 +428,9 @@ namespace HealthReporter.Controls
             ClearRatingAndLabel();
             testsDataGrid.SelectedIndex = -1;
             agesControl.ItemsSource = null;
+            deleteTestButton.Visibility = System.Windows.Visibility.Visible;
+            updateTestButton.Visibility = System.Windows.Visibility.Visible;
+
         }
 
         private void removeOldRatings(Test test, int age)

@@ -73,8 +73,8 @@ namespace HealthReporter.Controls
                     client.groupName = this.group.Text;
                     client.email = this.email.Text;
                     client.gender = ((ComboBoxItem)gender.SelectedValue).Tag.ToString();
+                
                     DateTime enteredDate = Convert.ToDateTime(birthDate.SelectedDate.ToString());
-
 
                     client.birthDate = String.Format("{0:yyyy-MM-dd}", enteredDate);
                     var repo = new ClientRepository();
