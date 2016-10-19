@@ -24,10 +24,10 @@ namespace HealthReporter.Controls
         private Client client;
         private MainWindow _parent;
 
-      
+
         public ClientAppraisalHistoryControl(MainWindow _parent)
         {
-           
+
             this._parent = _parent;
         }
 

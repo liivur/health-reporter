@@ -14,7 +14,7 @@
                             <Binding Path="firstName" />
                             <Binding Path="lastName" />
                             <Binding Path="age" />
-                            
+
                             <Binding Path="groupName" />
                         </MultiBinding>
                     </TextBlock.Text>
