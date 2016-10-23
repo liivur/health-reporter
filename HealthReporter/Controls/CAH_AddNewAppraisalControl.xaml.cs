@@ -22,7 +22,7 @@ namespace HealthReporter.Controls
     public partial class CAH_AddNewAppraisalControl : UserControl
     {
         private Client client;
-     
+        private List<Test> tests;
         private MainWindow _parent;
 
         public CAH_AddNewAppraisalControl()
@@ -30,19 +30,27 @@ namespace HealthReporter.Controls
             InitializeComponent();
         }
 
-        public CAH_AddNewAppraisalControl(MainWindow _parent, Client client)
+        public CAH_AddNewAppraisalControl(MainWindow _parent, Client client, List<Test> tests)
         {
             InitializeComponent();
             this._parent = _parent;
             this.client = client;
-            
+            this.tests = tests;
 
+            AddFields.ItemsSource = tests;
         }
 
         private void btn_Back(object sender, RoutedEventArgs e)
         {
             this._parent.stkTest.Children.Clear();
             CAH_SelectTestControl obj = new CAH_SelectTestControl(this._parent, client);
+            this._parent.stkTest.Children.Add(obj);
+        }
+
+        private void btn_OK(object sender, RoutedEventArgs e)
+        {
+            this._parent.stkTest.Children.Clear();
+            CAH obj = new CAH(this._parent, client);
             this._parent.stkTest.Children.Add(obj);
         }
     }

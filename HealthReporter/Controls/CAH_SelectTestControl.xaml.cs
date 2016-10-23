@@ -23,7 +23,7 @@ namespace HealthReporter.Controls
     {
         private Client client;
         private MainWindow _parent;
-        private List<String> tests;
+        private List<Test> tests = new List<Test>();
      
 
         public CAH_SelectTestControl(MainWindow _parent, Client client)
@@ -31,15 +31,14 @@ namespace HealthReporter.Controls
 
             var repo = new TestRepository();
             IList<Test> tests = repo.FindAll();
-
+            
             InitializeComponent();
             this._parent = _parent;
             this.client = client;
 
-            foreach (Test elem in tests)
-            {
-                listBox.Items.Add(elem.name);
-            }
+            
+            listBox.ItemsSource = tests;
+           
            
         }
 
@@ -52,13 +51,22 @@ namespace HealthReporter.Controls
 
         private void btn_OK(object sender, RoutedEventArgs e)
         {
-            //foreach (var item in listBox.SelectedItems)
-            //{
-            //    tests.Add(item.ToString());
-            //}
-            this._parent.stkTest.Children.Clear();
-            CAH_AddNewAppraisalControl obj = new CAH_AddNewAppraisalControl(this._parent, client);
-            this._parent.stkTest.Children.Add(obj);
+           
+            foreach (var item in listBox.SelectedItems)
+            {
+                Test test = (Test)item;
+                tests.Add(test);
+               // MessageBox.Show(test.name, "Message");
+            }
+            if (tests.Count < 1)
+            {
+                MessageBox.Show("Please select test/tests.", "Message");
+            }
+            else { 
+                this._parent.stkTest.Children.Clear();
+                CAH_AddNewAppraisalControl obj = new CAH_AddNewAppraisalControl(this._parent, client, tests);
+                this._parent.stkTest.Children.Add(obj);
+            }
         }
     }
 }

@@ -34,7 +34,7 @@ namespace HealthReporter.Models
         }
     }
 
-    class Test
+   public class Test
     {
         public byte[] id { get; set; }
         public byte[] categoryId { get; set; }
