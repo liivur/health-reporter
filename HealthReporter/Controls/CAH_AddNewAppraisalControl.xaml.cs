@@ -22,7 +22,7 @@ namespace HealthReporter.Controls
     public partial class CAH_AddNewAppraisalControl : UserControl
     {
         private Client client;
-        private List<string> tests;
+     
         private MainWindow _parent;
 
         public CAH_AddNewAppraisalControl()
@@ -30,12 +30,12 @@ namespace HealthReporter.Controls
             InitializeComponent();
         }
 
-        public CAH_AddNewAppraisalControl(MainWindow _parent, Client client, List<string> tests)
+        public CAH_AddNewAppraisalControl(MainWindow _parent, Client client)
         {
             InitializeComponent();
             this._parent = _parent;
             this.client = client;
-            this.tests = tests;
+            
 
         }
 

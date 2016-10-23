@@ -52,12 +52,12 @@ namespace HealthReporter.Controls
 
         private void btn_OK(object sender, RoutedEventArgs e)
         {
-            foreach (var item in listBox.SelectedItems)
-            {
-                tests.Add(item.ToString());
-            }
+            //foreach (var item in listBox.SelectedItems)
+            //{
+            //    tests.Add(item.ToString());
+            //}
             this._parent.stkTest.Children.Clear();
-            CAH_AddNewAppraisalControl obj = new CAH_AddNewAppraisalControl(this._parent, client, tests);
+            CAH_AddNewAppraisalControl obj = new CAH_AddNewAppraisalControl(this._parent, client);
             this._parent.stkTest.Children.Add(obj);
         }
     }
