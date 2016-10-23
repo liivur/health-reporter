@@ -19,19 +19,19 @@ namespace HealthReporter.Controls
     /// <summary>
     /// Interaction logic for ClientAppraisalHistoryControl.xaml
     /// </summary>
-    public partial class ClientAppraisalHistoryControl : UserControl
+    public partial class CAH : UserControl
     {
         private Client client;
         private MainWindow _parent;
 
 
-        public ClientAppraisalHistoryControl(MainWindow _parent)
+        public CAH(MainWindow _parent)
         {
 
             this._parent = _parent;
         }
 
-        public ClientAppraisalHistoryControl(MainWindow _parent, Client client) : this(_parent)
+        public CAH(MainWindow _parent, Client client) : this(_parent)
         {
             InitializeComponent();
             this._parent = _parent;
@@ -44,6 +44,23 @@ namespace HealthReporter.Controls
             this._parent.stkTest.Children.Clear();
             ClientUserControl obj = new ClientUserControl(this._parent);
             this._parent.stkTest.Children.Add(obj);
+        }
+        
+        private void btn_NewAppraisal(object sender, RoutedEventArgs e)
+        {
+            this._parent.stkTest.Children.Clear();
+            CAH_SelectTestControl obj = new CAH_SelectTestControl(this._parent,client);
+            this._parent.stkTest.Children.Add(obj);
+        }
+
+        private void btn_AddTest(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btn_Report(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

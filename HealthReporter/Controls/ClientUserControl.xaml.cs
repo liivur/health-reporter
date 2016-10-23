@@ -140,7 +140,7 @@ namespace HealthReporter.Controls
             {
                 Client client = (Client)dataGrid.SelectedItem;
 
-                ClientAppraisalHistoryControl obj = new ClientAppraisalHistoryControl(_parent, client);
+                CAH obj = new CAH(_parent, client);
                 _parent.stkTest.Children.Clear();
                 _parent.stkTest.Children.Add(obj);
             }
@@ -149,6 +149,7 @@ namespace HealthReporter.Controls
                 return;
             }
         }
+
        
     }
 }

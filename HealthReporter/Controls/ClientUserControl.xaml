@@ -29,15 +29,19 @@
     <Border>
         <Grid>
             <Button Template="{StaticResource ButtonStyle}" x:Name="button1" Content="+" HorizontalAlignment="Left" Margin="587,20,0,0" VerticalAlignment="Top" Width="40" Click="btn_AddNewClient" Height="40" BorderBrush="#FFA2B2BD"  Background="White" FontWeight="Bold" FontSize="20"/>
-            <DataGrid AutoGenerateColumns="False" x:Name="dataGrid" HorizontalAlignment="Left" Margin="34,93,0,0" VerticalAlignment="Top" Height="360" Width="611"  CanUserAddRows="False">
+            <DataGrid AutoGenerateColumns="False" IsReadOnly="True" x:Name="dataGrid" HorizontalAlignment="Left" Margin="34,93,0,0" VerticalAlignment="Top" Height="360" Width="611"  CanUserAddRows="False"  Background="LightBlue" >
+                <DataGrid.Resources>
+                    <Style TargetType="DataGridRow">
+                        <EventSetter Event="MouseDoubleClick" Handler="clickedOnRow"/>
+                    </Style>
+                </DataGrid.Resources>
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="id" Visibility="Hidden" Binding="{Binding id}" />
                     <DataGridTextColumn Header="First Name" Binding="{Binding firstName}" />
                     <DataGridTextColumn Header="Last Name" Binding="{Binding lastName}" />
                     <DataGridTextColumn Header="Group Name" Binding="{Binding groupName}" />
                     <DataGridTextColumn Header="Age" Binding="{Binding age, Mode=OneWay}" />
-                    <DataGridTextColumn Header="Updated" Visibility="Hidden" Binding="{Binding updated}" />
-                    <DataGridTemplateColumn>
+                    <DataGridTemplateColumn IsReadOnly="True" >
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Button Click="btn_Update"  BorderBrush="#FFA2B2BD"  Background="White">

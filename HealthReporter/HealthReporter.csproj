@@ -112,8 +112,14 @@
     <Compile Include="Controls\AddNewTestCategoryControl.xaml.cs">
       <DependentUpon>AddNewTestCategoryControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\ClientAppraisalHistoryControl.xaml.cs">
-      <DependentUpon>ClientAppraisalHistoryControl.xaml</DependentUpon>
+    <Compile Include="Controls\CAH_AddNewAppraisalControl.xaml.cs">
+      <DependentUpon>CAH_AddNewAppraisalControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CAH_SelectTestControl.xaml.cs">
+      <DependentUpon>CAH_SelectTestControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CAH.xaml.cs">
+      <DependentUpon>CAH.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\ClientUserControl.xaml.cs">
       <DependentUpon>ClientUserControl.xaml</DependentUpon>
@@ -140,7 +146,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\ClientAppraisalHistoryControl.xaml">
+    <Page Include="Controls\CAH_AddNewAppraisalControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\CAH_SelectTestControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\CAH.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
