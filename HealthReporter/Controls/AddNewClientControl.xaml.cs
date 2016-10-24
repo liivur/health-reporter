@@ -31,7 +31,7 @@ namespace HealthReporter.Controls
         public AddNewClientControl(MainWindow parent)
         {
             InitializeComponent();
-            this.grid.DataContext = new Client { };
+            
             //firstName.DataContext = new Client { firstName = " " };
             // lastName.DataContext = new Client { lastName = " " };
             this._parent = parent;
@@ -39,6 +39,7 @@ namespace HealthReporter.Controls
 
            
         }
+
 
         private void btn_Back(object sender, RoutedEventArgs e)
         {
@@ -49,11 +50,24 @@ namespace HealthReporter.Controls
 
         private void btn_CreateNewClient(object sender, RoutedEventArgs e)
         {
+            this.grid.DataContext = new Client
+            {
+                firstName = this.firstName.Text.ToString(),
+                lastName = this.lastName.Text.ToString(),
+                groupName = this.group.Text.ToString(),
+                email = this.email.Text.ToString(),
+                gender=  this.gender.Text.ToString(),
+                birthDate =this.birthDate.Text.ToString()
+
+            };
+
+
+
             if (String.IsNullOrWhiteSpace(this.firstName.Text) || String.IsNullOrWhiteSpace(this.lastName.Text) ||
                 String.IsNullOrWhiteSpace(this.gender.Text) || String.IsNullOrWhiteSpace(this.birthDate.Text)||
                 (!String.IsNullOrWhiteSpace(this.email.Text)&&!Regex.IsMatch(this.email.Text, @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$")))
             {
-                MessageBox.Show("You forgot to enter required fields or there is something wrong with your input.", "Message");
+                
             }
             else
             {
@@ -86,7 +100,7 @@ namespace HealthReporter.Controls
 
                         var repo = new ClientRepository();
                         repo.Insert(client);
-
+                        
                         this._parent.stkTest.Children.Clear();
                         ClientUserControl obj = new ClientUserControl(this._parent);
                         this._parent.stkTest.Children.Add(obj);
