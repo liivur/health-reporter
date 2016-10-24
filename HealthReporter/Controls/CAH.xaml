@@ -52,6 +52,14 @@
             </Button>
             <TextBlock x:Name="textBlock_Copy1" HorizontalAlignment="Left" Margin="112,61,0,0" TextWrapping="Wrap" Text="Add Test" VerticalAlignment="Top"/>
             <TextBlock x:Name="textBlock_Copy2" HorizontalAlignment="Left" Margin="46,61,0,0" TextWrapping="Wrap" Text="Clients" VerticalAlignment="Top"/>
+            <DataGrid x:Name="dataGrid" AutoGenerateColumns="False" HorizontalAlignment="Left" Margin="73,166,0,0" VerticalAlignment="Top" Height="220" Width="539">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="TestName" Binding="{Binding TestName}" />
+                    <DataGridTextColumn Header="units" Binding="{Binding units}" />
+                    <DataGridTextColumn Header="Score" Binding="{Binding score}" />
+                    <DataGridTextColumn Header="Appraisers Name" Binding="{Binding AppraisersName}" />
+                </DataGrid.Columns>
+            </DataGrid>
         </Grid>
     </Border>
 </UserControl>

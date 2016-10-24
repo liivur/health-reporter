@@ -49,9 +49,68 @@ namespace HealthReporter.Controls
 
         private void btn_OK(object sender, RoutedEventArgs e)
         {
+            //var res = connection.InsertSql("INSERT INTO appraisals (id, appraiserId, clientId, date) values(@id, @appraiserId, @clientId, @date)", appraisal);
+            //var res2 = connection.InsertSql("INSERT INTO appraisers (id, name) values(@id, @name)", appraiser);
+            //var res3 = connection.InsertSql("INSERT INTO appraisal_tests (appraisalId, testId, score, note, trial1, trial2, trial3) values(@appraisalId, @testId, @score, @note, @trial1, @trial2, @trial3)", test);
+
+            try { 
+
+            //Appraiser object
+            Appraiser appraiser = new Appraiser();
+            appraiser.id = System.Guid.NewGuid().ToByteArray();
+            appraiser.name = name.Text.ToString();
+
+            //Appraisal object
+            Appraisal appraisal = new Appraisal();
+            appraisal.id = System.Guid.NewGuid().ToByteArray();
+            appraisal.appraiserId = appraiser.id;
+            appraisal.clientId = client.id;
+            appraisal.date = date.ToString();
+
+            List<Appraisal_tests> testsList = new List<Appraisal_tests>();
+
+            for (int i = 0; i < AddFields.Items.Count; i++)
+            {
+                ContentPresenter c = (ContentPresenter)AddFields.ItemContainerGenerator.ContainerFromItem(AddFields.Items[i]);
+
+                Test test = tests[i];
+
+                TextBox tb = c.ContentTemplate.FindName("Trial1", c) as TextBox;
+                TextBox tb2 = c.ContentTemplate.FindName("Trial2", c) as TextBox;
+                TextBox tb3 = c.ContentTemplate.FindName("Trial3", c) as TextBox;
+
+
+                
+
+                //Appraisal_tests object
+                Appraisal_tests o = new Appraisal_tests();
+                o.appraisalId = appraisal.id;
+                o.testId = test.id;
+                o.score = decimal.Parse(tb.Text);
+                o.note = "note";
+                o.trial1 = decimal.Parse(tb.Text);
+                o.trial2 = 0;
+                o.trial3 = 0;
+
+                testsList.Add(o);
+            }
+        
+
+    
+
+            AppraisalsRepository repo = new AppraisalsRepository();
+            repo.Insert(appraisal, appraiser, testsList);
+
+
             this._parent.stkTest.Children.Clear();
             CAH obj = new CAH(this._parent, client);
             this._parent.stkTest.Children.Add(obj);
+            }
+            catch
+            {
+                MessageBox.Show("You must insert at least one Trial for every test or you entered something wrong into the trials fields", "Message");
+            }
+        }
         }
     }
-}
+

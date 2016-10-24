@@ -37,6 +37,15 @@ namespace HealthReporter.Controls
             this._parent = _parent;
             this.client = client;
             ClientInfo.DataContext = client;
+
+
+            var repo = new AppraisalsRepository();
+            IList<HistoryTableItem> history = repo.FindAll(client);
+
+           
+
+            dataGrid.ItemsSource = history;
+
         }
 
         private void btn_Back(object sender, RoutedEventArgs e)
