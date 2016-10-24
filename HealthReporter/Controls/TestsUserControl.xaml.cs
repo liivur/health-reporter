@@ -7,6 +7,7 @@ using System.Windows.Data;
 using HealthReporter.Models;
 using System.Diagnostics;
 using System.Windows.Media;
+using System.Linq;
 
 namespace HealthReporter.Controls
 {
@@ -34,7 +35,7 @@ namespace HealthReporter.Controls
 
             categorySelector.ItemsSource = catRep.FindAll();
             DisableFields();
-            
+
             btnShowTests.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFF0F0F0"));
         }
 
@@ -52,18 +53,17 @@ namespace HealthReporter.Controls
             TestDescriptionText.DataContext = newTest;
             addNewRating.CommandParameter = newTest;
             Cancel.CommandParameter = newTest;
-            categorySelector.SelectedIndex = 0;
-            decimalsSelector.SelectedIndex = 2;
 
             var obsAges = new System.Collections.ObjectModel.ObservableCollection<AgeInterval>();
             obsAges.Add(new AgeInterval() { interval = "0-" });
             agesControl.ItemsSource = obsAges;
 
+            testsDataGrid.SelectedIndex = -1;
+            testsDataGrid.IsHitTestVisible = false;
+            catsDataGrid.IsHitTestVisible = false;
             ClearFields();
             EnableFields();
-            deleteTestButton.Visibility = System.Windows.Visibility.Hidden;
-            updateTestButton.Visibility = System.Windows.Visibility.Hidden;
-
+            updateButton.Visibility = Visibility.Hidden;
         }
 
         private void btn_AddNewCategory(object sender, RoutedEventArgs e)
@@ -84,55 +84,51 @@ namespace HealthReporter.Controls
             var button = sender as Button;
             Test test = (Test)button.CommandParameter;
 
+            var rep = new RatingLabelRepository();
+            rep.Delete(test);
+
             var repo = new RatingRepository();
             repo.removeRatingsByTest(test);
 
-            ClearRatingAndLabel();
+            ClearRatingDatagrid();
+            ClearFields();
             DisableFields();
             agesControl.ItemsSource = null;
             catsDataGrid.SelectedIndex = -1;
             testsDataGrid.SelectedIndex = -1;
-            deleteTestButton.Visibility = System.Windows.Visibility.Visible;
-            updateTestButton.Visibility = System.Windows.Visibility.Visible;
+            testsDataGrid.IsHitTestVisible = true;
+            catsDataGrid.IsHitTestVisible = true;
         }
 
         private void catsDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e) //is called when a catecory is selected
         {
-            if (SaveTest.Visibility == System.Windows.Visibility.Visible)
-            {
-                MessageBox.Show("Your changes will be lost. Please save new test or cancel adding.", "Confirmation");
-                return;
-            }
+            updateButton.Visibility = Visibility.Hidden;
             DisableFields();
             var grid = sender as DataGrid;
             var selected = grid.SelectedItems;
 
             if (selected.Count > 0)
             {
-              TestCategory category = (TestCategory)selected[0];
-              updateTestsColumn(category);
+                TestCategory category = (TestCategory)selected[0];
+                updateTestsColumn(category);
             }
-         
         }
 
         private void testsDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e) //is called when a test is selected
         {
-            if (SaveTest.Visibility == System.Windows.Visibility.Visible)
-            {
-                MessageBox.Show("Your changes will be lost. Please save new test or cancel adding.", "Confirmation");
-                return;
-            }
+            updateButton.Visibility = Visibility.Hidden;
             DisableFields();
             var grid = sender as DataGrid;
             var selected = grid.SelectedItems;
 
             if (selected.Count > 0)
             {
-               Test test = (Test)selected[0];
-               updateTest(test);
+                LastTest ltest = (LastTest)selected[0];
+                Test test = ltest.test;
+                updateTest(test);
             }
-         }
-        
+        }
+
         private void updateTestsColumn(TestCategory cat) //cat is a main category
         {
             var rep = new TestCategoryRepository();
@@ -142,18 +138,31 @@ namespace HealthReporter.Controls
 
             //get tests of subcategories
             var repo = new TestRepository();
-
             List<Test> cat_tests = new List<Test>();
             foreach (var category in subCats)
             {
-                IList<Test> tests = repo.GetTestsByCategory(category);
-                cat_tests.AddRange(tests);
+                IList<Test> t = repo.GetTestsByCategory(category);
+                cat_tests.AddRange(t);
             }
-            //get tests of main category
+            //get tests of main category (if there are any)
             IList<Test> tsts = repo.GetTestsByCategory(cat);
             cat_tests.AddRange(tsts);
 
-            testsDataGrid.ItemsSource = cat_tests;
+            IList<LastTest> tests = new List<LastTest>();
+            for (int i = 0; i < cat_tests.Count; i++)
+            {
+                if (i + 1 < cat_tests.Count)
+                {
+                    if (!cat_tests[i].categoryId.SequenceEqual(cat_tests[i + 1].categoryId))
+                    {
+                        tests.Add(new LastTest() { isLast = true, test = cat_tests[i] });
+                    }
+                    else tests.Add(new LastTest() { isLast = false, test = cat_tests[i] });
+                }
+                else tests.Add(new LastTest() { isLast = false, test = cat_tests[i] });
+            }
+
+            testsDataGrid.ItemsSource = tests;
         }
 
         //updates test fields, adds ages buttons
@@ -163,27 +172,17 @@ namespace HealthReporter.Controls
             testName.DataContext = test;
             units.DataContext = test;
             TestDescriptionText.DataContext = test;
-
             decimalsSelector.SelectedItem = test.decimals;
-            addNewRating.CommandParameter = test;
 
             IList<AgeInterval> ageIntervals = getAgeIntervals(test);
             agesControl.ItemsSource = ageIntervals;
-
-            //select first
-            if (agesControl.Items.Count >= 1)
-            {
-                ContentPresenter c = (ContentPresenter)agesControl.ItemContainerGenerator.ContainerFromItem(agesControl.Items[0]);
-                c.ApplyTemplate();
-                RadioButton rb = c.ContentTemplate.FindName("AgeRadio", c) as RadioButton;
-                rb.IsChecked = true;
-            }
+            select_first();
 
             //show subcategory
             var catRep = new TestCategoryRepository();
             foreach (TestCategory cat in categorySelector.Items)
             {
-                if (cat.IdAsString() == (catRep.GetCategoryByTest(test)[0]).IdAsString())
+                if (cat.id.SequenceEqual(catRep.GetCategoryByTest(test)[0].id))
                 {
                     categorySelector.SelectedItem = cat;
                     break;
@@ -221,7 +220,7 @@ namespace HealthReporter.Controls
             //clear columns if no rating is connected with the button
             if (rating == null)
             {
-                ClearRatingAndLabel();
+                ClearRatingDatagrid();
                 return;
             }
             //get other ratings of the same age
@@ -236,8 +235,14 @@ namespace HealthReporter.Controls
             {
                 labels.AddRange(rep.getLabel(rat));
             }
-            ratingsDatagrid.ItemsSource = sameAgeRatings;
-            LabelandDescDatagrid.ItemsSource = labels;
+
+            List<RatingDatagridItem> items = new List<RatingDatagridItem>();
+            for (int i = 0; i < sameAgeRatings.Count; i++)
+            {
+                if (labels.Count > i) items.Add(new RatingDatagridItem() { rating = sameAgeRatings[i], ratingLabel = labels[i] });
+                else items.Add(new RatingDatagridItem() { rating = sameAgeRatings[i] });
+            }
+            ratingsDatagrid.ItemsSource = items;
         }
 
         private void GenderRadio_Checked(object sender, RoutedEventArgs e) //is called when a radio button to show man/woman ratings is checked
@@ -246,11 +251,11 @@ namespace HealthReporter.Controls
             {
                 if ((bool)menRadio.IsChecked)
                 {
-                    RatingColumn.Binding = new Binding("normM");
+                    RatingColumn.Binding = new Binding("rating.normM");
                 }
                 else if ((bool)womenRadio.IsChecked)
                 {
-                    RatingColumn.Binding = new Binding("normF");
+                    RatingColumn.Binding = new Binding("rating.normF");
                 }
             }
         }
@@ -268,246 +273,276 @@ namespace HealthReporter.Controls
             }
         }
 
-        private void btn_AddNewRating(object sender, RoutedEventArgs e) //adds new radiobutton to ages radiobuttons
+        void chkbox_Unchecked(object sender, RoutedEventArgs e)
         {
-            var button = sender as Button;
-            Test newTest = (Test)button.CommandParameter;
+            if (testName.IsReadOnly == true) return;
+            var button = sender as RadioButton;
+            Rating rating = ((AgeInterval)button.CommandParameter).rating;
+            string ageStr = ((AgeInterval)button.CommandParameter).interval;
 
-            //saves last ratingtable
-            int nextAge = SaveLastRating(newTest);
-
-            if (nextAge == -1)
+            if (rating == null)
             {
+                int age = parse_age(ageStr, true, 0);
+
+                rating = new Rating() { age = age };
+                Rating rat = SaveRating(rating.age);
+                int j = -1;
+                for (int i = 0; i < agesControl.Items.Count; i++)
+                {
+                    RadioButton rb = get_button(i);
+                    if (rb == button)
+                    {
+                        j = i;
+                        ((AgeInterval)rb.CommandParameter).rating = rat;
+                    }
+                }
+            }
+            else SaveRating(rating.age);
+        }
+
+        private void btn_AddNewAge(object sender, RoutedEventArgs e) //adds new radiobutton to ages radiobuttons
+        {
+            Test newTest = (Test)testName.DataContext;
+            string ageStr = ""; //current age
+            string lastAgeStr = "";
+            var obsAges = new System.Collections.ObjectModel.ObservableCollection<AgeInterval>();
+            int j = -1;
+            for (int i = 0; i < agesControl.Items.Count; i++)
+            {
+                RadioButton rb = get_button(i);
+                AgeInterval param = (AgeInterval)rb.CommandParameter;
+
+                if ((bool)rb.IsChecked)
+                {
+                    j = i;
+                    ageStr = param.interval;
+                }
+                else obsAges.Add(param);
+
+                if (i == agesControl.Items.Count - 2) lastAgeStr = param.interval;
+            }
+            //check if age is in correct format
+            int age = parse_age(ageStr, true, 0);
+            int nextAge = parse_age(ageStr, false, 1);
+            int lastAge = -1;
+            if (lastAgeStr != "") Int32.TryParse(lastAgeStr.Split('-')[1], out lastAge);
+
+            if(age == -1 || nextAge == -1)
+            {
+                MessageBox.Show("Please insert age.", "Confirmation");
+                return;
+            }
+    
+            if (nextAge > -1 && nextAge <= age || (lastAge != -1 && lastAge + 1 != age))
+            {
+                obsAges.Insert(j, (new AgeInterval() { interval = ageStr }));
                 EnableLastRadioWriting();
                 return;
             }
+            Rating rating = SaveRating(age);
+            if (rating != null) obsAges.Insert(j, (new AgeInterval() { interval = ageStr, rating = rating }));
+            else obsAges.Insert(j, (new AgeInterval() { interval = ageStr }));
 
-            var repo = new RatingRepository();
-            Rating r = new Rating() { age = nextAge};
-            r.testId = newTest.id;
-            repo.Insert(r);
-
-            //gets all ageintervals as observable
-            IList<AgeInterval> ageIntervals = getAgeIntervals(newTest);
-            var obsAges = new System.Collections.ObjectModel.ObservableCollection<AgeInterval>(ageIntervals);
+            if (nextAge != -1) obsAges.Add(new AgeInterval() { interval = nextAge + 1 + "+" });
             agesControl.ItemsSource = obsAges;
             EnableLastRadioWriting();
         }
 
-        //saves current ratings and binds to age radiobutton
-        private int SaveLastRating(Test newTest)
+        private Rating SaveRating(int age)
         {
-            //get button that is selected
-            string ageStr = "";
-            var obsAges = new System.Collections.ObjectModel.ObservableCollection<AgeInterval>();
-            RadioButton checkedRb = null;
-            for (int i = 0; i < agesControl.Items.Count; i++)
-            {
-                ContentPresenter c = (ContentPresenter)agesControl.ItemContainerGenerator.ContainerFromItem(agesControl.Items[i]);
-                RadioButton rb = c.ContentTemplate.FindName("AgeRadio", c) as RadioButton;
-                if ((bool)rb.IsChecked)
-                {
-                    ageStr = ((AgeInterval)rb.CommandParameter).interval;
-                    checkedRb = rb;
-                }
-                else
-                {
-                    obsAges.Add((AgeInterval)rb.CommandParameter);
-                }
-            }
-            //check if age is in correct format
-            int age = 0;
-            int nextAge = 0;
-            try
-            {
-                string lowerBoundary = ageStr.Split('-')[0];
-                string upperBoundary = ageStr.Split('-')[1];
-                Int32.TryParse(lowerBoundary, out age);
-                if (!Int32.TryParse(lowerBoundary, out age) || !Int32.TryParse(upperBoundary, out nextAge))
-                {
-                    MessageBox.Show("Please insert age.", "Confirmation");
-                    return -1;
-                }
-            }
-            catch(IndexOutOfRangeException)
-            {
-                string lowerBoundary = ageStr.Split('+')[0];
-                Int32.TryParse(lowerBoundary, out age);
-                if (!Int32.TryParse(lowerBoundary, out age))
-                {
-                    MessageBox.Show("Please insert age.", "Confirmation");
-                    return -1;
-                }
-            }
+            Test newTest = (Test)testName.DataContext;
 
             //get ratings and ratinglabels connected with that age from the datagrids
-            IList ratings = ratingsDatagrid.Items;
-            IList labels = LabelandDescDatagrid.Items;
+            IList items = ratingsDatagrid.Items;
+
             //add age, testId, labelId to ratings and id to labels
             IList<Rating> ratingList = new List<Rating>();
             IList<RatingLabel> ratingLabelList = new List<RatingLabel>();
-            for (int i=0; i<ratings.Count; i++)
+            for (int i = 0; i < items.Count; i++)
             {
                 byte[] labelId = System.Guid.NewGuid().ToByteArray();
 
-                if (ratings[i] is Rating)
+                if (items[i] is RatingDatagridItem)
                 {
-                    ((Rating)ratings[i]).age = age;
-                    ((Rating)ratings[i]).testId = newTest.id;
-                    if (i < labels.Count && labels[i] is RatingLabel)
+                    RatingDatagridItem item = (RatingDatagridItem)items[i];
+                    item.rating.age = age;
+                    item.rating.testId = newTest.id;
+                    item.ratingLabel.id = labelId;
+                    item.rating.labelId = labelId;
+                    if(!((item.rating.normF == 0 || item.rating.normM == 0) && i > 0 && item.ratingLabel.name == "" && item.ratingLabel.interpretation == ""))
                     {
-                        ((RatingLabel)labels[i]).id = labelId;
-                        ((Rating)ratings[i]).labelId = labelId;
-                        ratingLabelList.Add((RatingLabel)labels[i]);
+                        ratingLabelList.Add(item.ratingLabel);
+                        ratingList.Add(item.rating);
                     }
-                    ratingList.Add((Rating)ratings[i]);
                 }
             }
-            if (ratingList.Count == 0)
-            {
-                MessageBox.Show("Rating table is empty.", "Confirmation");
-                return -1;
-            }
-            removeOldRatings(newTest, ((Rating)ratingList[0]).age); //checks if there are any ratings with given testId and age and removes them from db
+            //checks if there are any ratings with given testId and age and removes them from db
+            if (ratingList.Count != 0) removeOldRatings(newTest, ((Rating)ratingList[0]).age);
 
             //add data to db
+            if (ratingList.Count == 0) ratingList.Add(new Rating() { age = age, testId = newTest.id });
+            
             var repo = new RatingRepository();
-            foreach(Rating rati in ratingList)
-            {
-                repo.Insert(rati);
-            }
-  
+            foreach (Rating rati in ratingList) repo.Insert(rati);
+
             var rep = new RatingLabelRepository();
-            foreach(RatingLabel lab in ratingLabelList)
+            foreach (RatingLabel lab in ratingLabelList) rep.Insert(lab);
+
+            ClearRatingDatagrid();
+            return ratingList[0];
+        }
+
+        private void btn_DeleteRating(object sender, RoutedEventArgs e) //deletes last rating
+        {
+            var obsAges = new System.Collections.ObjectModel.ObservableCollection<AgeInterval>();
+            string lastAgeStr = "";
+            string ageStr = "";
+            Rating rating = null;
+            for (int i = 0; i < agesControl.Items.Count; i++)
             {
-                rep.Insert(lab);
+                RadioButton rb = get_button(i);
+                AgeInterval param = (AgeInterval)rb.CommandParameter;
+
+                if (agesControl.Items.Count == 1)
+                {
+                    obsAges.Add(param);
+                    agesControl.ItemsSource = obsAges;
+                    EnableLastRadioWriting();
+                    removeOldRatings((Test)testName.DataContext, 0);
+                    ClearRatingDatagrid();
+                    return;
+                }
+                if (i == agesControl.Items.Count - 2)
+                {
+                    lastAgeStr = param.interval;
+                    rating = param.rating;
+                }
+
+                else if (i == agesControl.Items.Count - 1) ageStr = param.interval;
+                else obsAges.Add(param); 
             }
-
-            ClearRatingAndLabel();
-
-            //bind CHECKED agebutton to inserted ratings
-            AgeInterval rat = new AgeInterval() { interval = ((AgeInterval)checkedRb.CommandParameter).interval, rating = ratingList[0]};
-            obsAges.Add(rat);
+            int lastAge = parse_age(lastAgeStr, false, 0);
+            obsAges.Add(new AgeInterval() { interval = lastAge + "+", rating = rating });
             agesControl.ItemsSource = obsAges;
+            EnableLastRadioWriting();
 
-            if (nextAge == 0) return -1;
-            return nextAge + 1;
+            int age = parse_age(ageStr, true, 0);
+            var rep = new RatingRepository();
+            if (age != -1) rep.removeRatingsByAge((Test)testName.DataContext, age);
+        }
+
+        private int parse_age(string ageStr, bool last, int i)
+        {
+            int age = -1;
+            if (i < ageStr.Split('-').Length)
+            {
+                if (!Int32.TryParse(ageStr.Split('-')[i], out age))
+                {
+                    if (last) Int32.TryParse(ageStr.Split('+')[i], out age);
+                }
             }
+            return age;
+        }
 
         //save new test into db
         private void btn_SaveTest(object sender, RoutedEventArgs e)
         {
-            var button = sender as Button;
-            Test test = (Test)button.CommandParameter;
+            Test test = (Test)testName.DataContext;
 
-            int j = SaveLastRating(test);
-            if (j == -1) { return; }
+            if (testName.Text == "")
+            {
+                MessageBox.Show("Test name cannot be empty", "Confirmation");
+                return;
+            }
+            select_first();
+            deselect_first();
 
             test.categoryId = ((TestCategory)this.categorySelector.SelectedItem).id;
             test.decimals = (int)this.decimalsSelector.SelectedItem;
- 
+
             var repo = new TestRepository();
             repo.Insert(test);
 
-            DisableFields();
             MessageBox.Show("Saved", "Confirmation");
 
             IList<Test> tests = repo.FindAll();
             noOfTests.Text = tests.Count.ToString();
 
-            //select first
-            ContentPresenter c = (ContentPresenter)agesControl.ItemContainerGenerator.ContainerFromItem(agesControl.Items[0]);
-            c.ApplyTemplate();
-            RadioButton rb = c.ContentTemplate.FindName("AgeRadio", c) as RadioButton;
+            select_first();
+            int i = catsDataGrid.SelectedIndex;
+            catsDataGrid.SelectedIndex = -1;
+            catsDataGrid.SelectedIndex = i;
+
+            ClearFields();
+            ClearRatingDatagrid();
+            DisableFields();
+            testsDataGrid.SelectedIndex = -1;
+            testsDataGrid.IsHitTestVisible = true;
+            catsDataGrid.IsHitTestVisible = true;
+            agesControl.ItemsSource = null;
+        }
+
+        private void removeOldRatings(Test test, int age)
+        {
+            var repo = new RatingRepository();
+            var rep = new RatingLabelRepository();
+            IList<Rating> ages = repo.getAges(test);
+            foreach (Rating a in ages)
+            {
+                //removes ratings with given testId and age & removes ratingslabels
+                if (a.age == age)
+                {
+                    rep.DeleteByAge(test, age);
+                    repo.removeRatingsByAge(test, age);
+                    break;
+                }
+            }
+        }
+
+        private void ClearRatingDatagrid()
+        {
+            var ratings = new System.Collections.ObjectModel.ObservableCollection<RatingDatagridItem>();
+            ratingsDatagrid.ItemsSource = ratings;
+            ratingsDatagrid.CanUserAddRows = true;
+            ratingsDatagrid.IsReadOnly = false;
+        }
+
+        private void EnableLastRadioWriting()
+        {
+            RadioButton rb = get_button(agesControl.Items.Count - 1);
             rb.IsChecked = true;
+            TextBox tb = rb.Content as TextBox;
+            tb.IsReadOnly = false;
+        }
+
+        private void btn_DeleteTest(object sender, RoutedEventArgs e)
+        {
+            Test test = (Test)testName.DataContext;
+            var testRepo = new TestRepository();
+            testRepo.Delete(test);
+
+            var labRepo = new RatingLabelRepository();
+            labRepo.Delete(test);
+
+            var ratRepo = new RatingRepository();
+            ratRepo.Delete(test);
 
             int i = catsDataGrid.SelectedIndex;
             catsDataGrid.SelectedIndex = -1;
             catsDataGrid.SelectedIndex = i;
 
             ClearFields();
-            ClearRatingAndLabel();
-            testsDataGrid.SelectedIndex = -1;
+            DisableFields();
             agesControl.ItemsSource = null;
-            deleteTestButton.Visibility = System.Windows.Visibility.Visible;
-            updateTestButton.Visibility = System.Windows.Visibility.Visible;
 
-        }
-
-        private void removeOldRatings(Test test, int age)
-        {
-            var repo = new RatingRepository();
-            IList<Rating> ages = repo.getAges(test);
-            foreach(Rating a in ages)
-            {
-                //removes ratings with given testId and age
-                if (a.age == age)
-                {
-                    repo.removeRatingsByAge(test, age);
-                    break;
-                }
-            }
-        }
-        private void ClearRatingAndLabel()
-        {
-            var ratings = new System.Collections.ObjectModel.ObservableCollection<Rating>();
-            ratingsDatagrid.ItemsSource = ratings;
-            ratingsDatagrid.CanUserAddRows = true;
-            ratingsDatagrid.IsReadOnly = false;
-
-            var labels = new System.Collections.ObjectModel.ObservableCollection<RatingLabel>();
-            LabelandDescDatagrid.IsReadOnly = false;
-            LabelandDescDatagrid.CanUserAddRows = true;
-            LabelandDescDatagrid.ItemsSource = labels;
-        }
-
-        private void EnableLastRadioWriting()
-        {
-            int n = agesControl.Items.Count - 1;
-            ContentPresenter c = (ContentPresenter)agesControl.ItemContainerGenerator.ContainerFromItem(agesControl.Items[n]);
-            c.ApplyTemplate();
-            RadioButton rb = c.ContentTemplate.FindName("AgeRadio", c) as RadioButton;
-            rb.IsChecked = true;
-            TextBox tb = rb.Content as TextBox;
-            tb.IsReadOnly = false;
-        }
-
-        private void btn_RemoveRating(object sender, RoutedEventArgs e)
-        {
-        }
-
-        private void btn_DeleteTest(object sender, RoutedEventArgs e)
-        {
-            Test test = (Test)testName.DataContext;
-            if(test != null) {
-                var testRepo = new TestRepository();
-                testRepo.Delete(test);
-
-                var labRepo = new RatingLabelRepository();
-                labRepo.Delete(test);
-
-                var ratRepo = new RatingRepository();
-                ratRepo.Delete(test);
-
-                int i = catsDataGrid.SelectedIndex;
-                catsDataGrid.SelectedIndex = -1;
-                catsDataGrid.SelectedIndex = i;
-
-                ClearFields();
-                agesControl.ItemsSource = null;
-                ClearRatingAndLabel();
-
-                IList<Test> tests = testRepo.FindAll();
-                noOfTests.Text = tests.Count.ToString();
-            }
+            IList<Test> tests = testRepo.FindAll();
+            noOfTests.Text = tests.Count.ToString();
+         
         }
         private void btn_UpdateTest(object sender, RoutedEventArgs e)
         {
-            updateTestButton.Visibility = Visibility.Hidden;
             updateButton.Visibility = Visibility.Visible;
             EnableFields();
-            SaveTest.Visibility = Visibility.Hidden;
-            Cancel.Visibility =  Visibility.Hidden;
             EnableLastRadioWriting();
         }
 
@@ -517,28 +552,54 @@ namespace HealthReporter.Controls
             test.categoryId = ((TestCategory)this.categorySelector.SelectedItem).id;
             test.decimals = (int)this.decimalsSelector.SelectedItem;
 
-            SaveLastRating(test);
+            if (testName.Text == "")
+            {
+                MessageBox.Show("Test name cannot be empty", "Confirmation");
+                return;
+            }
+            select_first();
+            deselect_first();
 
             var repo = new TestRepository();
             repo.Update(test);
 
-            DisableFields();
-            MessageBox.Show("Updated", "Confirmation");
-            updateTestButton.Visibility = Visibility.Visible;
-            updateButton.Visibility = Visibility.Hidden;
+            var result = MessageBox.Show("Updated", "Confirmation");
+            if (result == MessageBoxResult.OK) DisableFields();          
+            select_first();
 
+            addTestButton.IsEnabled = true;
+            int i = catsDataGrid.SelectedIndex;
+            catsDataGrid.SelectedIndex = -1;
+            catsDataGrid.SelectedIndex = i;
+        }
 
+        private void select_first()
+        {
+            RadioButton rb = get_button(0);
+            rb.IsChecked = true;           
+        }
 
-            //select first
-            ContentPresenter c = (ContentPresenter)agesControl.ItemContainerGenerator.ContainerFromItem(agesControl.Items[0]);
-            c.ApplyTemplate();
-            RadioButton rb = c.ContentTemplate.FindName("AgeRadio", c) as RadioButton;
-            rb.IsChecked = true;
+        private void deselect_first()
+        {
+            RadioButton rb = get_button(0);
+            rb.IsChecked = false;           
+        }
+
+        private RadioButton get_button(int i)
+        {
+            RadioButton rb = null;
+            if (agesControl.Items.Count > i)
+            {
+                ContentPresenter c = (ContentPresenter)agesControl.ItemContainerGenerator.ContainerFromItem(agesControl.Items[i]);
+                c.ApplyTemplate();
+                rb = c.ContentTemplate.FindName("AgeRadio", c) as RadioButton;
+            }
+            return rb;
         }
 
         private void ClearFields()
         {
-            ClearRatingAndLabel();
+            ClearRatingDatagrid();
             EnableLastRadioWriting();
             testName.Text = "";
             testName.IsReadOnly = false;
@@ -562,12 +623,8 @@ namespace HealthReporter.Controls
             TestDescriptionText.IsReadOnly = false;
             ratingsDatagrid.CanUserAddRows = true;
             ratingsDatagrid.IsReadOnly = false;
-            LabelandDescDatagrid.IsReadOnly = false;
-            LabelandDescDatagrid.CanUserAddRows = true;
-            SaveTest.Visibility = System.Windows.Visibility.Visible;
-            addNewRating.Visibility = System.Windows.Visibility.Visible;
-            removeRating.Visibility = System.Windows.Visibility.Visible;
-            Cancel.Visibility = System.Windows.Visibility.Visible;
+            addNewRating.Visibility = Visibility.Visible;
+            deleteRating.Visibility = Visibility.Visible;
         }
 
         private void DisableFields()
@@ -577,14 +634,11 @@ namespace HealthReporter.Controls
             decimalsSelector.IsEnabled = false;
             categorySelector.IsEnabled = false;
             TestDescriptionText.IsReadOnly = true;
+            FormulaText.IsReadOnly = true;
             ratingsDatagrid.CanUserAddRows = false;
             ratingsDatagrid.IsReadOnly = true;
-            LabelandDescDatagrid.IsReadOnly = true;
-            LabelandDescDatagrid.CanUserAddRows = false;
-            SaveTest.Visibility = System.Windows.Visibility.Hidden;
-            addNewRating.Visibility = System.Windows.Visibility.Hidden;
-            removeRating.Visibility = System.Windows.Visibility.Hidden;
-            Cancel.Visibility = System.Windows.Visibility.Hidden;
+            addNewRating.Visibility = Visibility.Hidden;
+            deleteRating.Visibility = Visibility.Hidden;
             updateButton.Visibility = Visibility.Hidden;
         }
 
@@ -592,6 +646,21 @@ namespace HealthReporter.Controls
         {
             public string interval { get; set; }
             public Rating rating { get; set; }
+        }
+        class LastTest
+        {
+            public bool isLast { get; set; }
+            public Test test { get; set; }
+        }
+        class RatingDatagridItem
+        {
+            public RatingDatagridItem()
+            {
+                rating = new Rating();
+                ratingLabel = new RatingLabel();
+            }
+            public Rating rating { get; set; }
+            public RatingLabel ratingLabel { get; set; }
         }
 
         private void btn_Clients(object sender, RoutedEventArgs e)

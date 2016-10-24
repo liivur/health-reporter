@@ -31,7 +31,8 @@
             <TextBlock x:Name="noOfTests" HorizontalAlignment="Left" Margin="344,63,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188" Width="22"/>
             <TextBlock x:Name="Text0" HorizontalAlignment="Left" Margin="366,63,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188" Width="93" Text="Tests"/>
             <TextBlock x:Name="ratings" FontWeight="Bold" HorizontalAlignment="Left" Margin="289,179,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188" Width="48" Text="Ratings"/>
-            <Button x:Name="addTestButton" Template="{StaticResource ButtonStyle}" Content="+" HorizontalAlignment="Left" Margin="587,20,0,0" VerticalAlignment="Top" Width="40" Click="btn_AddNewTest" Height="40" BorderBrush="#FFA2B2BD"  Background="White" FontWeight="Bold" FontSize="20" />
+            <Button x:Name="addTestButton" Template="{StaticResource ButtonStyle}" Content="+" HorizontalAlignment="Left" Margin="587,20,0,0" VerticalAlignment="Top" Width="40" Click="btn_AddNewTest" Height="40" BorderBrush="#FFA2B2BD"  Background="White" FontWeight="Bold" FontSize="20">
+            </Button>
             <Button x:Name="addCategoryButton" Content="Add New Category" HorizontalAlignment="Left" Margin="29,33,0,0" VerticalAlignment="Top" Width="108" Click="btn_AddNewCategory" Background="White" >
                 <Button.Resources>
                     <Style TargetType="{x:Type Border}">
@@ -41,28 +42,94 @@
             </Button>
             <RadioButton x:Name="menRadio" GroupName="Gender" Content="Men" Margin="530,180,93,281" Checked="GenderRadio_Checked"/>
             <RadioButton x:Name="womenRadio" GroupName="Gender" Content="Women" Margin="584,181,20,283" IsChecked="True" Checked="GenderRadio_Checked"/>
-            <DataGrid x:Name="catsDataGrid" SelectionMode="Single" IsReadOnly="True" GridLinesVisibility="None" HeadersVisibility="Column" AutoGenerateColumns="False" Margin="0,93,541,0" SelectionChanged="catsDataGrid_SelectionChanged" Background="{x:Null}" BorderBrush="{x:Null}">
+            <DataGrid x:Name="catsDataGrid" SelectionMode="Single" CanUserSortColumns="False" IsReadOnly="True" GridLinesVisibility="None" HeadersVisibility="Column" AutoGenerateColumns="False" Margin="0,93,559,0" SelectionChanged="catsDataGrid_SelectionChanged" Background="{x:Null}" BorderBrush="{x:Null}" Height="392" FontSize="13">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Category" Binding="{Binding name}" Width="*"/>
                 </DataGrid.Columns>
+                <DataGrid.Resources>
+                    <Style TargetType="{x:Type DataGridCell}">
+                        <Style.Triggers>
+                            <Trigger Property="DataGridCell.IsSelected" Value="True">
+                                <Setter Property="Background" Value="Bisque" />
+                                <Setter Property="Foreground" Value="Black" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                    <Style TargetType="{x:Type DataGrid}">
+                        <Style.Triggers>
+                            <Trigger Property="IsHitTestVisible" Value="False">
+                                <Setter Property="Foreground" Value="Gray" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.Resources>
+                <DataGrid.RowStyle>
+                    <Style TargetType="DataGridRow">
+                        <Setter Property="Height" Value="23"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="Linen"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.RowStyle>
             </DataGrid>
-            <DataGrid x:Name="testsDataGrid" IsReadOnly="True"  HeadersVisibility="Column" AutoGenerateColumns="False" Margin="137,93,399,0" SelectionChanged="testsDataGrid_SelectionChanged" Background="{x:Null}" GridLinesVisibility="None" BorderBrush="{x:Null}">
+            <DataGrid x:Name="testsDataGrid" SelectionMode="Single" IsReadOnly="True" CanUserSortColumns="False" HeadersVisibility="Column" AutoGenerateColumns="False" Margin="121,93,399,0" SelectionChanged="testsDataGrid_SelectionChanged" Background="{x:Null}" GridLinesVisibility="None" BorderBrush="{x:Null}">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Tests" Binding="{Binding name}" Width="*"/>
+                    <DataGridTextColumn Header="Tests" Binding="{Binding test.name}" Width="*"/>
                 </DataGrid.Columns>
+                <DataGrid.Resources>
+                    <Style TargetType="{x:Type DataGridCell}">
+                        <Style.Triggers>
+                            <Trigger Property="DataGridCell.IsSelected" Value="True">
+                                <Setter Property="Background" Value="Bisque" />
+                                <Setter Property="Foreground" Value="Black" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                    <Style TargetType="{x:Type DataGrid}">
+                        <Style.Triggers>
+                            <Trigger Property="IsHitTestVisible" Value="False">
+                                <Setter Property="Foreground" Value="Gray" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.Resources>
+                <DataGrid.RowStyle>
+                    <Style TargetType="DataGridRow">
+                        <Setter Property="Height" Value="23"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="Linen"/>
+                            </Trigger>
+                            <DataTrigger Binding="{Binding isLast}" Value="true">
+                                <Setter Property="BorderThickness" Value="0, 0, 0, 2"/>
+                                <Setter Property="BorderBrush" Value="Black"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.RowStyle>
             </DataGrid>
-            <DataGrid x:Name="ratingsDatagrid" IsReadOnly="True"  HeadersVisibility="Column" AutoGenerateColumns="False" Margin="284,224,315,136" Background="{x:Null}" GridLinesVisibility="Horizontal" BorderBrush="{x:Null}">
+            <DataGrid x:Name="ratingsDatagrid" IsReadOnly="True"  HeadersVisibility="Column" AutoGenerateColumns="False" Margin="284,224,31,136" Background="{x:Null}" BorderBrush="{x:Null}">
                 <DataGrid.Columns>
-                    <DataGridTextColumn x:Name="RatingColumn" Binding="{Binding normF}" Header="Score" Width="*"/>
+                    <DataGridTextColumn x:Name="RatingColumn" Binding="{Binding rating.normF}" Header="Score" Width="*" CanUserSort="False"/>
+                    <DataGridTextColumn Header="Meaning" Binding="{Binding ratingLabel.name}" Width="*" CanUserSort="False"/>
+                    <DataGridTextColumn Header="Description" Binding="{Binding ratingLabel.interpretation}" Width="*" CanUserSort="False"/>
                 </DataGrid.Columns>
+                <DataGrid.Resources>
+                    <Style TargetType="{x:Type DataGridCell}">
+                        <Style.Triggers>
+                            <Trigger Property="DataGridCell.IsSelected" Value="True">
+                                <Setter Property="Background" Value="White" />
+                                <Setter Property="Foreground" Value="Black" />
+                                <Setter Property="BorderBrush" Value="Black" />
+                                <Setter Property="BorderThickness" Value="0.7" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.Resources>
             </DataGrid>
-            <DataGrid x:Name="LabelandDescDatagrid" IsReadOnly="True"  HeadersVisibility="Column" AutoGenerateColumns="False" Margin="363,224,27,136" Background="{x:Null}" GridLinesVisibility="Horizontal" BorderBrush="{x:Null}" RenderTransformOrigin="0.443,0.49">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Meaning" Binding="{Binding name}" Width="*"/>
-                    <DataGridTextColumn Header="Description" Binding="{Binding interpretation}" Width="*"/>
-                </DataGrid.Columns>
-            </DataGrid>
-            <ItemsControl x:Name="agesControl" Margin="289,198,0,263"  HorizontalAlignment="Left" Width="362">
+            <ItemsControl x:Name="agesControl" Margin="289,198,0,263"  HorizontalAlignment="Left" Width="338">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <UniformGrid Columns="5" />
@@ -70,7 +137,7 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <RadioButton x:Name="AgeRadio" GroupName="AgesGroup" CommandParameter="{Binding}" Margin="0,0,5,5" Checked="AgeRadio_checked">
+                        <RadioButton x:Name="AgeRadio" Unchecked="chkbox_Unchecked" GroupName="AgesGroup" CommandParameter="{Binding}" Margin="0,0,5,5" Checked="AgeRadio_checked">
                             <TextBox x:Name="AgeTextBox" Text="{Binding interval}" IsReadOnly="True"/>
                         </RadioButton>
                     </DataTemplate>
@@ -93,7 +160,7 @@
                     </Style>
                 </TextBox.Resources>
             </TextBox>
-            <ComboBox x:Name="decimalsSelector" IsEnabled="False" HorizontalAlignment="Left" Margin="607,120,0,0" VerticalAlignment="Top" Width="44" RenderTransformOrigin="1.076,0.676"/>
+            <ComboBox x:Name="decimalsSelector" SelectedIndex="2" IsEnabled="False" HorizontalAlignment="Left" Margin="607,120,0,0" VerticalAlignment="Top" Width="44" RenderTransformOrigin="1.076,0.676"/>
             <TextBox x:Name="TestDescriptionText" HorizontalAlignment="Left" IsReadOnly="True" Height="23" Margin="289,422,0,0" TextWrapping="Wrap" Text="{Binding description}" VerticalAlignment="Top" Width="362">
                 <TextBox.Resources>
                     <Style TargetType="{x:Type Border}">
@@ -101,8 +168,8 @@
                     </Style>
                 </TextBox.Resources>
             </TextBox>
-            <RadioButton x:Name="menFormulaRadio" GroupName="FormulaGender" Content="Men" Margin="528,353,97,109" Checked="FormulaRadio_Checked" RenderTransformOrigin="0.498,0.001"/>
-            <RadioButton x:Name="womenFormulaRadio" GroupName="FormulaGender" Content="Women" IsChecked="True" Margin="586,352,21,110" Checked="FormulaRadio_Checked"/>
+            <RadioButton x:Name="menFormulaRadio" GroupName="FormulaGender" Content="Men" Margin="530,349,95,113" Checked="FormulaRadio_Checked"/>
+            <RadioButton x:Name="womenFormulaRadio" GroupName="FormulaGender" Content="Women" IsChecked="True" Margin="585,349,29,113" Checked="FormulaRadio_Checked"/>
             <TextBox x:Name="FormulaText" HorizontalAlignment="Left" IsReadOnly="True" Height="23" Margin="289,374,0,0" TextWrapping="Wrap" Text="{Binding formulaF}" VerticalAlignment="Top" Width="362">
                 <TextBox.Resources>
                     <Style TargetType="{x:Type Border}">
@@ -112,16 +179,26 @@
             </TextBox>
             <TextBlock FontWeight="Bold" HorizontalAlignment="Left" Margin="289,352,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188" Width="48" Height="16"><Run Text="Formula"/><LineBreak/><Run/></TextBlock>
             <TextBlock HorizontalAlignment="Left" Margin="289,400,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188" Width="79" Height="16"><Run Text="Descriptio"/><Run Text="n"/><LineBreak/><Run/></TextBlock>
-            <Button x:Name="addNewRating" Content="+" HorizontalAlignment="Left" Margin="596,224,0,0" VerticalAlignment="Top" Width="17" Click="btn_AddNewRating"  Visibility="Hidden" />
-            <Button x:Name="removeRating" Content="-" HorizontalAlignment="Left" Margin="613,224,0,0" VerticalAlignment="Top" Width="17"  Click="btn_RemoveRating"  Visibility="Hidden" />
+            <Button x:Name="addNewRating" Content="+" HorizontalAlignment="Left" Margin="634,199,0,0" VerticalAlignment="Top" Width="17" Click="btn_AddNewAge"  Visibility="Visible" RenderTransformOrigin="1.353,0.6" />
+            <Button x:Name="deleteRating" Content="-" HorizontalAlignment="Left" Margin="653,199,0,0" VerticalAlignment="Top" Width="17" Click="btn_DeleteRating"  Visibility="Visible" RenderTransformOrigin="1.353,0.6" />
             <TextBlock HorizontalAlignment="Left" Margin="289,152,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188"><Run Text="Subcategory"/><Run Text=":"/></TextBlock>
-            <ComboBox x:Name="categorySelector"  IsEnabled="False" DisplayMemberPath="name" SelectedValuePath="id" HorizontalAlignment="Left" Margin="370,150,0,0" VerticalAlignment="Top" Width="163" Height="21"/>
-            <Button x:Name="SaveTest" Content="Save" HorizontalAlignment="Left" Margin="563,453,0,0"  VerticalAlignment="Top" Width="38" RenderTransformOrigin="0.706,8.4" Click="btn_SaveTest" Visibility="Visible" Background="White" >
+            <ComboBox x:Name="categorySelector" SelectedIndex="0" IsEnabled="False" DisplayMemberPath="name" SelectedValuePath="id" HorizontalAlignment="Left" Margin="370,150,0,0" VerticalAlignment="Top" Width="163" Height="21"/>
+            <Button x:Name="SaveTest" Content="Save" HorizontalAlignment="Left" Margin="563,453,0,0" VerticalAlignment="Top" Width="38" RenderTransformOrigin="0.706,8.4" Click="btn_SaveTest" Background="White" >
                 <Button.Resources>
                     <Style TargetType="{x:Type Border}">
                         <Setter Property="CornerRadius" Value="4"/>
                     </Style>
                 </Button.Resources>
+                <Button.Style>
+                    <Style>
+                        <Style.Triggers>
+                            <DataTrigger 
+                     Binding ="{Binding ElementName=testsDataGrid, Path=IsHitTestVisible}" Value="true">
+                                <Setter Property="Button.Visibility" Value="Hidden"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
             </Button>
 
             <Button x:Name="Cancel" Content="Cancel" HorizontalAlignment="Left" Margin="605,453,0,0" VerticalAlignment="Top" Width="46" Click="btn_Cancel" Background="White">
@@ -130,8 +207,18 @@
                         <Setter Property="CornerRadius" Value="4"/>
                     </Style>
                 </Button.Resources>
+                <Button.Style>
+                    <Style>
+                        <Style.Triggers>
+                            <DataTrigger 
+                     Binding ="{Binding ElementName=testsDataGrid, Path=IsHitTestVisible}" Value="true">
+                                <Setter Property="Button.Visibility" Value="Hidden"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
             </Button>
-           
+
             <Button x:Name="deleteTestButton" Content="Delete test" HorizontalAlignment="Left" Margin="492,453,0,0" VerticalAlignment="Top" Width="74" Click="btn_DeleteTest" Background="White" >
                 <Button.Resources>
                     <Style TargetType="{x:Type Border}">
@@ -142,8 +229,7 @@
                     <Style>
                         <Style.Triggers>
                             <DataTrigger 
-                     Binding ="{Binding ElementName=testsDataGrid, Path=SelectedIndex}" 
-                     Value="-1">
+                     Binding ="{Binding ElementName=testsDataGrid, Path=SelectedIndex}" Value="-1">
                                 <Setter Property="Button.Visibility" Value="Hidden"/>
                             </DataTrigger>
                         </Style.Triggers>
@@ -183,12 +269,22 @@
                     </Style>
                 </Button.Style>
             </Button>
-            <Button x:Name="updateButton" Content="Update" HorizontalAlignment="Left" Margin="575,453,0,0"  VerticalAlignment="Top" Width="45" RenderTransformOrigin="0.706,8.4" Click="btn_Update" Visibility="Hidden" Background="White">
+            <Button x:Name="updateButton" Content="Update" HorizontalAlignment="Left" Margin="575,453,0,0"  Visibility="Hidden" VerticalAlignment="Top" Width="74" RenderTransformOrigin="0.706,8.4" Click="btn_Update"  Background="White">
                 <Button.Resources>
                     <Style TargetType="{x:Type Border}">
                         <Setter Property="CornerRadius" Value="4"/>
                     </Style>
                 </Button.Resources>
+                <Button.Style>
+                    <Style>
+                        <Style.Triggers>
+                            <DataTrigger 
+                     Binding ="{Binding ElementName=testsDataGrid, Path=DataGridCell.IsSelected}" Value="True">
+                                <Setter Property="Button.Visibility" Value="Hidden"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
             </Button>
         </Grid>
     </Border>

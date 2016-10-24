@@ -18,7 +18,12 @@ namespace HealthReporter.Models
 
         public void Delete(Test test)
         {
-            var res = DatabaseUtility.getConnection().InsertSql("DELETE FROM rating_labels WHERE id in (SELECT labelId FROM ratings WHERE ratings.labelId = rating_labels.id and testId=@id)", test);
+            var res = DatabaseUtility.getConnection().InsertSql("DELETE FROM rating_labels WHERE id in (SELECT labelId FROM ratings WHERE ratings.labelId = rating_labels.id AND testId=@id)", test);
+        }
+
+        public void DeleteByAge(Test test, int age)
+        {
+            var res = DatabaseUtility.getConnection().InsertSql("DELETE FROM rating_labels WHERE id in (SELECT labelId FROM ratings WHERE ratings.labelId = rating_labels.id AND testId=@id AND age=" + age +")", test);
         }
 
         public IList<RatingLabel> FindAll()

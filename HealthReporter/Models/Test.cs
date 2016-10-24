@@ -30,7 +30,7 @@ namespace HealthReporter.Models
 
         public void Update(Test test)
         {
-            DatabaseUtility.getConnection().QuerySql<Test>("UPDATE tests SET categoryId=@categoryId, name=@name, description=@description, units=@units, decimals=@decimals, weight=@weight, formulaF=@formulaF, formulaM=@formulaM WHERE id=@id", test);
+            DatabaseUtility.getConnection().QuerySql<Test>("UPDATE tests SET categoryId=@categoryId, name=@name, description=@description, units=@units, decimals=@decimals, weight=@weight, formulaF=@formulaF, formulaM=@formulaM, updated=CURRENT_TIMESTAMP WHERE id=@id", test);
         }
     }
 
