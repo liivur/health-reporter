@@ -56,8 +56,6 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="TestName" Binding="{Binding TestName}" />
                     <DataGridTextColumn Header="units" Binding="{Binding units}" />
-                    <DataGridTextColumn Header="Score" Binding="{Binding score}" />
-                    <DataGridTextColumn Header="Appraisers Name" Binding="{Binding AppraisersName}" />
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>

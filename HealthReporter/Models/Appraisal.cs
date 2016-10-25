@@ -28,7 +28,7 @@ namespace HealthReporter.Models
 
         public IList<HistoryTableItem> FindAll(Client client)
         {
-            IList<HistoryTableItem> res = DatabaseUtility.getConnection().QuerySql<HistoryTableItem>("SELECT tests.name as TestName,tests.units,  appraisal_tests.score as score, appraisers.name as AppraisersName FROM appraisers inner JOIN appraisals ON appraisals.appraiserId = appraisers.id inner JOIN appraisal_tests ON appraisal_tests.appraisalId = appraisals.id inner JOIN tests ON tests.id = appraisal_tests.testId WHERE appraisals.clientId=@id ", client);
+           IList<HistoryTableItem> res = DatabaseUtility.getConnection().QuerySql<HistoryTableItem>("SELECT appraisals.date, tests.name as TestName, tests.units as Units,  appraisal_tests.score as Score, appraisers.name as AppraisersName  FROM appraisers inner JOIN appraisals ON appraisals.appraiserId = appraisers.id inner JOIN appraisal_tests ON appraisal_tests.appraisalId = appraisals.id inner JOIN tests ON tests.id = appraisal_tests.testId WHERE appraisals.clientId=@id ", client);
 
             //IList< Result > res = DatabaseUtility.getConnection().QuerySql<Result>("SELECT * FROM clients");
             return res;
@@ -71,14 +71,38 @@ namespace HealthReporter.Models
     }
     public class HistoryTableItem
     {
+        // public HistoryTableItem()
+        // {
+        //     appraiser = new Appraiser();
+        //     appraisal = new Appraisal();
+        //     Appraisal_tests = new Appraisal_tests();
+        //     test= new Test();
 
-       
+        // }
+        //public Appraiser appraiser { get; set; }
+        //public Appraisal appraisal { get; set; }
+        //public Appraisal_tests Appraisal_tests { get; set; }
+        //public Test test { get; set; }
+
+
         public string TestName { get; set; }
-        public string units { get; set; }       
-        public decimal score { get; set; }
+        public string Units { get; set; }
+        public string date { get; set; }
+        public decimal Score { get; set; }
         public string AppraisersName { get; set; }
 
 
+
+    }
+    class RatingDatagridItem
+    {
+        public RatingDatagridItem()
+        {
+            rating = new Rating();
+            ratingLabel = new RatingLabel();
+        }
+        public Rating rating { get; set; }
+        public RatingLabel ratingLabel { get; set; }
     }
 
 

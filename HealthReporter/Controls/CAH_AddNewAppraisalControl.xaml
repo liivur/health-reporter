@@ -26,7 +26,7 @@
             <TextBlock x:Name="textBlock_Copy" HorizontalAlignment="Left" Margin="45,375,0,0" TextWrapping="Wrap" Text="Appraisers Name" VerticalAlignment="Top"/>
             <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="44,410,0,0" TextWrapping="Wrap" VerticalAlignment="Top"><Run Text="Date of appr"/><Run Text="a"/><Run Text="isal"/></TextBlock>
             <TextBox x:Name="name" HorizontalAlignment="Left" Height="23" Margin="147,374,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120"/>
-            <DatePicker x:Name="date" HorizontalAlignment="Left" Margin="147,409,0,0" VerticalAlignment="Top" Width="120"/>
+            <DatePicker x:Name="date" Text="{Binding date, StringFormat='d', ConverterCulture=en-GB}" HorizontalAlignment="Left" Margin="147,409,0,0" VerticalAlignment="Top" Width="120"/>
             <ItemsControl Name="AddFields" Margin="44,110,37,146">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
