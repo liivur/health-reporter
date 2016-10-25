@@ -131,6 +131,8 @@
       <DependentUpon>TestsUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\Appraisal.cs" />
+    <Compile Include="Models\Appraisal_tests.cs" />
+    <Compile Include="Models\Appraiser.cs" />
     <Compile Include="Models\Client.cs" />
     <Compile Include="Models\Rating.cs" />
     <Compile Include="Models\RatingLabel.cs" />

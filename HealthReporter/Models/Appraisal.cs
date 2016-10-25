@@ -18,6 +18,7 @@ namespace HealthReporter.Models
 
             var res = connection.InsertSql("INSERT INTO appraisals (id, appraiserId, clientId, date ) values(@id, @appraiserId, @clientId, @date)", appraisal);
             var res2 = connection.InsertSql("INSERT INTO appraisers (id, name) values(@id, @name)", appraiser);
+
             foreach (Appraisal_tests test in tests)
             {
                 var res3 = connection.InsertSql("INSERT INTO appraisal_tests (appraisalId, testId, score, note, trial1, trial2, trial3) values(@appraisalId, @testId, @score, @note, @trial1, @trial2, @trial3)", test);
@@ -28,10 +29,7 @@ namespace HealthReporter.Models
 
         public IList<HistoryTableItem> FindAll(Client client)
         {
-           IList<HistoryTableItem> res = DatabaseUtility.getConnection().QuerySql<HistoryTableItem>("SELECT appraisals.date, tests.name as TestName, tests.units as Units,  appraisal_tests.score as Score, appraisers.name as AppraisersName  FROM appraisers inner JOIN appraisals ON appraisals.appraiserId = appraisers.id inner JOIN appraisal_tests ON appraisal_tests.appraisalId = appraisals.id inner JOIN tests ON tests.id = appraisal_tests.testId WHERE appraisals.clientId=@id ", client);
-
-            //IList< Result > res = DatabaseUtility.getConnection().QuerySql<Result>("SELECT * FROM clients");
-            return res;
+           return DatabaseUtility.getConnection().QuerySql<HistoryTableItem>("SELECT appraisals.date, tests.name as TestName, tests.units as Units,  appraisal_tests.score as Score, appraisers.name as AppraisersName  FROM appraisers inner JOIN appraisals ON appraisals.appraiserId = appraisers.id inner JOIN appraisal_tests ON appraisal_tests.appraisalId = appraisals.id inner JOIN tests ON tests.id = appraisal_tests.testId WHERE appraisals.clientId=@id ", client);
 
         }
 
@@ -45,45 +43,11 @@ namespace HealthReporter.Models
         public string date { get; set; }
         public string updated { get; set; }
 
-    }
-
-    public class Appraiser 
-    {
-        public byte[] id { get; set; }
-        public string name; 
-        public string updated { get; set; }
-
-       
-
-    }
-    public class Appraisal_tests
-    {
-        public byte[] appraisalId { get; set; }
-        public byte[] testId { get; set; }
-        public decimal score { get; set; }
-        public string note { get; set; }
-        public decimal trial1 { get; set; }
-        public decimal trial2 { get; set; }
-        public decimal trial3 { get; set; }
-        public string updated { get; set; }
-
-
-    }
+    }  
+   
     public class HistoryTableItem
     {
-        // public HistoryTableItem()
-        // {
-        //     appraiser = new Appraiser();
-        //     appraisal = new Appraisal();
-        //     Appraisal_tests = new Appraisal_tests();
-        //     test= new Test();
-
-        // }
-        //public Appraiser appraiser { get; set; }
-        //public Appraisal appraisal { get; set; }
-        //public Appraisal_tests Appraisal_tests { get; set; }
-        //public Test test { get; set; }
-
+        
 
         public string TestName { get; set; }
         public string Units { get; set; }
@@ -94,16 +58,49 @@ namespace HealthReporter.Models
 
 
     }
-    class RatingDatagridItem
+
+
+    //Classes for holding all HistoryDatagrid Items
+    public class FullHistoryDatagrid
     {
-        public RatingDatagridItem()
-        {
-            rating = new Rating();
-            ratingLabel = new RatingLabel();
-        }
-        public Rating rating { get; set; }
-        public RatingLabel ratingLabel { get; set; }
+        public string TestName { get; set; }
+        public string units { get; set; }
+        public List<Date_Score_Appraiser> list { get; set; }
+
+
     }
+
+    public class Date_Score_Appraiser
+    {
+        public string date { get; set; }
+        private decimal _score;
+        public string appraiser { get; set; }
+        public decimal score
+        {
+            get
+            {
+                return _score;
+            }
+            set
+            {
+                _score = value;
+            }
+        }
+        public override string ToString()
+        {
+            if (score.ToString() == "0")
+            {
+                return "";
+            }
+            else
+            {
+                return score.ToString();
+            }
+        }
+    }
+
+
+
 
 
 }
