@@ -38,7 +38,7 @@
                 </TextBox.Resources>
             </TextBox>
             <TextBox x:Name="email" HorizontalAlignment="Left" Height="23" Margin="404,92,0,0" TextWrapping="Wrap" 
-                     Text="{Binding email, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" VerticalAlignment="Top" Width="142" 
+                     Text="{Binding email, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" VerticalAlignment="Top" Width="184" 
                      Validation.ErrorTemplate="{x:Null}">
                 <TextBox.Resources>
                     <Style TargetType="{x:Type Border}">
@@ -48,15 +48,15 @@
             </TextBox>
             <Label x:Name="AdornerSite3" Foreground="Red" FontWeight="Bold" FontSize="8" 
                    Content="{Binding (Validation.Errors).CurrentItem.ErrorContent, ElementName=email}" Margin="406,116,50,210"/>
-            <TextBlock x:Name="Text1" HorizontalAlignment="Left" Margin="68,99,0,0" TextWrapping="Wrap" Text="First Name" VerticalAlignment="Top"/>
-            <TextBlock x:Name="Text2" HorizontalAlignment="Left" Margin="68,144,0,0" TextWrapping="Wrap" Text="Last Name" VerticalAlignment="Top"/>
-            <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="68,192,0,0" TextWrapping="Wrap" Text="Group name" VerticalAlignment="Top"/>
+            <TextBlock x:Name="Text1" HorizontalAlignment="Left" Margin="65,99,0,0" TextWrapping="Wrap" Text="First Name" VerticalAlignment="Top"/>
+            <TextBlock x:Name="Text2" HorizontalAlignment="Left" Margin="65,146,0,0" TextWrapping="Wrap" Text="Last Name" VerticalAlignment="Top"/>
+            <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="64,195,0,0" TextWrapping="Wrap" VerticalAlignment="Top"><Run Text="Group "/><Run Text="N"/><Run Text="ame"/></TextBlock>
             <TextBlock x:Name="textBlock1" HorizontalAlignment="Left" Margin="326,96,0,0" TextWrapping="Wrap" Text="Email" VerticalAlignment="Top"/>
-            <TextBlock x:Name="textBlock2" HorizontalAlignment="Left" Margin="325,147,0,0" TextWrapping="Wrap" Text="Gender" VerticalAlignment="Top"/>
+            <TextBlock x:Name="textBlock2" HorizontalAlignment="Left" Margin="325,145,0,0" TextWrapping="Wrap" Text="Gender" VerticalAlignment="Top"/>
             <TextBlock x:Name="textBlock3" HorizontalAlignment="Left" Margin="324,195,0,0" TextWrapping="Wrap" Text="Date of Birth" VerticalAlignment="Top" RenderTransformOrigin="0.18,0.25"/>
             <TextBlock x:Name="textBlock4" HorizontalAlignment="Center" Margin="0,32,0,0" TextWrapping="Wrap" Text="New Client" VerticalAlignment="Top" FontWeight="Bold" Height="23" Width="76" FontSize="14"/>
             <ComboBox Text="{Binding gender, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" SelectedValuePath="Tag" x:Name="gender" 
-                       HorizontalAlignment="Left" Margin="404,141,0,0" VerticalAlignment="Top" Width="142"
+                       HorizontalAlignment="Left" Margin="404,141,0,0" VerticalAlignment="Top" Width="184"
                         Validation.ErrorTemplate="{x:Null}">
                 <ComboBoxItem Content="Female" Tag="0"/>
                 <ComboBoxItem Content="Male" Tag="1"/>
@@ -68,7 +68,7 @@
             </ComboBox>
             <Label x:Name="AdornerSite4" Foreground="Red" FontWeight="Bold" FontSize="8" 
                    Content="{Binding (Validation.Errors).CurrentItem.ErrorContent, ElementName=gender}" Margin="406,163,50,163"/>
-            <DatePicker x:Name="birthDate" HorizontalAlignment="Left" Margin="404,191,0,0" VerticalAlignment="Top" Width="142"  DisplayDate="2016-09-29" 
+            <DatePicker x:Name="birthDate" HorizontalAlignment="Left" Margin="404,191,0,0" VerticalAlignment="Top" Width="184"  DisplayDate="2016-09-29" 
                          SelectedDate="{Binding birthDate, StringFormat='d', ConverterCulture=en-GB, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                         IsTodayHighlighted="False" FirstDayOfWeek="Monday" Validation.ErrorTemplate="{x:Null}" >
                 <DatePicker.Resources>
