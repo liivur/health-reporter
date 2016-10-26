@@ -50,7 +50,7 @@
                    Content="{Binding (Validation.Errors).CurrentItem.ErrorContent, ElementName=email}" Margin="406,116,50,210"/>
             <TextBlock x:Name="Text1" HorizontalAlignment="Left" Margin="65,99,0,0" TextWrapping="Wrap" Text="First Name" VerticalAlignment="Top"/>
             <TextBlock x:Name="Text2" HorizontalAlignment="Left" Margin="65,146,0,0" TextWrapping="Wrap" Text="Last Name" VerticalAlignment="Top"/>
-            <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="64,195,0,0" TextWrapping="Wrap" VerticalAlignment="Top"><Run Text="Group "/><Run Text="N"/><Run Text="ame"/></TextBlock>
+            <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="64,195,0,0" TextWrapping="Wrap" Text="Group Name" VerticalAlignment="Top"/>
             <TextBlock x:Name="textBlock1" HorizontalAlignment="Left" Margin="326,96,0,0" TextWrapping="Wrap" Text="Email" VerticalAlignment="Top"/>
             <TextBlock x:Name="textBlock2" HorizontalAlignment="Left" Margin="325,145,0,0" TextWrapping="Wrap" Text="Gender" VerticalAlignment="Top"/>
             <TextBlock x:Name="textBlock3" HorizontalAlignment="Left" Margin="324,195,0,0" TextWrapping="Wrap" Text="Date of Birth" VerticalAlignment="Top" RenderTransformOrigin="0.18,0.25"/>
