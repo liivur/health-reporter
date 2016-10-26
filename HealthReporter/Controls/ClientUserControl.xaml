@@ -73,20 +73,13 @@
             </DataGrid>
             <TextBlock x:Name="total" HorizontalAlignment="Left" Margin="347,63,0,0" TextWrapping="Wrap"  VerticalAlignment="Top"/>
             <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="49,55,0,0" TextWrapping="Wrap" Text="Search Clients" VerticalAlignment="Top"/>
-            <TextBox x:Name="search" HorizontalAlignment="Left" Height="23" Margin="34,27,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="104">
+            <TextBox x:Name="search" HorizontalAlignment="Left" Height="23" Margin="34,27,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="104" TextChanged="filterSearchBox">
                 <TextBox.Resources>
                     <Style TargetType="{x:Type Border}">
                         <Setter Property="CornerRadius" Value="4"/>
                     </Style>
                 </TextBox.Resources>
             </TextBox>
-            <Button x:Name="button" HorizontalAlignment="Left" Content="Go" Margin="147,26,0,0" VerticalAlignment="Top" Width="39" Height="23" Click="btn_Search" BorderBrush="#FFA2B2BD" Background="White" >
-                <Button.Resources>
-                    <Style TargetType="{x:Type Border}">
-                        <Setter Property="CornerRadius" Value="4"/>
-                    </Style>
-                </Button.Resources>
-            </Button>
             <TextBlock x:Name="textBlock1" HorizontalAlignment="Left" Margin="578,63,0,0" TextWrapping="Wrap" Text="New Client" VerticalAlignment="Top" Width="63"/>
             <Button x:Name="btnShowClients" Content="Clients" Click="btn_Clients" HorizontalAlignment="Left" Margin="268,22,0,0"  VerticalAlignment="Top" Width="97" BorderBrush="#FFA2B2BD" Height="33" Background="White" RenderTransformOrigin="0.632,-0.808">
                 <Button.Resources>

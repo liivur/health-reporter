@@ -103,7 +103,7 @@ namespace HealthReporter.Controls
 
         }
 
-        private void btn_Search(object sender, RoutedEventArgs e)
+        private void filterSearchBox(object sender, TextChangedEventArgs e)
         {
             string searchBy = search.Text;
 
@@ -112,8 +112,6 @@ namespace HealthReporter.Controls
 
 
             dataGrid.ItemsSource = clients;
-
-
         }
 
         private void btn_Clients(object sender, RoutedEventArgs e)
@@ -150,6 +148,5 @@ namespace HealthReporter.Controls
             }
         }
 
-       
     }
 }
