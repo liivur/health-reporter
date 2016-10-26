@@ -36,7 +36,19 @@ namespace HealthReporter.Controls
             InitializeComponent();
             this._parent = _parent;
             this.client = client;
-            ClientInfo.DataContext = client;
+
+            Client client1 = this.client; 
+
+            if (client1.gender == "1")
+            {
+                client1.gender = "Male";
+            }
+            else
+            {
+                client1.gender = "Female";
+            }
+
+            ClientInfo.DataContext = client1;
 
 
             //Finding all appraisal results of client
@@ -46,7 +58,7 @@ namespace HealthReporter.Controls
 
             //Finding all appraisal dates of client
             List<string> dates = new List<string>();
-
+           
             foreach (HistoryTableItem item in history)
             {
                 if (item.date != null && !dates.Contains(item.date.ToString()))
@@ -55,6 +67,7 @@ namespace HealthReporter.Controls
                 }
             }
 
+            dates.Sort((x, y) => DateTime.Parse( y).CompareTo(DateTime.Parse(x)));
 
             //Creating list with structure: (TestName, units, (date, score, appraiser))
 
@@ -119,10 +132,17 @@ namespace HealthReporter.Controls
             foreach (string elem in dates)
             {
                 
-                    DataGridTextColumn textColumn = new DataGridTextColumn();
-                    textColumn.Header = elem;
+                DataGridTextColumn textColumn = new DataGridTextColumn();
+                textColumn.Header = String.Format("{0:dd/MM/yyyy}", DateTime.Parse(elem));
                 textColumn.Binding = new Binding("list[" + i + "]");
-                         
+                Style style = new Style(typeof(DataGridCell))
+                {
+                    Setters = {
+                                new Setter(TextBlock.TextAlignmentProperty, TextAlignment.Right)
+                }
+                };
+                textColumn.CellStyle = style;
+
                 dataGrid.Columns.Add(textColumn);
                 i++;
            
