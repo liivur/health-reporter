@@ -680,5 +680,12 @@ namespace HealthReporter.Controls
             btnShowTests.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFF0F0F0"));
             btnShowClients.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
         }
+
+        private void btn_OpenManagePresets(object sender, RoutedEventArgs e)
+        {
+            ManagePresetsControl obj = new ManagePresetsControl(this._parent);
+            this._parent.stkTest.Children.Clear();
+            this._parent.stkTest.Children.Add(obj);
+        }
     }
 }

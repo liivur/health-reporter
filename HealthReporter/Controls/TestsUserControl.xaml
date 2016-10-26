@@ -31,7 +31,10 @@
             <TextBlock x:Name="noOfTests" HorizontalAlignment="Left" Margin="344,63,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188" Width="22"/>
             <TextBlock x:Name="Text0" HorizontalAlignment="Left" Margin="366,63,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188" Width="93" Text="Tests"/>
             <TextBlock x:Name="ratings" FontWeight="Bold" HorizontalAlignment="Left" Margin="289,179,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188" Width="48" Text="Ratings"/>
-            <Button x:Name="addTestButton" Template="{StaticResource ButtonStyle}" Content="+" HorizontalAlignment="Left" Margin="587,20,0,0" VerticalAlignment="Top" Width="40" Click="btn_AddNewTest" Height="40" BorderBrush="#FFA2B2BD"  Background="White" FontWeight="Bold" FontSize="20">
+            <Button x:Name="managePresetsButton" Template="{StaticResource ButtonStyle}" Content="M" HorizontalAlignment="Left" Margin="530,20,0,0" VerticalAlignment="Top" Width="40" Click="btn_OpenManagePresets" Height="40" BorderBrush="#FFA2B2BD"  Background="White" FontWeight="Bold" FontSize="20">
+            </Button>
+            <TextBlock x:Name="managePresetsTextBlock" HorizontalAlignment="Left" Margin="508,63,0,0" TextWrapping="Wrap" Text="Manage Presets" VerticalAlignment="Top"/>
+            <Button x:Name="addTestButton" Template="{StaticResource ButtonStyle}" Content="+" HorizontalAlignment="Left" Margin="611,20,0,0" VerticalAlignment="Top" Width="40" Click="btn_AddNewTest" Height="40" BorderBrush="#FFA2B2BD"  Background="White" FontWeight="Bold" FontSize="20">
             </Button>
             <Button x:Name="addCategoryButton" Content="Add New Category" HorizontalAlignment="Left" Margin="29,33,0,0" VerticalAlignment="Top" Width="108" Click="btn_AddNewCategory" Background="White" >
                 <Button.Resources>
@@ -250,7 +253,7 @@
                     </Style>
                 </Button.Resources>
             </Button>
-            <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="584,63,0,0" TextWrapping="Wrap" Text="New Test" VerticalAlignment="Top"/>
+            <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="608,63,0,0" TextWrapping="Wrap" Text="New Test" VerticalAlignment="Top"/>
             <Button x:Name="updateTestButton" Content="Update test" HorizontalAlignment="Left" Margin="575,453,0,0" VerticalAlignment="Top" Width="74" Click="btn_UpdateTest" Background="White" >
                 <Button.Resources>
                     <Style TargetType="{x:Type Border}">
