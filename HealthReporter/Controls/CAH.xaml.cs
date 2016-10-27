@@ -37,9 +37,9 @@ namespace HealthReporter.Controls
             this._parent = _parent;
             this.client = client;
 
-            Client client1 = this.client; 
+            Client client1 = this.client;
 
-            if (client1.gender == "1")
+            if (client1.gender == "1"|| client1.gender == "Male")
             {
                 client1.gender = "Male";
             }
