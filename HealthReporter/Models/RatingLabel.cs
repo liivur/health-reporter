@@ -20,6 +20,10 @@ namespace HealthReporter.Models
         {
             var res = DatabaseUtility.getConnection().InsertSql("DELETE FROM rating_labels WHERE id in (SELECT labelId FROM ratings WHERE ratings.labelId = rating_labels.id AND testId=@id)", test);
         }
+        public void DeleteByRating(Rating rating)
+        {
+            var res = DatabaseUtility.getConnection().InsertSql("DELETE FROM rating_labels WHERE id=@labelId", rating);
+        }
 
         public void DeleteByAge(Test test, int age)
         {
@@ -33,6 +37,10 @@ namespace HealthReporter.Models
         public IList<RatingLabel> getLabel(Rating rating)
         {
             return DatabaseUtility.getConnection().QuerySql<RatingLabel>("SELECT * FROM rating_labels where id = @labelId", rating);
+        }
+        public void Update(RatingLabel label)
+        {
+            DatabaseUtility.getConnection().QuerySql<Rating>("UPDATE rating_labels SET rating=@rating, name=@name, interpretation=@interpretation, updated = CURRENT_TIMESTAMP WHERE id=@id", label);
         }
     }
 

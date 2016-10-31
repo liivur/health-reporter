@@ -3,8 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:local="clr-namespace:HealthReporter.Controls"
-             mc:Ignorable="d" Height="485" Width="680">
+             mc:Ignorable="d" Height="Auto" Width="Auto">
     <UserControl.Resources>
         <ControlTemplate x:Key="ButtonStyle" TargetType="{x:Type Button}">
             <Border x:Name="button" CornerRadius="100" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}">
@@ -25,29 +26,227 @@
                 </Trigger>
             </ControlTemplate.Triggers>
         </ControlTemplate>
+        <LinearGradientBrush x:Key="WindowBackgroundBrush">
+            <GradientStop Offset="0" Color="Silver"/>
+            <GradientStop Offset="1" Color="Gray"/>
+        </LinearGradientBrush>
+        <x:Array x:Key="ComboBoxItems" Type="sys:String">
+            <sys:String>Needs Improvement</sys:String>
+            <sys:String>Fair</sys:String>
+            <sys:String>Good</sys:String>
+            <sys:String>Very Good</sys:String>
+            <sys:String>Excellent</sys:String>
+            <sys:String>Potential Risk</sys:String>
+            <sys:String>Optimal</sys:String>
+            <sys:String>Healthy</sys:String>
+            <sys:String>Considerable Risk</sys:String>
+            <sys:String>High Risk</sys:String>
+            <sys:String>Uhealthy</sys:String>
+            <sys:String>Healthy</sys:String>
+        </x:Array>
+        <x:Array x:Key="RatingColors" Type="Brush">
+            <Brush>Red</Brush>
+            <Brush>Orange</Brush>
+            <Brush>Yellow</Brush>
+            <Brush>Green</Brush>
+            <Brush>Blue</Brush>
+        </x:Array>
     </UserControl.Resources>
     <Border>
         <Grid ShowGridLines="False" Margin="0,0,0,0">
-            <TextBlock x:Name="noOfTests" HorizontalAlignment="Left" Margin="344,63,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188" Width="22"/>
-            <TextBlock x:Name="Text0" HorizontalAlignment="Left" Margin="366,63,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188" Width="93" Text="Tests"/>
-            <TextBlock x:Name="ratings" FontWeight="Bold" HorizontalAlignment="Left" Margin="289,179,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188" Width="48" Text="Ratings"/>
-            <Button x:Name="managePresetsButton" Template="{StaticResource ButtonStyle}" Content="M" HorizontalAlignment="Left" Margin="530,20,0,0" VerticalAlignment="Top" Width="40" Click="btn_OpenManagePresets" Height="40" BorderBrush="#FFA2B2BD"  Background="White" FontWeight="Bold" FontSize="20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1.3*" />
+                <ColumnDefinition Width="4*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="3*" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+            <TextBlock x:Name="noOfTests" HorizontalAlignment="Left" Margin="68,63,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188" Width="17" Grid.Column="2"/>
+            <TextBlock x:Name="Text0" HorizontalAlignment="Left" Margin="95,63,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188" Width="31" Text="Tests" Grid.Column="2"/>
+            <TextBlock x:Name="ratings" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,217,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188" Width="48" Text="Ratings" Grid.Column="2"/>
+            <Button x:Name="addStuffButton" ContextMenuService.IsEnabled="False" Template="{StaticResource ButtonStyle}" Content="+" Margin="0,15,22,0" VerticalAlignment="Top" Click="btn_AddStuff" Height="40" BorderBrush="#FFA2B2BD"  Background="White" FontWeight="Bold" FontSize="20" Grid.Column="2" HorizontalAlignment="Right" Width="40">
+                <Button.ContextMenu>
+                    <ContextMenu >
+                        <MenuItem Header="New test" Click="btn_AddNewTest"/>
+                        <MenuItem Header="New category" Click="btn_AddNewCategory"/>
+                        <MenuItem Header="New age group" Click="btn_AddNewAge"/>
+                        <MenuItem Header="Delete last age group" Click="btn_DeleteRating"/>
+                    </ContextMenu>
+                </Button.ContextMenu>
             </Button>
-            <TextBlock x:Name="managePresetsTextBlock" HorizontalAlignment="Left" Margin="508,63,0,0" TextWrapping="Wrap" Text="Manage Presets" VerticalAlignment="Top"/>
-            <Button x:Name="addTestButton" Template="{StaticResource ButtonStyle}" Content="+" HorizontalAlignment="Left" Margin="611,20,0,0" VerticalAlignment="Top" Width="40" Click="btn_AddNewTest" Height="40" BorderBrush="#FFA2B2BD"  Background="White" FontWeight="Bold" FontSize="20">
-            </Button>
-            <Button x:Name="addCategoryButton" Content="Add New Category" HorizontalAlignment="Left" Margin="29,33,0,0" VerticalAlignment="Top" Width="108" Click="btn_AddNewCategory" Background="White" >
-                <Button.Resources>
-                    <Style TargetType="{x:Type Border}">
-                        <Setter Property="CornerRadius" Value="4"/>
-                    </Style>
-                </Button.Resources>
-            </Button>
-            <RadioButton x:Name="menRadio" GroupName="Gender" Content="Men" Margin="530,180,93,281" Checked="GenderRadio_Checked"/>
-            <RadioButton x:Name="womenRadio" GroupName="Gender" Content="Women" Margin="584,181,20,283" IsChecked="True" Checked="GenderRadio_Checked"/>
-            <DataGrid x:Name="catsDataGrid" SelectionMode="Single" CanUserSortColumns="False" IsReadOnly="True" GridLinesVisibility="None" HeadersVisibility="Column" AutoGenerateColumns="False" Margin="0,93,559,0" SelectionChanged="catsDataGrid_SelectionChanged" Background="{x:Null}" BorderBrush="{x:Null}" Height="392" FontSize="13">
+            <Grid Grid.Column="2" Margin="0,217,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="3*" />
+                    <RowDefinition Height="1*" />
+                </Grid.RowDefinitions>
+                <TabControl Name="GenderTab" Margin="10,0,0,0" Height="290">
+                    <TabControl.Resources>
+                        <Style TargetType="TabPanel">
+                            <Setter Property="HorizontalAlignment" Value="Right"/>
+                        </Style>
+                    </TabControl.Resources>
+                    <TabItem Header="Men">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="3*" />
+                                <RowDefinition Height="0.7*" />
+                                <RowDefinition Height="0.5*" />
+                            </Grid.RowDefinitions>
+                            <TabControl Name="MenAgesTab" Margin="0" SelectedValue="{Binding Path=rowitems.age}" SelectedValuePath="interval.rating.age">
+                                <TabControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock VerticalAlignment="Top" Text="{Binding interval.interval}"></TextBlock>
+                                    </DataTemplate>
+                                </TabControl.ItemTemplate>
+                                <TabControl.ContentTemplate>
+                                    <DataTemplate>
+                                        <DataGrid x:Name="menRatingsDatagrid" SelectionUnit="FullRow" Unloaded="menRatingsDatagrid_Unloaded" SelectionMode="Single" RowDetailsVisibilityMode="Collapsed" PreviewKeyDown="KeyDownHandler" RowEditEnding="RatingsDataGrid_RowEditEnding" ItemsSource = "{Binding Path=rowitems}" IsReadOnly="False" HeadersVisibility="Column" AutoGenerateColumns="False" Background="{x:Null}" BorderBrush="{x:Null}" RowHeight="25">
+                                            <DataGrid.Columns>
+                                                <DataGridTextColumn Header="Score" Binding="{Binding normM, UpdateSourceTrigger = PropertyChanged}"  Width="0.5*" CanUserSort="False"/>
+                                                <DataGridTemplateColumn Header="Rating">
+                                                    <DataGridTemplateColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <ComboBox Name="cmbColors" ItemsSource="{StaticResource RatingColors}" SelectedItem="{Binding rating, UpdateSourceTrigger=PropertyChanged}" >
+                                                                <ComboBox.ItemTemplate>
+                                                                    <DataTemplate>
+                                                                        <StackPanel Orientation="Horizontal">
+                                                                            <Rectangle Fill="{Binding}" Width="16" Height="16" Margin="0,2,5,2" />
+                                                                        </StackPanel>
+                                                                    </DataTemplate>
+                                                                </ComboBox.ItemTemplate>
+                                                            </ComboBox>
+                                                        </DataTemplate>
+                                                    </DataGridTemplateColumn.CellTemplate>
+                                                </DataGridTemplateColumn>
+                                                <DataGridTemplateColumn Header="Meaning">
+                                                    <DataGridTemplateColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <ComboBox ItemsSource="{StaticResource ComboBoxItems}" SelectedItem="{Binding name, UpdateSourceTrigger=PropertyChanged}" />
+                                                        </DataTemplate>
+                                                    </DataGridTemplateColumn.CellTemplate>
+                                                </DataGridTemplateColumn>
+                                                <DataGridTextColumn Header="Description" Binding="{Binding interpretation, UpdateSourceTrigger = PropertyChanged}"  Width="5*" CanUserSort="False"/>
+                                            </DataGrid.Columns>
+                                            <DataGrid.RowDetailsTemplate>
+                                                <DataTemplate>
+                                                    <TextBox Height="80"  Width="390" AcceptsReturn="True" TextWrapping="Wrap" Text="{Binding interpretation,  UpdateSourceTrigger = PropertyChanged}"/>
+                                                </DataTemplate>
+                                            </DataGrid.RowDetailsTemplate>
+                                            <DataGrid.Resources>
+                                                <Style TargetType="{x:Type DataGridCell}">
+                                                    <Style.Triggers>
+                                                        <Trigger Property="DataGridCell.IsSelected" Value="True">
+                                                            <Setter Property="Background" Value="White" />
+                                                            <Setter Property="Foreground" Value="Black" />
+                                                            <Setter Property="BorderBrush" Value="Black" />
+                                                            <Setter Property="BorderThickness" Value="0.7" />
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </DataGrid.Resources>
+                                        </DataGrid>
+                                    </DataTemplate>
+                                </TabControl.ContentTemplate>
+                            </TabControl>
+                            <TextBlock Grid.Row="1" FontWeight="Bold" HorizontalAlignment="Left" Margin="0" TextWrapping="Wrap" VerticalAlignment="Bottom" RenderTransformOrigin="0.469,-1.188" Width="48" Height="16" Grid.Column="2"><Run Text="Formula"/><LineBreak/><Run/></TextBlock>
+                            <TextBox Grid.Row="2" x:Name="FormulaTextM" Margin="0" TextWrapping="Wrap" Text="{Binding formulaM}" Grid.Column="2">
+                                <TextBox.Resources>
+                                    <Style TargetType="{x:Type Border}">
+                                        <Setter Property="CornerRadius" Value="4"/>
+                                    </Style>
+                                </TextBox.Resources>
+                            </TextBox>
+                        </Grid>
+                    </TabItem>
+                    <TabItem Header="Women">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="3*" />
+                                <RowDefinition Height="0.7*" />
+                                <RowDefinition Height="0.5*" />
+                            </Grid.RowDefinitions>
+                            <TabControl Name="WomenAgesTab" Margin="0,0,0,0" SelectedIndex="{Binding ElementName=MenAgesTab, Path=SelectedIndex}"  SelectedValue="{Binding Path=rowitems.age}" SelectedValuePath="interval.rating.age">
+                                <TabControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock VerticalAlignment="Top" Text="{Binding interval.interval}"></TextBlock>
+                                    </DataTemplate>
+                                </TabControl.ItemTemplate>
+                                <TabControl.ContentTemplate>
+                                    <DataTemplate>
+                                        <DataGrid x:Name="WomenRatingsDatagrid" SelectionMode="Single" Unloaded="WomenRatingsDatagrid_Unloaded" RowDetailsVisibilityMode="Collapsed" IsReadOnly="False" RowEditEnding="RatingsDataGrid_RowEditEnding" ItemsSource = "{Binding Path=rowitems}"  HeadersVisibility="Column" AutoGenerateColumns="False" Background="{x:Null}" BorderBrush="{x:Null}" RowHeight="25">
+                                            <DataGrid.Columns>
+                                                <DataGridTextColumn Header="Score" Binding="{Binding normF, UpdateSourceTrigger = PropertyChanged}"  Width="0.5*" CanUserSort="False"/>
+                                                <DataGridTemplateColumn Header="Rating">
+                                                    <DataGridTemplateColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <ComboBox Name="cmbColors" ItemsSource="{StaticResource RatingColors}" SelectedItem="{Binding rating, UpdateSourceTrigger=PropertyChanged}" >
+                                                                <ComboBox.ItemTemplate>
+                                                                    <DataTemplate>
+                                                                        <StackPanel Orientation="Horizontal">
+                                                                            <Rectangle Fill="{Binding}" Width="16" Height="16" Margin="0,2,5,2" />
+                                                                        </StackPanel>
+                                                                    </DataTemplate>
+                                                                </ComboBox.ItemTemplate>
+                                                            </ComboBox>
+                                                        </DataTemplate>
+                                                    </DataGridTemplateColumn.CellTemplate>
+                                                </DataGridTemplateColumn>
+                                                <DataGridTemplateColumn Header="Meaning">
+                                                    <DataGridTemplateColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <ComboBox ItemsSource="{StaticResource ComboBoxItems}" SelectedItem="{Binding name,  NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged}" />
+                                                        </DataTemplate>
+                                                    </DataGridTemplateColumn.CellTemplate>
+                                                </DataGridTemplateColumn>
+                                                <DataGridTextColumn Header="Description" Binding="{Binding interpretation, UpdateSourceTrigger = PropertyChanged}"  Width="5*" CanUserSort="False"/>
+                                            </DataGrid.Columns>
+                                            <DataGrid.RowDetailsTemplate>
+                                                <DataTemplate>
+                                                    <TextBox Height="80"  Width="390" AcceptsReturn="True" TextWrapping="Wrap" Text="{Binding interpretation,  UpdateSourceTrigger = PropertyChanged}"/>
+                                                </DataTemplate>
+                                            </DataGrid.RowDetailsTemplate>
+                                            <DataGrid.Resources>
+                                                <Style TargetType="{x:Type DataGridCell}">
+                                                    <Style.Triggers>
+                                                        <Trigger Property="DataGridCell.IsSelected" Value="True">
+                                                            <Setter Property="Background" Value="White" />
+                                                            <Setter Property="Foreground" Value="Black" />
+                                                            <Setter Property="BorderBrush" Value="Black" />
+                                                            <Setter Property="BorderThickness" Value="0.7" />
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </DataGrid.Resources>
+                                        </DataGrid>
+                                    </DataTemplate>
+                                </TabControl.ContentTemplate>
+                            </TabControl>
+                            <TextBlock Grid.Row="1" FontWeight="Bold" HorizontalAlignment="Left" Margin="0" TextWrapping="Wrap" VerticalAlignment="Bottom" RenderTransformOrigin="0.469,-1.188" Width="48" Height="16" Grid.Column="2"><Run Text="Formula"/><LineBreak/><Run/></TextBlock>
+                            <TextBox Grid.Row="2" x:Name="FormulaTextF" Margin="0" TextWrapping="Wrap" Text="{Binding formulaF}" Grid.Column="2">
+                                <TextBox.Resources>
+                                    <Style TargetType="{x:Type Border}">
+                                        <Setter Property="CornerRadius" Value="4"/>
+                                    </Style>
+                                </TextBox.Resources>
+                            </TextBox>
+                        </Grid>
+                    </TabItem>
+                </TabControl>
+                <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188" Width="79" Height="16" Grid.Row="2"><Run Text="Descriptio"/><Run Text="n"/><LineBreak/><Run/></TextBlock>
+                <TextBox x:Name="TestDescriptionText" Margin="10,0,0,40" TextWrapping="Wrap" Text="{Binding description}" Grid.Row="2" Height="27" VerticalAlignment="Bottom">
+                    <TextBox.Resources>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="CornerRadius" Value="4"/>
+                        </Style>
+                    </TextBox.Resources>
+                </TextBox>
+            </Grid>
+            <DataGrid x:Name="catsDataGrid" HeadersVisibility="None" SelectedValuePath="name"  SelectionMode="Single" CanUserSortColumns="False" IsReadOnly="True" GridLinesVisibility="None" AutoGenerateColumns="False" Margin="0,93,0,0" SelectionChanged="catsDataGrid_SelectionChanged" Background="{x:Null}" BorderBrush="{x:Null}" FontSize="13">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Category" Binding="{Binding name}" Width="*"/>
+                    <DataGridTextColumn Binding="{Binding name}" Width="*"/>
                 </DataGrid.Columns>
                 <DataGrid.Resources>
                     <Style TargetType="{x:Type DataGridCell}">
@@ -77,9 +276,9 @@
                     </Style>
                 </DataGrid.RowStyle>
             </DataGrid>
-            <DataGrid x:Name="testsDataGrid" SelectionMode="Single" IsReadOnly="True" CanUserSortColumns="False" HeadersVisibility="Column" AutoGenerateColumns="False" Margin="121,93,399,0" SelectionChanged="testsDataGrid_SelectionChanged" Background="{x:Null}" GridLinesVisibility="None" BorderBrush="{x:Null}">
+            <DataGrid x:Name="testsDataGrid" SelectionMode="Single" IsReadOnly="True" SelectedValuePath="test.name" CanUserSortColumns="False" HeadersVisibility="None" AutoGenerateColumns="False" Margin="0,93,0,0" SelectionChanged="testsDataGrid_SelectionChanged" Background="{x:Null}" GridLinesVisibility="None" BorderBrush="{x:Null}" RenderTransformOrigin="0.5,0.5" Grid.Column="1" Grid.RowSpan="3">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Tests" Binding="{Binding test.name}" Width="*"/>
+                    <DataGridTextColumn Binding="{Binding test.name}" Width="*"/>
                 </DataGrid.Columns>
                 <DataGrid.Resources>
                     <Style TargetType="{x:Type DataGridCell}">
@@ -113,116 +312,27 @@
                     </Style>
                 </DataGrid.RowStyle>
             </DataGrid>
-            <DataGrid x:Name="ratingsDatagrid" IsReadOnly="True"  HeadersVisibility="Column" AutoGenerateColumns="False" Margin="284,224,31,136" Background="{x:Null}" BorderBrush="{x:Null}">
-                <DataGrid.Columns>
-                    <DataGridTextColumn x:Name="RatingColumn" Binding="{Binding rating.normF}" Header="Score" Width="*" CanUserSort="False"/>
-                    <DataGridTextColumn Header="Meaning" Binding="{Binding ratingLabel.name}" Width="*" CanUserSort="False"/>
-                    <DataGridTextColumn Header="Description" Binding="{Binding ratingLabel.interpretation}" Width="*" CanUserSort="False"/>
-                </DataGrid.Columns>
-                <DataGrid.Resources>
-                    <Style TargetType="{x:Type DataGridCell}">
-                        <Style.Triggers>
-                            <Trigger Property="DataGridCell.IsSelected" Value="True">
-                                <Setter Property="Background" Value="White" />
-                                <Setter Property="Foreground" Value="Black" />
-                                <Setter Property="BorderBrush" Value="Black" />
-                                <Setter Property="BorderThickness" Value="0.7" />
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </DataGrid.Resources>
-            </DataGrid>
-            <ItemsControl x:Name="agesControl" Margin="289,198,0,263"  HorizontalAlignment="Left" Width="338">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <UniformGrid Columns="5" />
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <RadioButton x:Name="AgeRadio" Unchecked="chkbox_Unchecked" GroupName="AgesGroup" CommandParameter="{Binding}" Margin="0,0,5,5" Checked="AgeRadio_checked">
-                            <TextBox x:Name="AgeTextBox" Text="{Binding interval}" IsReadOnly="True"/>
-                        </RadioButton>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-            <TextBlock x:Name="Text1" HorizontalAlignment="Left" Margin="289,98,0,0" TextWrapping="Wrap" Text="Name" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188"/>
-            <TextBlock x:Name="Text2" HorizontalAlignment="Left" Margin="548,100,0,0" TextWrapping="Wrap" Text="Units" VerticalAlignment="Top" RenderTransformOrigin="-0.48,0.627"/>
-            <TextBlock x:Name="Text3" HorizontalAlignment="Left" Margin="605,100,0,0" TextWrapping="Wrap" Text="Decimals" VerticalAlignment="Top" RenderTransformOrigin="0.146,1.25"/>
-            <TextBox x:Name="testName" HorizontalAlignment="Left" IsReadOnly="True" Height="23" Margin="289,120,0,0" TextWrapping="Wrap" Text="{Binding name}" VerticalAlignment="Top" Width="244">
+            <TextBlock x:Name="Text1" Margin="21,102,0,0" TextWrapping="Wrap" Text="Name" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188" Grid.Column="2" HorizontalAlignment="Left" Width="32"/>
+            <TextBlock x:Name="Text2" Margin="0,102,93,0" TextWrapping="Wrap" Text="Units" VerticalAlignment="Top" RenderTransformOrigin="-0.48,0.627" Grid.Column="2" HorizontalAlignment="Right" Width="39"/>
+            <TextBlock x:Name="Text3" Margin="0,102,22,0" TextWrapping="Wrap" Text="Decimals" VerticalAlignment="Top" RenderTransformOrigin="0.146,1.25" Grid.Column="2" HorizontalAlignment="Right" Width="48"/>
+            <TextBox x:Name="testName" Height="23" Margin="17,121,147,0" TextWrapping="Wrap" Text="{Binding name}" VerticalAlignment="Top" Grid.Column="2">
                 <TextBox.Resources>
                     <Style TargetType="{x:Type Border}">
                         <Setter Property="CornerRadius" Value="4"/>
                     </Style>
                 </TextBox.Resources>
             </TextBox>
-            <TextBox x:Name="units" HorizontalAlignment="Left" IsReadOnly="True" Height="23" Margin="547,119,0,0" TextWrapping="Wrap" Text="{Binding units}" VerticalAlignment="Top" Width="48" RenderTransformOrigin="0.179,0.522">
+            <TextBox x:Name="units" Height="23" Margin="0,121,84,0" TextWrapping="Wrap" Text="{Binding units}" VerticalAlignment="Top" RenderTransformOrigin="0.179,0.522" Grid.Column="2" HorizontalAlignment="Right" Width="48">
                 <TextBox.Resources>
                     <Style TargetType="{x:Type Border}">
                         <Setter Property="CornerRadius" Value="4"/>
                     </Style>
                 </TextBox.Resources>
             </TextBox>
-            <ComboBox x:Name="decimalsSelector" SelectedIndex="2" IsEnabled="False" HorizontalAlignment="Left" Margin="607,120,0,0" VerticalAlignment="Top" Width="44" RenderTransformOrigin="1.076,0.676"/>
-            <TextBox x:Name="TestDescriptionText" HorizontalAlignment="Left" IsReadOnly="True" Height="23" Margin="289,422,0,0" TextWrapping="Wrap" Text="{Binding description}" VerticalAlignment="Top" Width="362">
-                <TextBox.Resources>
-                    <Style TargetType="{x:Type Border}">
-                        <Setter Property="CornerRadius" Value="4"/>
-                    </Style>
-                </TextBox.Resources>
-            </TextBox>
-            <RadioButton x:Name="menFormulaRadio" GroupName="FormulaGender" Content="Men" Margin="530,349,95,113" Checked="FormulaRadio_Checked"/>
-            <RadioButton x:Name="womenFormulaRadio" GroupName="FormulaGender" Content="Women" IsChecked="True" Margin="585,349,29,113" Checked="FormulaRadio_Checked"/>
-            <TextBox x:Name="FormulaText" HorizontalAlignment="Left" IsReadOnly="True" Height="23" Margin="289,374,0,0" TextWrapping="Wrap" Text="{Binding formulaF}" VerticalAlignment="Top" Width="362">
-                <TextBox.Resources>
-                    <Style TargetType="{x:Type Border}">
-                        <Setter Property="CornerRadius" Value="4"/>
-                    </Style>
-                </TextBox.Resources>
-            </TextBox>
-            <TextBlock FontWeight="Bold" HorizontalAlignment="Left" Margin="289,352,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188" Width="48" Height="16"><Run Text="Formula"/><LineBreak/><Run/></TextBlock>
-            <TextBlock HorizontalAlignment="Left" Margin="289,400,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188" Width="79" Height="16"><Run Text="Descriptio"/><Run Text="n"/><LineBreak/><Run/></TextBlock>
-            <Button x:Name="addNewRating" Content="+" HorizontalAlignment="Left" Margin="634,199,0,0" VerticalAlignment="Top" Width="17" Click="btn_AddNewAge"  Visibility="Visible" RenderTransformOrigin="1.353,0.6" />
-            <Button x:Name="deleteRating" Content="-" HorizontalAlignment="Left" Margin="653,199,0,0" VerticalAlignment="Top" Width="17" Click="btn_DeleteRating"  Visibility="Visible" RenderTransformOrigin="1.353,0.6" />
-            <TextBlock HorizontalAlignment="Left" Margin="289,152,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188"><Run Text="Subcategory"/><Run Text=":"/></TextBlock>
-            <ComboBox x:Name="categorySelector" SelectedIndex="0" IsEnabled="False" DisplayMemberPath="name" SelectedValuePath="id" HorizontalAlignment="Left" Margin="370,150,0,0" VerticalAlignment="Top" Width="163" Height="21"/>
-            <Button x:Name="SaveTest" Content="Save" HorizontalAlignment="Left" Margin="563,453,0,0" VerticalAlignment="Top" Width="38" RenderTransformOrigin="0.706,8.4" Click="btn_SaveTest" Background="White" >
-                <Button.Resources>
-                    <Style TargetType="{x:Type Border}">
-                        <Setter Property="CornerRadius" Value="4"/>
-                    </Style>
-                </Button.Resources>
-                <Button.Style>
-                    <Style>
-                        <Style.Triggers>
-                            <DataTrigger 
-                     Binding ="{Binding ElementName=testsDataGrid, Path=IsHitTestVisible}" Value="true">
-                                <Setter Property="Button.Visibility" Value="Hidden"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Button.Style>
-            </Button>
-
-            <Button x:Name="Cancel" Content="Cancel" HorizontalAlignment="Left" Margin="605,453,0,0" VerticalAlignment="Top" Width="46" Click="btn_Cancel" Background="White">
-                <Button.Resources>
-                    <Style TargetType="{x:Type Border}">
-                        <Setter Property="CornerRadius" Value="4"/>
-                    </Style>
-                </Button.Resources>
-                <Button.Style>
-                    <Style>
-                        <Style.Triggers>
-                            <DataTrigger 
-                     Binding ="{Binding ElementName=testsDataGrid, Path=IsHitTestVisible}" Value="true">
-                                <Setter Property="Button.Visibility" Value="Hidden"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Button.Style>
-            </Button>
-
-            <Button x:Name="deleteTestButton" Content="Delete test" HorizontalAlignment="Left" Margin="492,453,0,0" VerticalAlignment="Top" Width="74" Click="btn_DeleteTest" Background="White" >
+            <ComboBox x:Name="decimalsSelector" SelectedIndex="2" Margin="0,122,26,0"  SelectedValue="{Binding decimals, Mode=TwoWay}"  VerticalAlignment="Top" RenderTransformOrigin="1.076,0.676" Background="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}" BorderBrush="Black" Grid.Column="2" HorizontalAlignment="Right" Width="44"/>
+            <TextBlock Margin="21,160,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188" Grid.Column="2" HorizontalAlignment="Left" Width="69"><Run Text="Subcategory"/><Run Text=":"/></TextBlock>
+            <ComboBox x:Name="categorySelector" SelectionChanged="categorySelector_SelectionChanged" SelectedValue="{Binding categoryId, Mode=TwoWay}" SelectedIndex="0" DisplayMemberPath="name" SelectedValuePath="id" Margin="20,181,0,398" Grid.Column="2" HorizontalAlignment="Left" Width="163" RenderTransformOrigin="0.963,0.571"/>
+            <Button x:Name="deleteTestButton" Content="Delete" HorizontalAlignment="Right" Margin="0,570,15,10" Width="74" Click="btn_DeleteTest" Background="White" Grid.Column="2" RenderTransformOrigin="-2.595,1" >
                 <Button.Resources>
                     <Style TargetType="{x:Type Border}">
                         <Setter Property="CornerRadius" Value="4"/>
@@ -239,55 +349,19 @@
                     </Style>
                 </Button.Style>
             </Button>
-            <Button x:Name="btnShowClients" Content="Clients" Click="btn_Clients" HorizontalAlignment="Left" Margin="268,22,0,0"  VerticalAlignment="Top" Width="97" BorderBrush="#FFA2B2BD" Height="33" Background="White" RenderTransformOrigin="0.632,-0.808">
+            <Button x:Name="btnShowClients" Content="Clients" Click="btn_Clients" Margin="20,0,0,546"  VerticalAlignment="Bottom" BorderBrush="#FFA2B2BD" Height="33" Background="White" RenderTransformOrigin="0.632,-0.808" Grid.Column="2" HorizontalAlignment="Left" Width="85">
                 <Button.Resources>
                     <Style TargetType="{x:Type Border}">
                         <Setter Property="CornerRadius" Value="4"/>
                     </Style>
                 </Button.Resources>
             </Button>
-            <Button x:Name="btnShowTests" Content="Tests" Click="btn_Tests" HorizontalAlignment="Left" Margin="374,22,0,0" VerticalAlignment="Top" Width="86" BorderBrush="#FFA2B2BD" Height="33" Background="White">
+            <Button x:Name="btnShowTests" Content="Tests" Click="btn_Tests" Margin="119,22,-24,0" VerticalAlignment="Top" BorderBrush="#FFA2B2BD" Height="33" Background="White" Grid.Column="2" HorizontalAlignment="Left" Width="95">
                 <Button.Resources>
                     <Style TargetType="{x:Type Border}">
                         <Setter Property="CornerRadius" Value="4"/>
                     </Style>
                 </Button.Resources>
-            </Button>
-            <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="608,63,0,0" TextWrapping="Wrap" Text="New Test" VerticalAlignment="Top"/>
-            <Button x:Name="updateTestButton" Content="Update test" HorizontalAlignment="Left" Margin="575,453,0,0" VerticalAlignment="Top" Width="74" Click="btn_UpdateTest" Background="White" >
-                <Button.Resources>
-                    <Style TargetType="{x:Type Border}">
-                        <Setter Property="CornerRadius" Value="4"/>
-                    </Style>
-                </Button.Resources>
-                <Button.Style>
-                    <Style>
-                        <Style.Triggers>
-                            <DataTrigger 
-                     Binding ="{Binding ElementName=testsDataGrid, Path=SelectedIndex}" 
-                     Value="-1">
-                                <Setter Property="Button.Visibility" Value="Hidden"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Button.Style>
-            </Button>
-            <Button x:Name="updateButton" Content="Update" HorizontalAlignment="Left" Margin="575,453,0,0"  Visibility="Hidden" VerticalAlignment="Top" Width="74" RenderTransformOrigin="0.706,8.4" Click="btn_Update"  Background="White">
-                <Button.Resources>
-                    <Style TargetType="{x:Type Border}">
-                        <Setter Property="CornerRadius" Value="4"/>
-                    </Style>
-                </Button.Resources>
-                <Button.Style>
-                    <Style>
-                        <Style.Triggers>
-                            <DataTrigger 
-                     Binding ="{Binding ElementName=testsDataGrid, Path=DataGridCell.IsSelected}" Value="True">
-                                <Setter Property="Button.Visibility" Value="Hidden"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Button.Style>
             </Button>
         </Grid>
     </Border>

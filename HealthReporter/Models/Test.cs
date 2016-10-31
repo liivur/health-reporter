@@ -17,6 +17,10 @@ namespace HealthReporter.Models
         {
             var res = DatabaseUtility.getConnection().InsertSql("DELETE from tests where id=@id", test);
         }
+        public IList<Test> Get(Test test)
+        {
+            return DatabaseUtility.getConnection().QuerySql<Test>("SELECT * FROM tests WHERE id=@id", test);
+        }
 
         public IList<Test> FindAll()
         {
@@ -30,7 +34,7 @@ namespace HealthReporter.Models
 
         public void Update(Test test)
         {
-            DatabaseUtility.getConnection().QuerySql<Test>("UPDATE tests SET categoryId=@categoryId, name=@name, description=@description, units=@units, decimals=@decimals, weight=@weight, formulaF=@formulaF, formulaM=@formulaM, updated=CURRENT_TIMESTAMP WHERE id=@id", test);
+            DatabaseUtility.getConnection().QuerySql<Test>("UPDATE tests SET categoryId=@categoryId, name=@name, description=@description, units=@units, decimals=@decimals, formulaF=@formulaF, formulaM=@formulaM, updated=CURRENT_TIMESTAMP WHERE id=@id", test);
         }
     }
 

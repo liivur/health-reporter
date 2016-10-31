@@ -145,6 +145,7 @@
     <Compile Include="Models\TestCategory.cs" />
     <Compile Include="Utilities\DatabaseUtility.cs" />
     <Compile Include="Utilities\Helpers.cs" />
+    <Compile Include="ViewModels\InputDialog.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Page Include="Controls\AddNewClientControl.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -181,6 +182,10 @@
     <Page Include="Controls\TestsUserControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\InputDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
