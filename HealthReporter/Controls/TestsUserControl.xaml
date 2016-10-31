@@ -60,13 +60,12 @@
                 <ColumnDefinition Width="4*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
+                <RowDefinition Height="2*" />
                 <RowDefinition Height="1*" />
                 <RowDefinition Height="3*" />
-                <RowDefinition Height="1*" />
             </Grid.RowDefinitions>
             <TextBlock x:Name="noOfTests" HorizontalAlignment="Left" Margin="68,63,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188" Width="17" Grid.Column="2"/>
             <TextBlock x:Name="Text0" HorizontalAlignment="Left" Margin="95,63,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188" Width="31" Text="Tests" Grid.Column="2"/>
-            <TextBlock x:Name="ratings" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,217,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188" Width="48" Text="Ratings" Grid.Column="2"/>
             <Button x:Name="addStuffButton" ContextMenuService.IsEnabled="False" Template="{StaticResource ButtonStyle}" Content="+" Margin="0,15,22,0" VerticalAlignment="Top" Click="btn_AddStuff" Height="40" BorderBrush="#FFA2B2BD"  Background="White" FontWeight="Bold" FontSize="20" Grid.Column="2" HorizontalAlignment="Right" Width="40">
                 <Button.ContextMenu>
                     <ContextMenu >
@@ -77,25 +76,26 @@
                     </ContextMenu>
                 </Button.ContextMenu>
             </Button>
-            <Grid Grid.Column="2" Margin="0,217,0,0">
+            <Grid Grid.Column="2" Margin="0,232,0,0" Grid.RowSpan="3">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="3*" />
                     <RowDefinition Height="1*" />
                 </Grid.RowDefinitions>
-                <TabControl Name="GenderTab" Margin="10,0,0,0" Height="290">
+                <TextBlock x:Name="ratings" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188" Width="48" Text="Ratings" Grid.Column="2"/>
+                <TabControl Name="GenderTab" Margin="10,0,0,0" >
                     <TabControl.Resources>
                         <Style TargetType="TabPanel">
                             <Setter Property="HorizontalAlignment" Value="Right"/>
                         </Style>
                     </TabControl.Resources>
-                    <TabItem Header="Men">
+                    <TabItem Header="Men" >
                         <Grid>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="3*" />
-                                <RowDefinition Height="0.7*" />
-                                <RowDefinition Height="0.5*" />
+                                <RowDefinition Height="8*" />
+                                <RowDefinition Height="1*" />
+                                <RowDefinition Height="1*" />
                             </Grid.RowDefinitions>
-                            <TabControl Name="MenAgesTab" Margin="0" SelectedValue="{Binding Path=rowitems.age}" SelectedValuePath="interval.rating.age">
+                            <TabControl Name="MenAgesTab" SelectedValue="{Binding Path=rowitems.age}" SelectedValuePath="interval.rating.age">
                                 <TabControl.ItemTemplate>
                                     <DataTemplate>
                                         <TextBlock VerticalAlignment="Top" Text="{Binding interval.interval}"></TextBlock>
@@ -109,7 +109,7 @@
                                                 <DataGridTemplateColumn Header="Rating">
                                                     <DataGridTemplateColumn.CellTemplate>
                                                         <DataTemplate>
-                                                            <ComboBox Name="cmbColors" ItemsSource="{StaticResource RatingColors}" SelectedItem="{Binding rating, UpdateSourceTrigger=PropertyChanged}" >
+                                                            <ComboBox Name="cmbColors" ItemsSource="{StaticResource RatingColors}" Style="{StaticResource ComboBoxFlatStyle}" SelectedItem="{Binding rating, UpdateSourceTrigger=PropertyChanged}" >
                                                                 <ComboBox.ItemTemplate>
                                                                     <DataTemplate>
                                                                         <StackPanel Orientation="Horizontal">
@@ -124,7 +124,7 @@
                                                 <DataGridTemplateColumn Header="Meaning">
                                                     <DataGridTemplateColumn.CellTemplate>
                                                         <DataTemplate>
-                                                            <ComboBox ItemsSource="{StaticResource ComboBoxItems}" SelectedItem="{Binding name, UpdateSourceTrigger=PropertyChanged}" />
+                                                            <ComboBox ItemsSource="{StaticResource ComboBoxItems}" Style="{StaticResource ComboBoxFlatStyle}" SelectedItem="{Binding name, UpdateSourceTrigger=PropertyChanged}" />
                                                         </DataTemplate>
                                                     </DataGridTemplateColumn.CellTemplate>
                                                 </DataGridTemplateColumn>
@@ -151,7 +151,7 @@
                                     </DataTemplate>
                                 </TabControl.ContentTemplate>
                             </TabControl>
-                            <TextBlock Grid.Row="1" FontWeight="Bold" HorizontalAlignment="Left" Margin="0" TextWrapping="Wrap" VerticalAlignment="Bottom" RenderTransformOrigin="0.469,-1.188" Width="48" Height="16" Grid.Column="2"><Run Text="Formula"/><LineBreak/><Run/></TextBlock>
+                            <TextBlock Grid.Row="1" FontWeight="Bold" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Bottom" RenderTransformOrigin="0.469,-1.188" Width="48" Height="16" Margin="0,0,3,0"><Run Text="Formula"/><LineBreak/><Run/></TextBlock>
                             <TextBox Grid.Row="2" x:Name="FormulaTextM" Margin="0" TextWrapping="Wrap" Text="{Binding formulaM}" Grid.Column="2">
                                 <TextBox.Resources>
                                     <Style TargetType="{x:Type Border}">
@@ -164,11 +164,11 @@
                     <TabItem Header="Women">
                         <Grid>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="3*" />
-                                <RowDefinition Height="0.7*" />
-                                <RowDefinition Height="0.5*" />
+                                <RowDefinition Height="8*" />
+                                <RowDefinition Height="1*" />
+                                <RowDefinition Height="1*" />
                             </Grid.RowDefinitions>
-                            <TabControl Name="WomenAgesTab" Margin="0,0,0,0" SelectedIndex="{Binding ElementName=MenAgesTab, Path=SelectedIndex}"  SelectedValue="{Binding Path=rowitems.age}" SelectedValuePath="interval.rating.age">
+                            <TabControl Name="WomenAgesTab" SelectedIndex="{Binding ElementName=MenAgesTab, Path=SelectedIndex}"  SelectedValue="{Binding Path=rowitems.age}" SelectedValuePath="interval.rating.age">
                                 <TabControl.ItemTemplate>
                                     <DataTemplate>
                                         <TextBlock VerticalAlignment="Top" Text="{Binding interval.interval}"></TextBlock>
@@ -182,7 +182,7 @@
                                                 <DataGridTemplateColumn Header="Rating">
                                                     <DataGridTemplateColumn.CellTemplate>
                                                         <DataTemplate>
-                                                            <ComboBox Name="cmbColors" ItemsSource="{StaticResource RatingColors}" SelectedItem="{Binding rating, UpdateSourceTrigger=PropertyChanged}" >
+                                                            <ComboBox Name="cmbColors" ItemsSource="{StaticResource RatingColors}" Style="{StaticResource ComboBoxFlatStyle}" SelectedItem="{Binding rating, UpdateSourceTrigger=PropertyChanged}" >
                                                                 <ComboBox.ItemTemplate>
                                                                     <DataTemplate>
                                                                         <StackPanel Orientation="Horizontal">
@@ -197,7 +197,7 @@
                                                 <DataGridTemplateColumn Header="Meaning">
                                                     <DataGridTemplateColumn.CellTemplate>
                                                         <DataTemplate>
-                                                            <ComboBox ItemsSource="{StaticResource ComboBoxItems}" SelectedItem="{Binding name,  NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged}" />
+                                                            <ComboBox ItemsSource="{StaticResource ComboBoxItems}" Style="{StaticResource ComboBoxFlatStyle}" SelectedItem="{Binding name,  NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged}" />
                                                         </DataTemplate>
                                                     </DataGridTemplateColumn.CellTemplate>
                                                 </DataGridTemplateColumn>
@@ -236,7 +236,7 @@
                     </TabItem>
                 </TabControl>
                 <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188" Width="79" Height="16" Grid.Row="2"><Run Text="Descriptio"/><Run Text="n"/><LineBreak/><Run/></TextBlock>
-                <TextBox x:Name="TestDescriptionText" Margin="10,0,0,40" TextWrapping="Wrap" Text="{Binding description}" Grid.Row="2" Height="27" VerticalAlignment="Bottom">
+                <TextBox x:Name="TestDescriptionText" Margin="10,25,0,40" TextWrapping="Wrap" Text="{Binding description}" Grid.Row="1">
                     <TextBox.Resources>
                         <Style TargetType="{x:Type Border}">
                             <Setter Property="CornerRadius" Value="4"/>
@@ -244,7 +244,7 @@
                     </TextBox.Resources>
                 </TextBox>
             </Grid>
-            <DataGrid x:Name="catsDataGrid" HeadersVisibility="None" SelectedValuePath="name"  SelectionMode="Single" CanUserSortColumns="False" IsReadOnly="True" GridLinesVisibility="None" AutoGenerateColumns="False" Margin="0,93,0,0" SelectionChanged="catsDataGrid_SelectionChanged" Background="{x:Null}" BorderBrush="{x:Null}" FontSize="13">
+            <DataGrid x:Name="catsDataGrid" HeadersVisibility="None" SelectedValuePath="name"  SelectionMode="Single" CanUserSortColumns="False" IsReadOnly="True" GridLinesVisibility="None" AutoGenerateColumns="False" Margin="0,93,0,0" SelectionChanged="catsDataGrid_SelectionChanged" Background="{x:Null}" BorderBrush="{x:Null}" FontSize="13" Grid.RowSpan="3">
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding name}" Width="*"/>
                 </DataGrid.Columns>
@@ -312,10 +312,10 @@
                     </Style>
                 </DataGrid.RowStyle>
             </DataGrid>
-            <TextBlock x:Name="Text1" Margin="21,102,0,0" TextWrapping="Wrap" Text="Name" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188" Grid.Column="2" HorizontalAlignment="Left" Width="32"/>
+            <TextBlock x:Name="Text1" Margin="11,102,0,0" TextWrapping="Wrap" Text="Name" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188" Grid.Column="2" HorizontalAlignment="Left" Width="32"/>
             <TextBlock x:Name="Text2" Margin="0,102,93,0" TextWrapping="Wrap" Text="Units" VerticalAlignment="Top" RenderTransformOrigin="-0.48,0.627" Grid.Column="2" HorizontalAlignment="Right" Width="39"/>
             <TextBlock x:Name="Text3" Margin="0,102,22,0" TextWrapping="Wrap" Text="Decimals" VerticalAlignment="Top" RenderTransformOrigin="0.146,1.25" Grid.Column="2" HorizontalAlignment="Right" Width="48"/>
-            <TextBox x:Name="testName" Height="23" Margin="17,121,147,0" TextWrapping="Wrap" Text="{Binding name}" VerticalAlignment="Top" Grid.Column="2">
+            <TextBox x:Name="testName" Height="23" Margin="10,121,147,0" TextWrapping="Wrap" Text="{Binding name}" VerticalAlignment="Top" Grid.Column="2">
                 <TextBox.Resources>
                     <Style TargetType="{x:Type Border}">
                         <Setter Property="CornerRadius" Value="4"/>
@@ -329,9 +329,9 @@
                     </Style>
                 </TextBox.Resources>
             </TextBox>
-            <ComboBox x:Name="decimalsSelector" SelectedIndex="2" Margin="0,122,26,0"  SelectedValue="{Binding decimals, Mode=TwoWay}"  VerticalAlignment="Top" RenderTransformOrigin="1.076,0.676" Background="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}" BorderBrush="Black" Grid.Column="2" HorizontalAlignment="Right" Width="44"/>
-            <TextBlock Margin="21,160,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188" Grid.Column="2" HorizontalAlignment="Left" Width="69"><Run Text="Subcategory"/><Run Text=":"/></TextBlock>
-            <ComboBox x:Name="categorySelector" SelectionChanged="categorySelector_SelectionChanged" SelectedValue="{Binding categoryId, Mode=TwoWay}" SelectedIndex="0" DisplayMemberPath="name" SelectedValuePath="id" Margin="20,181,0,398" Grid.Column="2" HorizontalAlignment="Left" Width="163" RenderTransformOrigin="0.963,0.571"/>
+            <ComboBox x:Name="decimalsSelector" SelectedIndex="2" Margin="0,122,26,0"  SelectedValue="{Binding decimals, Mode=TwoWay}"  VerticalAlignment="Top" RenderTransformOrigin="1.076,0.676" Background="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}" BorderBrush="Black" Grid.Column="2" HorizontalAlignment="Right" Width="44" Style="{StaticResource ComboBoxFlatStyle}"/>
+            <TextBlock Margin="10,160,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188" Grid.Column="2" HorizontalAlignment="Left" Width="69"><Run Text="Subcategory"/><Run Text=":"/></TextBlock>
+            <ComboBox x:Name="categorySelector" SelectionChanged="categorySelector_SelectionChanged" SelectedValue="{Binding categoryId, Mode=TwoWay}" SelectedIndex="0" DisplayMemberPath="name" SelectedValuePath="id" Margin="10,181,0,0" HorizontalAlignment="Left" Width="173" RenderTransformOrigin="0.963,0.571" Grid.Column="2" VerticalAlignment="Top" Style="{StaticResource ComboBoxFlatStyle}"/>
             <Button x:Name="deleteTestButton" Content="Delete" HorizontalAlignment="Right" Margin="0,570,15,10" Width="74" Click="btn_DeleteTest" Background="White" Grid.Column="2" RenderTransformOrigin="-2.595,1" >
                 <Button.Resources>
                     <Style TargetType="{x:Type Border}">
@@ -349,7 +349,7 @@
                     </Style>
                 </Button.Style>
             </Button>
-            <Button x:Name="btnShowClients" Content="Clients" Click="btn_Clients" Margin="20,0,0,546"  VerticalAlignment="Bottom" BorderBrush="#FFA2B2BD" Height="33" Background="White" RenderTransformOrigin="0.632,-0.808" Grid.Column="2" HorizontalAlignment="Left" Width="85">
+            <Button x:Name="btnShowClients" Content="Clients" Click="btn_Clients" Margin="20,22,0,0"  VerticalAlignment="Top" BorderBrush="#FFA2B2BD" Height="33" Background="White" RenderTransformOrigin="0.632,-0.808" Grid.Column="2" HorizontalAlignment="Left" Width="85">
                 <Button.Resources>
                     <Style TargetType="{x:Type Border}">
                         <Setter Property="CornerRadius" Value="4"/>
