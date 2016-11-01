@@ -95,7 +95,7 @@
                                 <RowDefinition Height="1*" />
                                 <RowDefinition Height="1*" />
                             </Grid.RowDefinitions>
-                            <TabControl Name="MenAgesTab" SelectedValue="{Binding Path=rowitems.age}" SelectedValuePath="interval.rating.age">
+                            <TabControl Name="MenAgesTab" SelectedValuePath="interval.rating.age">
                                 <TabControl.ItemTemplate>
                                     <DataTemplate>
                                         <TextBlock VerticalAlignment="Top" Text="{Binding interval.interval}"></TextBlock>
@@ -109,7 +109,7 @@
                                                 <DataGridTemplateColumn Header="Rating">
                                                     <DataGridTemplateColumn.CellTemplate>
                                                         <DataTemplate>
-                                                            <ComboBox Name="cmbColors" ItemsSource="{StaticResource RatingColors}" IsEnabled="False" Style="{StaticResource ComboBoxFlatStyle}" SelectedItem="{Binding Path=rating}" >
+                                                            <ComboBox Name="cmbColors" ItemsSource="{StaticResource RatingColors}" SelectedIndex="0" IsEnabled="False" Style="{StaticResource ComboBoxFlatStyle}" SelectedItem="{Binding Path=rating}" >
                                                                 <ComboBox.ItemTemplate>
                                                                     <DataTemplate>
                                                                         <StackPanel Orientation="Horizontal">
@@ -279,6 +279,23 @@
                         </Style>
                     </TextBox.Resources>
                 </TextBox>
+                <Button x:Name="deleteTestButton" Content="Delete" HorizontalAlignment="Right" Margin="0,0,15,10" Width="74" Click="btn_DeleteTest" Background="White" RenderTransformOrigin="-2.595,1" Grid.Row="1" VerticalAlignment="Bottom" >
+                    <Button.Resources>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="CornerRadius" Value="4"/>
+                        </Style>
+                    </Button.Resources>
+                    <Button.Style>
+                        <Style>
+                            <Style.Triggers>
+                                <DataTrigger 
+                     Binding ="{Binding ElementName=testsDataGrid, Path=SelectedIndex}" Value="-1">
+                                    <Setter Property="Button.Visibility" Value="Hidden"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
             </Grid>
             <DataGrid x:Name="catsDataGrid" HeadersVisibility="None" SelectedValuePath="name"  SelectionMode="Single" CanUserSortColumns="False" IsReadOnly="True" GridLinesVisibility="None" AutoGenerateColumns="False" Margin="0,93,0,0" SelectionChanged="catsDataGrid_SelectionChanged" Background="{x:Null}" BorderBrush="{x:Null}" FontSize="13" Grid.RowSpan="3">
                 <DataGrid.Columns>
@@ -368,23 +385,6 @@
             <ComboBox x:Name="decimalsSelector" SelectedIndex="2" Margin="0,122,26,0"  SelectedValue="{Binding decimals, Mode=TwoWay}"  VerticalAlignment="Top" RenderTransformOrigin="1.076,0.676" Background="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}" BorderBrush="Black" Grid.Column="2" HorizontalAlignment="Right" Width="44" Style="{StaticResource ComboBoxFlatStyle}"/>
             <TextBlock Margin="10,160,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188" Grid.Column="2" HorizontalAlignment="Left" Width="69"><Run Text="Subcategory"/><Run Text=":"/></TextBlock>
             <ComboBox x:Name="categorySelector" SelectionChanged="categorySelector_SelectionChanged" SelectedValue="{Binding categoryId, Mode=TwoWay}" SelectedIndex="0" DisplayMemberPath="name" SelectedValuePath="id" Margin="10,181,0,0" HorizontalAlignment="Left" Width="173" RenderTransformOrigin="0.963,0.571" Grid.Column="2" VerticalAlignment="Top" Style="{StaticResource ComboBoxFlatStyle}"/>
-            <Button x:Name="deleteTestButton" Content="Delete" HorizontalAlignment="Right" Margin="0,570,15,10" Width="74" Click="btn_DeleteTest" Background="White" Grid.Column="2" RenderTransformOrigin="-2.595,1" >
-                <Button.Resources>
-                    <Style TargetType="{x:Type Border}">
-                        <Setter Property="CornerRadius" Value="4"/>
-                    </Style>
-                </Button.Resources>
-                <Button.Style>
-                    <Style>
-                        <Style.Triggers>
-                            <DataTrigger 
-                     Binding ="{Binding ElementName=testsDataGrid, Path=SelectedIndex}" Value="-1">
-                                <Setter Property="Button.Visibility" Value="Hidden"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Button.Style>
-            </Button>
             <Button x:Name="btnShowClients" Content="Clients" Click="btn_Clients" Margin="20,22,0,0"  VerticalAlignment="Top" BorderBrush="#FFA2B2BD" Height="33" Background="White" RenderTransformOrigin="0.632,-0.808" Grid.Column="2" HorizontalAlignment="Left" Width="85">
                 <Button.Resources>
                     <Style TargetType="{x:Type Border}">

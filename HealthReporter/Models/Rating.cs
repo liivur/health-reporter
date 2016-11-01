@@ -49,9 +49,9 @@ namespace HealthReporter.Models
         {
             DatabaseUtility.getConnection().QuerySql<Rating>("DELETE FROM ratings WHERE testId=@id", test);
         }
-        public void UpdateNorms(Rating old, Rating newR)
+        public void Update(Rating old, Rating newR)
         {
-            var res =DatabaseUtility.getConnection().QuerySql<Rating>("UPDATE ratings SET normF='" + newR.normF + "', normM='" + newR.normM + "' , updated = CURRENT_TIMESTAMP WHERE testId=@testId AND age=@age AND normM=@normM AND normF=@normF", old);
+            var res =DatabaseUtility.getConnection().QuerySql<Rating>("UPDATE ratings SET normF='" + newR.normF + "', normM='" + newR.normM + "' , labelId=@labelId, updated = CURRENT_TIMESTAMP WHERE testId=@testId AND age=@age AND normM=@normM AND normF=@normF", old);
         }
     }
 

@@ -75,56 +75,60 @@ namespace HealthReporter.Controls
                 DataGrid grid = sender as DataGrid;
 
                 int age = -1;
-                if((GenderTab.SelectedItem as System.Windows.Controls.TabItem).Header.ToString() == "Men") age = (int)MenAgesTab.SelectedValue; 
+                if ((GenderTab.SelectedItem as System.Windows.Controls.TabItem).Header.ToString() == "Men") age = (int)MenAgesTab.SelectedValue;
                 else age = (int)WomenAgesTab.SelectedValue;
-
                 Test test = (Test)testName.DataContext;
-                int itemIndex = -1;
-                Rating rat = null;
-                //only if item is the last item in the grid it will be added to the database, because updating a row correctly is NOT implemented yet, hopefully will be in the future
-                for (int i = 0; i < grid.Items.Count; i++)
+
+                int itemIndex = grid.Items.IndexOf(item);
+
+                if (item.normF == 0) item.normF = item.normM;
+                else if (item.normM == 0) item.normM = item.normF;
+
+                Rating rat = new Rating() { age = age, normF = item.normF, normM = item.normM, testId = test.id, labelId = item.LabelId };
+
+                var ratingRep = new RatingRepository();
+                var labelRep = new RatingLabelRepository();
+                IList<Rating> ratings = ratingRep.getSameAgeRatings(new Rating() { testId = test.id, age = age });
+
+                if (item.LabelId == null)
                 {
-                    if (grid.Items[i] is RowItem)
+                    byte[] id = System.Guid.NewGuid().ToByteArray();
+
+                    RatingLabel label = new RatingLabel() { id = id, interpretation = item.interpretation, name = item.name };
+                    if (item.rating == null) label.rating = 0;
+                    else label.rating = colorToInt(item.rating.ToString());
+                    rat.labelId = id;
+                    labelRep.Insert(label);
+                }
+                else
+                {
+                    RatingLabel dbLabel = labelRep.getLabel(rat)[0];
+
+                    int label_rating = 0;
+                    if (item.rating != null) label_rating = colorToInt(item.rating.ToString());
+
+                    if (dbLabel.name != item.name || dbLabel.rating != label_rating || dbLabel.interpretation != item.interpretation)
                     {
-                        RowItem ri = grid.Items[i] as RowItem;
-                        if (item.LabelId == ri.LabelId && item.name == ri.name && item.normF == ri.normF && item.normM == ri.normM && item.rating == ri.rating)
-                        {
-                            if (i == grid.Items.Count - 2)
-                            {
-                                //add rating and label to db
-                                byte[] id = System.Guid.NewGuid().ToByteArray();
-
-                                int label_rating = 0;
-                                if (item.rating != null)
-                                {
-                                    label_rating = colorToInt(item.rating.ToString()); //if not set then 0 (Red)
-                                }
-    
-                                if (item.normF == 0) item.normF = item.normM;
-                                else if (item.normM == 0) item.normM = item.normF;
-
-
-                                RatingLabel label = new RatingLabel { id = id, name = item.name, interpretation = item.interpretation, rating = label_rating };
-                                rat = new Rating() { testId = test.id, age = age, labelId = id, normF = item.normF, normM = item.normM };
-
-                                var rep = new RatingLabelRepository();
-                                rep.Insert(label);
-                                var repo = new RatingRepository();
-                                repo.Insert(rat);
-                               
-                            }
-                            else itemIndex = i;
-                            rat = new Rating() { testId = test.id, age = age, normF = item.normF, normM = item.normM };
-                        }
+                        RatingLabel label = new RatingLabel() { id = dbLabel.id, interpretation = item.interpretation, name = item.name, rating=label_rating };
+                        labelRep.Update(label);
                     }
                 }
-                //a row is updated only if normF/normM is changed, other data is not updated in the db
-                //var ratingRep = new RatingRepository();
-                //IList<Rating> ratings = ratingRep.getSameAgeRatings(new Rating() { testId = test.id, age = item.age});
+                var testRep = new TestRepository();
+                if (ratings.Count > itemIndex)
+                {
+                    Rating dbRating = ratings[itemIndex];
+                    dbRating.labelId = rat.labelId; //Not good! Needs to be fixed in the future.
+                    ratingRep.Update(dbRating, rat);
+                    testRep.Update(test);
 
-                //Rating dbRating = ratings[itemIndex];
-                //ratingRep.UpdateNorms(dbRating, rat);
-
+                    IList<Rating> rs = ratingRep.getSameAgeRatings(new Rating() { testId = test.id, age = age });
+                    Rating dbRating2 = rs[itemIndex];
+                }
+                else
+                {
+                    ratingRep.Insert(rat);
+                    testRep.Update(test);
+                }
             }
         }
 
@@ -156,6 +160,11 @@ namespace HealthReporter.Controls
 
         private void KeyDownHandler(object sender, KeyEventArgs e) //removes selected rating and ratingLabel from the database if Delete key is pressed
         {
+            int tab = (int)WomenAgesTab.SelectedValue;
+            if ((GenderTab.SelectedItem as System.Windows.Controls.TabItem).Header.ToString() == "Men")
+            {
+               tab = (int)MenAgesTab.SelectedValue;
+            }
             var grid = (DataGrid)sender;
             if (Key.Delete == e.Key)
             {
@@ -174,6 +183,12 @@ namespace HealthReporter.Controls
                         rep.DeleteByRating(new Rating() { labelId = item.LabelId });
                     }
                 }
+                updateTestView((Test)testName.DataContext);
+
+                MenAgesTab.SelectedValue = tab;
+
+                var testRep = new TestRepository();
+                testRep.Update((Test)testName.DataContext);
             }
         }
 
@@ -332,7 +347,12 @@ namespace HealthReporter.Controls
                         Brush brush = ratingToColor(lab.rating);
                         items.Add(new RowItem() {name = lab.name, interpretation=lab.interpretation, LabelId=lab.id, normF=rat.normF, normM=rat.normM, rating=brush});
                     }
-                }             
+                    if (labs.Count == 0)
+                    {
+                        items.Add(new RowItem() { normF = rat.normF, normM = rat.normM, rating = ratingToColor(0)});
+                    }
+                }
+                          
                 tabitems.Add(new TabItem() { interval = ageint, rowitems = items});
             }
             GenderTabsItemssource(new System.Collections.ObjectModel.ObservableCollection<TabItem>(tabitems));
@@ -451,16 +471,21 @@ namespace HealthReporter.Controls
                     var repo = new RatingRepository();
                     if (MenAgesTab.Items.Count == 0)
                     {
-                        repo.Insert(new Rating() { testId = test.id, age = frst });
-                        repo.Insert(new Rating() { testId = test.id, age = last + 1 });
+                        repo.Insert(new Rating() { testId = test.id, age = frst});
+                        repo.Insert(new Rating() { testId = test.id, age = last + 1});
+                    }
+                    else if(((TabItem)MenAgesTab.Items[MenAgesTab.Items.Count-1]).interval.rating.age > frst) 
+                    {
+                        repo.Insert(new Rating() { testId = test.id, age = frst});
+                        repo.Insert(new Rating() { testId = test.id, age = last + 1});
                     }
                     else
                     {
-                        repo.Insert(new Rating() { testId = test.id, age = last + 1 });
+                        repo.Insert(new Rating() { testId = test.id, age = last + 1});
                     }
                 }
                 else MessageBox.Show("Invalid age group.");
-                updateTestView((Test)testName.DataContext);
+                updateTestView(test);
             }
         }
 
@@ -471,8 +496,8 @@ namespace HealthReporter.Controls
                 MessageBox.Show("Please select a test.");
                 return;
             }
-
             if (MenAgesTab.Items.Count == 0) return;
+
             TabItem tabitem = (TabItem)MenAgesTab.Items[MenAgesTab.Items.Count - 1];
             int last = tabitem.interval.rating.age;
 
