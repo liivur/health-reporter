@@ -6,7 +6,7 @@
     <Application.Resources>
         <SolidColorBrush x:Key="ComboBoxNormalBorderBrush" Color="#FFABADB3" />
         <SolidColorBrush x:Key="ComboBoxNormalBackgroundBrush" Color="#fff" />
-        <SolidColorBrush x:Key="ComboBoxDisabledForegroundBrush" Color="#888" />
+        <SolidColorBrush x:Key="ComboBoxDisabledForegroundBrush" Color="#404242" />
         <SolidColorBrush x:Key="ComboBoxDisabledBackgroundBrush" Color="#eee" />
         <SolidColorBrush x:Key="ComboBoxDisabledBorderBrush" Color="#888" />
 

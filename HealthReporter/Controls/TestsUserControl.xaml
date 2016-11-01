@@ -109,7 +109,7 @@
                                                 <DataGridTemplateColumn Header="Rating">
                                                     <DataGridTemplateColumn.CellTemplate>
                                                         <DataTemplate>
-                                                            <ComboBox Name="cmbColors" ItemsSource="{StaticResource RatingColors}" Style="{StaticResource ComboBoxFlatStyle}" SelectedItem="{Binding rating, UpdateSourceTrigger=PropertyChanged}" >
+                                                            <ComboBox Name="cmbColors" ItemsSource="{StaticResource RatingColors}" IsEnabled="False" Style="{StaticResource ComboBoxFlatStyle}" SelectedItem="{Binding Path=rating}" >
                                                                 <ComboBox.ItemTemplate>
                                                                     <DataTemplate>
                                                                         <StackPanel Orientation="Horizontal">
@@ -120,13 +120,31 @@
                                                             </ComboBox>
                                                         </DataTemplate>
                                                     </DataGridTemplateColumn.CellTemplate>
+                                                    <DataGridTemplateColumn.CellEditingTemplate>
+                                                        <DataTemplate>
+                                                            <ComboBox Name="cmbColors" ItemsSource="{StaticResource RatingColors}" IsDropDownOpen="True" Style="{StaticResource ComboBoxFlatStyle}" SelectedItem="{Binding Path=rating, Mode=TwoWay, UpdateSourceTrigger =PropertyChanged}" >
+                                                                <ComboBox.ItemTemplate>
+                                                                    <DataTemplate>
+                                                                        <StackPanel Orientation="Horizontal">
+                                                                            <Rectangle Fill="{Binding}" Width="16" Height="16" Margin="0,2,5,2" />
+                                                                        </StackPanel>
+                                                                    </DataTemplate>
+                                                                </ComboBox.ItemTemplate>
+                                                            </ComboBox>
+                                                        </DataTemplate>
+                                                    </DataGridTemplateColumn.CellEditingTemplate>
                                                 </DataGridTemplateColumn>
                                                 <DataGridTemplateColumn Header="Meaning">
                                                     <DataGridTemplateColumn.CellTemplate>
                                                         <DataTemplate>
-                                                            <ComboBox ItemsSource="{StaticResource ComboBoxItems}" Style="{StaticResource ComboBoxFlatStyle}" SelectedItem="{Binding name, UpdateSourceTrigger=PropertyChanged}" />
+                                                            <ComboBox ItemsSource="{StaticResource ComboBoxItems}" IsEnabled="False" Style="{StaticResource ComboBoxFlatStyle}" SelectedItem="{Binding name}" />
                                                         </DataTemplate>
                                                     </DataGridTemplateColumn.CellTemplate>
+                                                    <DataGridTemplateColumn.CellEditingTemplate>
+                                                        <DataTemplate>
+                                                            <ComboBox ItemsSource="{StaticResource ComboBoxItems}" IsDropDownOpen="True" Style="{StaticResource ComboBoxFlatStyle}" SelectedItem="{Binding name, UpdateSourceTrigger=PropertyChanged}" />
+                                                        </DataTemplate>
+                                                    </DataGridTemplateColumn.CellEditingTemplate>
                                                 </DataGridTemplateColumn>
                                                 <DataGridTextColumn Header="Description" Binding="{Binding interpretation, UpdateSourceTrigger = PropertyChanged}"  Width="5*" CanUserSort="False"/>
                                             </DataGrid.Columns>
@@ -182,7 +200,7 @@
                                                 <DataGridTemplateColumn Header="Rating">
                                                     <DataGridTemplateColumn.CellTemplate>
                                                         <DataTemplate>
-                                                            <ComboBox Name="cmbColors" ItemsSource="{StaticResource RatingColors}" Style="{StaticResource ComboBoxFlatStyle}" SelectedItem="{Binding rating, UpdateSourceTrigger=PropertyChanged}" >
+                                                            <ComboBox Name="cmbColors" ItemsSource="{StaticResource RatingColors}" IsEnabled="False" Style="{StaticResource ComboBoxFlatStyle}" SelectedItem="{Binding rating}" >
                                                                 <ComboBox.ItemTemplate>
                                                                     <DataTemplate>
                                                                         <StackPanel Orientation="Horizontal">
@@ -193,13 +211,31 @@
                                                             </ComboBox>
                                                         </DataTemplate>
                                                     </DataGridTemplateColumn.CellTemplate>
+                                                    <DataGridTemplateColumn.CellEditingTemplate>
+                                                        <DataTemplate>
+                                                            <ComboBox Name="cmbColors" ItemsSource="{StaticResource RatingColors}" IsDropDownOpen="True" Style="{StaticResource ComboBoxFlatStyle}" SelectedItem="{Binding Path=rating, Mode=TwoWay, UpdateSourceTrigger =PropertyChanged}" >
+                                                                <ComboBox.ItemTemplate>
+                                                                    <DataTemplate>
+                                                                        <StackPanel Orientation="Horizontal">
+                                                                            <Rectangle Fill="{Binding}" Width="16" Height="16" Margin="0,2,5,2" />
+                                                                        </StackPanel>
+                                                                    </DataTemplate>
+                                                                </ComboBox.ItemTemplate>
+                                                            </ComboBox>
+                                                        </DataTemplate>
+                                                    </DataGridTemplateColumn.CellEditingTemplate>
                                                 </DataGridTemplateColumn>
                                                 <DataGridTemplateColumn Header="Meaning">
                                                     <DataGridTemplateColumn.CellTemplate>
                                                         <DataTemplate>
-                                                            <ComboBox ItemsSource="{StaticResource ComboBoxItems}" Style="{StaticResource ComboBoxFlatStyle}" SelectedItem="{Binding name,  NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged}" />
+                                                            <ComboBox ItemsSource="{StaticResource ComboBoxItems}" Style="{StaticResource ComboBoxFlatStyle}" IsEnabled="False" SelectedItem="{Binding name,  NotifyOnTargetUpdated=True}" />
                                                         </DataTemplate>
                                                     </DataGridTemplateColumn.CellTemplate>
+                                                    <DataGridTemplateColumn.CellEditingTemplate>
+                                                        <DataTemplate>
+                                                            <ComboBox ItemsSource="{StaticResource ComboBoxItems}" IsDropDownOpen="True" Style="{StaticResource ComboBoxFlatStyle}" SelectedItem="{Binding name, UpdateSourceTrigger=PropertyChanged}" />
+                                                        </DataTemplate>
+                                                    </DataGridTemplateColumn.CellEditingTemplate>
                                                 </DataGridTemplateColumn>
                                                 <DataGridTextColumn Header="Description" Binding="{Binding interpretation, UpdateSourceTrigger = PropertyChanged}"  Width="5*" CanUserSort="False"/>
                                             </DataGrid.Columns>
