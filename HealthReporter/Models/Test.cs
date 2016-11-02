@@ -32,6 +32,11 @@ namespace HealthReporter.Models
             return DatabaseUtility.getConnection().QuerySql<Test>("SELECT * FROM tests WHERE categoryId = @id", cat);
         }
 
+        internal IList<Test> FindSearchResult(string searchBy)
+        {
+            return DatabaseUtility.getConnection().QuerySql<Test>("SELECT * FROM tests WHERE name LIKE '%" + searchBy + "%'");
+        }
+
         public void Update(Test test)
         {
             DatabaseUtility.getConnection().QuerySql<Test>("UPDATE tests SET categoryId=@categoryId, name=@name, description=@description, units=@units, decimals=@decimals, formulaF=@formulaF, formulaM=@formulaM, updated=CURRENT_TIMESTAMP WHERE id=@id", test);

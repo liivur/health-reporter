@@ -628,5 +628,22 @@ namespace HealthReporter.Controls
             btnShowTests.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFF0F0F0"));
             btnShowClients.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
         }
+
+        private void filterSearchBox(object sender, TextChangedEventArgs e)
+        {
+            string searchBy = search.Text;
+
+            var testRepo = new TestRepository();
+            IList<Test> tests = testRepo.FindSearchResult(searchBy);
+
+            if (tests.Count != 0)
+            {
+                var categoryRepo = new TestCategoryRepository();
+                IList<TestCategory> categories = categoryRepo.GetCategoryByTest(tests[0]);
+                catsDataGrid.SelectedValue = categories[0].name;
+                testsDataGrid.SelectedValue = tests[0].name;
+            }
+            
+        }
     }
 }
