@@ -47,7 +47,7 @@ namespace HealthReporter.Controls
                 parentId = category.id;
             }
             AddNewTestCategoryControl obj = new AddNewTestCategoryControl(this._parent, parentId);
-            this._parent.stkTest.Children.Clear();
+            this.Opacity = 0.3;
             this._parent.stkTest.Children.Add(obj);
         }
 

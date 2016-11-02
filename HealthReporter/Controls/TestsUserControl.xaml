@@ -66,6 +66,7 @@
             </Grid.RowDefinitions>
             <TextBlock x:Name="noOfTests" HorizontalAlignment="Left" Margin="68,63,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188" Width="17" Grid.Column="2"/>
             <TextBlock x:Name="Text0" HorizontalAlignment="Left" Margin="95,63,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188" Width="31" Text="Tests" Grid.Column="2"/>
+            <TextBlock x:Name="newLabel" HorizontalAlignment="Right" Margin="0,60,24,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="33" Text="New..." Grid.Column="2"/>
             <Button x:Name="addStuffButton" ContextMenuService.IsEnabled="False" Template="{StaticResource ButtonStyle}" Content="+" Margin="0,15,22,0" VerticalAlignment="Top" Click="btn_AddStuff" Height="40" BorderBrush="#FFA2B2BD"  Background="White" FontWeight="Bold" FontSize="20" Grid.Column="2" HorizontalAlignment="Right" Width="40">
                 <Button.ContextMenu>
                     <ContextMenu >
