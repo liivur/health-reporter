@@ -109,7 +109,7 @@
                                                 <DataGridTemplateColumn Header="Rating">
                                                     <DataGridTemplateColumn.CellTemplate>
                                                         <DataTemplate>
-                                                            <ComboBox Name="cmbColors" ItemsSource="{StaticResource RatingColors}" SelectedIndex="0" IsEnabled="False" Style="{StaticResource ComboBoxFlatStyle}" SelectedItem="{Binding Path=rating}" >
+                                                            <ComboBox Name="cmbColors" ItemsSource="{StaticResource RatingColors}" IsEnabled="False" Style="{StaticResource ComboBoxFlatStyle}" SelectedItem="{Binding Path=rating}" >
                                                                 <ComboBox.ItemTemplate>
                                                                     <DataTemplate>
                                                                         <StackPanel Orientation="Horizontal">
