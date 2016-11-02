@@ -197,6 +197,11 @@ namespace HealthReporter.Controls
             Test newTest = new Test() { };
             newTest.id = System.Guid.NewGuid().ToByteArray();
             newTest.name = "No Name";
+            if ((TestCategory)catsDataGrid.SelectedItem == null)
+            {
+                MessageBox.Show("You have not created any categories yet");
+                return;
+            }
             newTest.categoryId = ((TestCategory)catsDataGrid.SelectedItem).id;
 
             //new test is inserted into db
