@@ -18,7 +18,7 @@ namespace HealthReporter.Models
         {
             var connection = DatabaseUtility.getConnection();
             client.id = System.Guid.NewGuid().ToByteArray();
-            var res = connection.InsertSql("INSERT INTO clients (id, firstName, lastName, groupName, email, gender, birthDate) values(@id, @firstName, @lastName, @groupName, @email, @gender,@birthDate)", client);
+            var res = connection.InsertSql("INSERT INTO clients (id, firstName, lastName, groupId, email, gender, birthDate) values(@id, @firstName, @lastName, @groupId, @email, @gender, @birthDate)", client);
         }
 
         public IList<Client> FindAll()
@@ -29,9 +29,9 @@ namespace HealthReporter.Models
         public void Delete(Client client)
         {
             var connection = DatabaseUtility.getConnection();
-            
+
             var res = connection.InsertSql("DELETE from clients where id=@id", client);
-  
+
         }
 
         internal IList<Client> SelectClient(byte[] id)
@@ -39,31 +39,33 @@ namespace HealthReporter.Models
             return DatabaseUtility.getConnection().QuerySql<Client>("SELECT * FROM clients WHERE id='" + id + "'");
         }
 
-       
+
 
         public void Update(Client client)
         {
             var connection = DatabaseUtility.getConnection();
-            
-            var res = connection.InsertSql("UPDATE clients set firstName='" + client.firstName + "', lastName='"+client.lastName + "' , groupName = '" + client.groupName+"', email='"+client.email+"', gender = '"+client.gender+"' , birthDate= '"+client.birthDate+"', updated = CURRENT_TIMESTAMP WHERE id=@id", client);
 
+            var res = connection.InsertSql("UPDATE clients set firstName='" + client.firstName + "', lastName='" + client.lastName + "', email='" + client.email + "', gender = '" + client.gender + "', birthDate= '" + client.birthDate + "', updated = CURRENT_TIMESTAMP WHERE id=@id", client);
 
-          
+        }
+        public IList<Client> GetClientsByGroupName(Group group)
+        {
+            return DatabaseUtility.getConnection().QuerySql<Client>("SELECT * FROM clients WHERE groupId = @id", group);
         }
 
-        internal IList<Client> FindSearchResult(string searchBy)
+        internal IList<Client> FindSearchResult(string searchBy, Group group)
         {
-            return DatabaseUtility.getConnection().QuerySql<Client>("SELECT * FROM clients WHERE firstname LIKE '%"+searchBy+ "%' OR lastName LIKE'%" + searchBy + "%' OR groupName LIKE '%" + searchBy + "%'");
+            return DatabaseUtility.getConnection().QuerySql<Client>("SELECT * FROM clients WHERE firstname LIKE '%" + searchBy + "%' OR lastName LIKE'%" + searchBy + "%' AND groupId = @id", group);
         }
     }
 
-    public class Client: INotifyPropertyChanged, IDataErrorInfo
+    public class Client : INotifyPropertyChanged, IDataErrorInfo
     {
-        
+
         public byte[] id { get; set; }
         public string updated { get; set; }
         public string uploaded { get; set; }
-        public string groupName { get; set; }
+        public byte[] groupId { get; set; }
         private string _firstName;
         private string _lastName;
         private string _email;
@@ -98,7 +100,8 @@ namespace HealthReporter.Models
                 OnPropertyChanged("lastName");
             }
         }
-        public string email {
+        public string email
+        {
             get
             {
                 return _email;
@@ -109,7 +112,8 @@ namespace HealthReporter.Models
                 OnPropertyChanged("email");
             }
         }
-        public string gender {
+        public string gender
+        {
             get
             {
                 return _gender;
@@ -120,12 +124,13 @@ namespace HealthReporter.Models
                 OnPropertyChanged("gender");
             }
         }
-        public string birthDate {
+        public string birthDate
+        {
             get
             {
                 return _birthDate;
             }
-             set
+            set
             {
                 _birthDate = value;
                 OnPropertyChanged("birthDate");
@@ -137,16 +142,16 @@ namespace HealthReporter.Models
             get
             {
 
-                    var today = DateTime.Today;
-                    DateTime birthday = DateTime.Parse(this.birthDate);
-                    var age = today.Year - birthday.Year;
-                    if (birthday > today.AddYears(-age)) age--;
-                    this._age = age.ToString();
-                    return _age;
-                
-                
+                var today = DateTime.Today;
+                //DateTime birthday = DateTime.Parse(this.birthDate);
+                //   var age = today.Year - birthday.Year;
+                //   if (birthday > today.AddYears(-age)) age--;
+                this._age = age.ToString();
+                return _age;
+
+
             }
-           
+
         }
 
 
@@ -239,7 +244,7 @@ namespace HealthReporter.Models
         }
 
         private string ValidateClientFirstName()
-         {
+        {
             if (String.IsNullOrWhiteSpace(firstName))
             {
                 return "Client first name can not be empty.";
@@ -262,8 +267,8 @@ namespace HealthReporter.Models
         }
         private string ValidateClientEmail()
         {
-            
-             if (!String.IsNullOrWhiteSpace(email) && !Regex.IsMatch(email, @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$"))
+
+            if (!String.IsNullOrWhiteSpace(email) && !Regex.IsMatch(email, @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$"))
             {
                 return "Email format is wrong";
             }

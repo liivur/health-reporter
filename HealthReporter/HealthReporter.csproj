@@ -134,6 +134,7 @@
     <Compile Include="Models\Appraisal_tests.cs" />
     <Compile Include="Models\Appraiser.cs" />
     <Compile Include="Models\Client.cs" />
+    <Compile Include="Models\Group.cs" />
     <Compile Include="Models\Preset.cs" />
     <Compile Include="Models\PresetTest.cs" />
     <Compile Include="Models\Rating.cs" />
@@ -236,6 +237,9 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\dustbin.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.103\build\net46\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.103\build\net46\System.Data.SQLite.Core.targets')" />

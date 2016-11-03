@@ -70,7 +70,7 @@ namespace HealthReporter.Controls
                     client.firstName = this.firstName.Text;
 
                     client.lastName = this.lastName.Text;
-                    client.groupName = this.group.Text;
+                   // client.groupName = this.group.Text;
                     client.email = this.email.Text;
                     client.gender = ((ComboBoxItem)gender.SelectedValue).Tag.ToString();
                 

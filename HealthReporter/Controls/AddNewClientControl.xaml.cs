@@ -54,7 +54,7 @@ namespace HealthReporter.Controls
             {
                 firstName = this.firstName.Text.ToString(),
                 lastName = this.lastName.Text.ToString(),
-                groupName = this.group.Text.ToString(),
+                //groupName = this.group.Text.ToString(),
                 email = this.email.Text.ToString(),
                 gender=  this.gender.Text.ToString(),
                 birthDate =this.birthDate.Text.ToString()
@@ -88,7 +88,7 @@ namespace HealthReporter.Controls
                     {
                         firstName = this.firstName.Text,
                         lastName = this.lastName.Text,
-                        groupName = this.group.Text,
+                        //groupName = this.group.Text,
                         email = this.email.Text,
                         gender = this.gender.SelectedValue.ToString(),
                         birthDate = String.Format("{0:yyyy-MM-dd}", enteredDate)

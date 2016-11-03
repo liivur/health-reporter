@@ -81,6 +81,14 @@ CREATE TABLE 'rating_labels'(
   CONSTRAINT 'id_UNIQUE'
     UNIQUE('id')
 );
+CREATE TABLE 'groups'(
+  'id' BLOB PRIMARY KEY NOT NULL,
+  'name' TEXT,
+  'updated' DATETIME DEFAULT CURRENT_TIMESTAMP,
+  'uploaded' DATETIME,
+  CONSTRAINT 'id_UNIQUE'
+    UNIQUE('id')
+);
 CREATE TABLE 'appraisers'(
   'id' BLOB PRIMARY KEY NOT NULL,
   'name' TEXT,
@@ -113,7 +121,7 @@ CREATE TABLE 'clients'(
   'id' BLOB PRIMARY KEY NOT NULL,
   'firstName' TEXT,
   'lastName' TEXT,
-  'groupName' TEXT,
+  'groupId' BLOB NOT NULL,
   'email' TEXT,
   'gender' INTEGER,
   'birthDate' DATE,
@@ -121,8 +129,13 @@ CREATE TABLE 'clients'(
   'uploaded' DATETIME,
   CONSTRAINT 'id_UNIQUE'
     UNIQUE('id')
+  CONSTRAINT 'clients_to_groups'
+    FOREIGN KEY('groupId')
+    REFERENCES 'groups'('id')
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
 );
-
+CREATE INDEX 'clients to groups_idx' ON 'clients' ('groupId');
 CREATE TABLE 'preset_tests'(
   'testId' BLOB NOT NULL,
   'presetId' BLOB NOT NULL,

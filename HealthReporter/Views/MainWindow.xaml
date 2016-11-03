@@ -28,6 +28,6 @@
         </ControlTemplate>
     </Window.Resources>
     <Grid Name="grid1">
-        <Grid Name="stkTest" Margin="20,10,21,22"/>
+        <Grid Name="stkTest"/>
     </Grid>
 </Window>
