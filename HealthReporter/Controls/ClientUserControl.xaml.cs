@@ -40,6 +40,7 @@ namespace HealthReporter.Controls
             groupDataGrid.ItemsSource = groups;
 
             NoCards.Visibility = Visibility.Visible;
+            search.Visibility = Visibility.Hidden;
 
         }
 
@@ -189,7 +190,7 @@ namespace HealthReporter.Controls
 
         private void groupsDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            search.Visibility = Visibility.Visible;
             clientDetailDatagrid.Visibility = Visibility.Hidden;
             delete.Visibility = Visibility.Hidden;
             NoCards.Visibility = Visibility.Visible;
@@ -265,6 +266,7 @@ namespace HealthReporter.Controls
 
         }
 
+
         private void btn_Delete(object sender, RoutedEventArgs e)
         {
             MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Are you sure you want to delete this?", "Delete Confirmation", System.Windows.MessageBoxButton.YesNo);
@@ -284,8 +286,11 @@ namespace HealthReporter.Controls
                 clientDetailDatagrid.DataContext = this._client;
                 clientDataGrid.SelectedIndex = row;
             }
-
         }
+
+
+
+
 
 
         private void btn_Clients(object sender, RoutedEventArgs e)
@@ -375,6 +380,23 @@ namespace HealthReporter.Controls
             clientDetailDatagrid.DataContext = null;
 
         }
+
+        private void filterSearchBox(object sender, TextChangedEventArgs e)
+        {
+
+            string searchBy = search.Text;
+
+            var repo = new ClientRepository();
+            IList<Client> clients = repo.FindSearchResult(searchBy, this._group);
+
+
+            clientDataGrid.ItemsSource = clients;
+            clientDataGrid.SelectedIndex = 0;
+            
+            
+          }
+
+        
 
     }
 }

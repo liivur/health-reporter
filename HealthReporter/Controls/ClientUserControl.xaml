@@ -119,11 +119,55 @@
                 <GridSplitter Grid.Column="1" Width="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ResizeDirection="Columns"/>
                 <Grid Grid.Column="2">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="35" />
+                        <RowDefinition Height="55" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
+                        
+                    <TextBox  x:Name="search" Grid.Row="0" Height="20"  Margin="30,20,30,5" HorizontalAlignment="Stretch"  TextWrapping="Wrap" VerticalAlignment="Top" TextChanged="filterSearchBox">
 
-                    <TextBlock Grid.Row="0" Margin="10,10,10,5" Foreground="LightSlateGray" FontSize="14">Search</TextBlock>
+                        <TextBox.Resources>
+                            <Style TargetType="{x:Type Border}">
+                                <Setter Property="CornerRadius" Value="4"/>
+                            </Style>
+                        </TextBox.Resources>
+                        <TextBox.Style>
+                            <Style TargetType="TextBox">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=Text}" Value="">
+                                        <Setter Property="Background">
+                                            <Setter.Value>
+                                                <VisualBrush Stretch="None">
+                                                    <VisualBrush.Visual>
+                                                        <TextBlock Text="Search" Foreground="Gray"/>
+                                                    </VisualBrush.Visual>
+                                                </VisualBrush>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=Text}" Value="{x:Null}">
+                                        <Setter Property="Background">
+                                            <Setter.Value>
+                                                <VisualBrush Stretch="None">
+                                                    <VisualBrush.Visual>
+                                                        <TextBlock Text="Search" Foreground="Gray"/>
+                                                    </VisualBrush.Visual>
+                                                </VisualBrush>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsFocused}" Value="True">
+                                        <Setter Property="Background">
+                                            <Setter.Value>
+                                                <VisualBrush Stretch="None">
+                                                </VisualBrush>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBox.Style>
+                    </TextBox>
+                    <!--<TextBlock Grid.Row="0" Margin="10,10,10,5" Foreground="LightSlateGray" FontSize="14">Search</TextBlock>-->
                     <DataGrid Grid.Row="1" Focusable="True" Grid.Column="0" x:Name="clientDataGrid" HeadersVisibility="None" SelectionMode="Single" CanUserSortColumns="False" IsReadOnly="True"  SelectionChanged="clientDataGrid_SelectionChanged" GridLinesVisibility="None" AutoGenerateColumns="False" Background="{x:Null}" BorderBrush="{x:Null}" FontSize="13" Grid.RowSpan="3">
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding firstName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,NotifyOnTargetUpdated=True}" Width="*"/>
