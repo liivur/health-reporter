@@ -29,7 +29,7 @@ namespace HealthReporter.Controls
 
             var repo = new TestRepository();
             IList<Test> tests = repo.FindAll();
-            noOfTests.Text = tests.Count.ToString();
+            //noOfTests.Text = tests.Count.ToString();
 
             decimalsSelector.ItemsSource = new List<int> { -2, -1, 0, 1, 2 };
 
@@ -563,7 +563,7 @@ namespace HealthReporter.Controls
                 GenderTabsItemssource(null);
 
                 IList<Test> tests = testRepo.FindAll();
-                noOfTests.Text = tests.Count.ToString();
+                //noOfTests.Text = tests.Count.ToString();
             }
         }
 
@@ -629,21 +629,21 @@ namespace HealthReporter.Controls
             btnShowClients.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
         }
 
-        private void filterSearchBox(object sender, TextChangedEventArgs e)
-        {
-            string searchBy = search.Text;
+        //private void filterSearchBox(object sender, TextChangedEventArgs e)
+        //{
+        //    string searchBy = search.Text;
 
-            var testRepo = new TestRepository();
-            IList<Test> tests = testRepo.FindSearchResult(searchBy);
+        //    var testRepo = new TestRepository();
+        //    IList<Test> tests = testRepo.FindSearchResult(searchBy);
 
-            if (tests.Count != 0)
-            {
-                var categoryRepo = new TestCategoryRepository();
-                IList<TestCategory> categories = categoryRepo.GetCategoryByTest(tests[0]);
-                catsDataGrid.SelectedValue = categories[0].name;
-                testsDataGrid.SelectedValue = tests[0].name;
-            }
+        //    if (tests.Count != 0)
+        //    {
+        //        var categoryRepo = new TestCategoryRepository();
+        //        IList<TestCategory> categories = categoryRepo.GetCategoryByTest(tests[0]);
+        //        catsDataGrid.SelectedValue = categories[0].name;
+        //        testsDataGrid.SelectedValue = tests[0].name;
+        //    }
             
-        }
+        //}
     }
 }
