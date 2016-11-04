@@ -120,9 +120,6 @@ namespace HealthReporter.Controls
                     dbRating.labelId = rat.labelId; //Not good! Needs to be fixed in the future.
                     ratingRep.Update(dbRating, rat);
                     testRep.Update(test);
-
-                    IList<Rating> rs = ratingRep.getSameAgeRatings(new Rating() { testId = test.id, age = age });
-                    Rating dbRating2 = rs[itemIndex];
                 }
                 else
                 {
