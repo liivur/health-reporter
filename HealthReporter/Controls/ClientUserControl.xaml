@@ -29,7 +29,6 @@
         </ControlTemplate>
     </UserControl.Resources>
     <Border>
-
         <Grid Name="grid" Height="auto" Width="auto">
             <Grid.RowDefinitions>
                 <RowDefinition Height="20"></RowDefinition>
@@ -38,12 +37,8 @@
             <Grid Grid.Row="0" Background="#f5f5f5">
                 <Border BorderBrush="Gainsboro" BorderThickness="0.4">
                     <StackPanel Orientation="Horizontal" >
-                        <Button x:Name="btnShowClients" Content="Clients" Click="btn_Clients"   VerticalAlignment="Top" BorderBrush="#f5f5f5" Height="20" Background="#f5f5f5" RenderTransformOrigin="0.632,-0.808" Grid.Column="2" HorizontalAlignment="Left" Width="60">
-
-                        </Button>
-                        <Button x:Name="btnShowTests" Content="Tests" Click="btn_Tests"  VerticalAlignment="Top" BorderBrush="#f5f5f5" Height="20" Background="#f5f5f5" Grid.Column="2" HorizontalAlignment="Left" Width="50">
-
-                        </Button>
+                        <Button x:Name="btnShowClients" Content="Clients" Click="btn_Clients"   VerticalAlignment="Top" BorderBrush="#f5f5f5" Height="20" Background="#f5f5f5" RenderTransformOrigin="0.632,-0.808" Grid.Column="2" HorizontalAlignment="Left" Width="60"/>
+                        <Button x:Name="btnShowTests" Content="Tests" Click="btn_Tests"  VerticalAlignment="Top" BorderBrush="#f5f5f5" Height="20" Background="#f5f5f5" Grid.Column="2" HorizontalAlignment="Left" Width="50"/>
                     </StackPanel>
                 </Border>
             </Grid>
@@ -56,16 +51,15 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <Border Grid.Row="1" Grid.Column="0"  Background="AliceBlue" />
-                <!--<TextBlock FontSize="55"  HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap">Left side</TextBlock>-->
                 <Grid >
-
                     <Grid.RowDefinitions>
+                        <!--<RowDefinition Height="40" />-->
                         <RowDefinition Height="35" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-
-                    <TextBlock Margin="10,10,10,5" Foreground="LightSlateGray" FontSize="14">Groups</TextBlock>
-
+                    <!--<Button Grid.Row="0" Background="AliceBlue"  BorderThickness="0" Focusable="True" Content="All Clients" Click="btn_ShowAllClients"/>--> 
+                    
+                    <TextBlock Grid.Row="0" Margin="10,10,10,5" Foreground="LightSlateGray" FontSize="14">Groups</TextBlock>
                     <DataGrid  Focusable="True" Grid.Row="1" Grid.Column="0" x:Name="groupDataGrid" HeadersVisibility="None" SelectionMode="Single" CanUserSortColumns="False" IsReadOnly="True" CellEditEnding="groupDataGrid_CellEditEnding"  SelectionChanged="groupsDataGrid_SelectionChanged" GridLinesVisibility="None" AutoGenerateColumns="False" Background="{x:Null}" BorderBrush="{x:Null}" FontSize="13" Grid.RowSpan="3">
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding name,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,NotifyOnTargetUpdated=True}" Width="*"/>
@@ -77,7 +71,11 @@
                                         <Image Width="12" Height="12" />
                                     </MenuItem.Icon>
                                 </MenuItem>
-
+                                <MenuItem Header="Rename" Click="MenuItem_Rename">
+                                    <MenuItem.Icon>
+                                        <Image Width="12" Height="12" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
                             </ContextMenu>
                         </DataGrid.ContextMenu>
                         <DataGrid.Resources>
@@ -112,19 +110,15 @@
                                 </Style.Triggers>
                             </Style>
                         </DataGrid.RowStyle>
-
                     </DataGrid>
                 </Grid>
-
                 <GridSplitter Grid.Column="1" Width="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ResizeDirection="Columns"/>
                 <Grid Grid.Column="2">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="55" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                        
                     <TextBox  x:Name="search" Grid.Row="0" Height="20"  Margin="30,20,30,5" HorizontalAlignment="Stretch"  TextWrapping="Wrap" VerticalAlignment="Top" TextChanged="filterSearchBox">
-
                         <TextBox.Resources>
                             <Style TargetType="{x:Type Border}">
                                 <Setter Property="CornerRadius" Value="4"/>
@@ -167,7 +161,6 @@
                             </Style>
                         </TextBox.Style>
                     </TextBox>
-                    <!--<TextBlock Grid.Row="0" Margin="10,10,10,5" Foreground="LightSlateGray" FontSize="14">Search</TextBlock>-->
                     <DataGrid Grid.Row="1" Focusable="True" Grid.Column="0" x:Name="clientDataGrid" HeadersVisibility="None" SelectionMode="Single" CanUserSortColumns="False" IsReadOnly="True"  SelectionChanged="clientDataGrid_SelectionChanged" GridLinesVisibility="None" AutoGenerateColumns="False" Background="{x:Null}" BorderBrush="{x:Null}" FontSize="13" Grid.RowSpan="3">
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding firstName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,NotifyOnTargetUpdated=True}" Width="*"/>
@@ -194,7 +187,6 @@
                         <DataGrid.RowStyle>
                             <Style TargetType="DataGridRow">
                                 <Setter Property="Height" Value="23"/>
-
                                 <Setter Property="Margin" Value="15,0,0,0" />
                                 <Style.Triggers>
                                     <Trigger Property="IsMouseOver" Value="True">
@@ -206,26 +198,14 @@
                         </DataGrid.RowStyle>
                     </DataGrid>
                 </Grid>
-
-                <!--<TextBlock Grid.Column="2" FontSize="55" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap">Center</TextBlock>-->
                 <GridSplitter Grid.Column="3" Width="3" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" ResizeDirection="Columns" />
-
-
-                <!--<Line Grid.Column="5" Margin="10,10,10,10" Stroke="Black" HorizontalAlignment="Stretch"
-                  X2="{Binding ActualWidth, RelativeSource={RelativeSource Self}}"
-                   StrokeThickness="1" ></Line>-->
-                <!--<TextBlock Grid.Column="5" FontSize="55" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap">Right side</TextBlock>-->
                 <Grid  x:Name="clientDetailMain" Grid.Column="5">
-
-
                     <Grid.RowDefinitions>
                         <RowDefinition Height="60" />
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-
                     <Grid Visibility="Hidden" Grid.Row="1" x:Name="clientDetailDatagrid" HorizontalAlignment="Stretch">
-
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="100"/>
                             <ColumnDefinition Width="*"/>
@@ -239,111 +219,100 @@
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
                         </Grid.RowDefinitions>
-
-
-                        <TextBlock  Foreground="LightSlateGray" HorizontalAlignment="Right" Grid.Column="0" Grid.Row="1" x:Name="Text1" Text="First Name" Margin="10"/>
-                        <TextBox Margin="10" HorizontalAlignment="Left" Grid.Column="1" Grid.Row="1" x:Name="firstName"  TextWrapping="Wrap" 
+                        <TextBlock  Foreground="LightSlateGray" HorizontalAlignment="Right" Grid.Column="0" Grid.Row="1" x:Name="Text1" Text="First Name" Margin="0,0,10,0"/>
+                        <StackPanel Grid.Column="1" Grid.Row="1">
+                            <TextBox Margin="10,0,0,0" HorizontalAlignment="Left"  x:Name="firstName"  TextWrapping="Wrap" 
                                  Text="{Binding firstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Width="140"  
                                  Validation.ErrorTemplate="{x:Null}">
-                            <TextBox.Style>
-                                <Style TargetType="{x:Type TextBox}">
-                                    <Style.Setters>
-                                        <Setter Property="BorderThickness" Value="0 0 0 1"></Setter>
-
-
-                                    </Style.Setters>
-                                    <Style.Triggers>
-                                        <Trigger Property="IsFocused" Value="True">
-                                            <Setter Property="BorderThickness" Value="0 0 0 2"></Setter>
-
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBox.Style>
-                        </TextBox>
-
-
-                        <TextBlock Foreground="LightSlateGray" HorizontalAlignment="Right" Grid.Column="0" Grid.Row="2" x:Name="Text2" Text="Last Name" Margin="10"/>
-                        <TextBox Margin="10" HorizontalAlignment="Left" Grid.Column="1" Grid.Row="2" x:Name="lastName"  TextWrapping="Wrap" 
+                                <TextBox.Style>
+                                    <Style TargetType="{x:Type TextBox}">
+                                        <Style.Setters>
+                                            <Setter Property="BorderThickness" Value="0 0 0 1"></Setter>
+                                        </Style.Setters>
+                                        <Style.Triggers>
+                                            <Trigger Property="IsFocused" Value="True">
+                                                <Setter Property="BorderThickness" Value="0 0 0 2"></Setter>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBox.Style>
+                            </TextBox>
+                            <Label x:Name="AdornerSite" Foreground="Red"  FontWeight="Bold" FontSize="8" Content="{Binding (Validation.Errors).CurrentItem.ErrorContent, ElementName=firstName}" Margin="5,0,0,0" />
+                        </StackPanel>
+                        <TextBlock Foreground="LightSlateGray" HorizontalAlignment="Right" Grid.Column="0" Grid.Row="2" x:Name="Text2" Text="Last Name" Margin="0,0,10,0"/>
+                        <StackPanel Grid.Column="1" Grid.Row="2">
+                            <TextBox Margin="10,0,0,0" HorizontalAlignment="Left" x:Name="lastName"  TextWrapping="Wrap" 
                                  Text="{Binding lastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Width="140"  
                                  Validation.ErrorTemplate="{x:Null}">
-                            <TextBox.Style>
-                                <Style TargetType="{x:Type TextBox}">
-                                    <Style.Setters>
-                                        <Setter Property="BorderThickness" Value="0 0 0 1"></Setter>
-
-
-                                    </Style.Setters>
-                                    <Style.Triggers>
-                                        <Trigger Property="IsFocused" Value="True">
-                                            <Setter Property="BorderThickness" Value="0 0 0 2"></Setter>
-
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBox.Style>
-                        </TextBox>
-
-                        <TextBlock  Foreground="LightSlateGray" HorizontalAlignment="Right" Grid.Column="0" Grid.Row="3" x:Name="Text3" Text="Email" Margin="10"/>
-                        <TextBox Margin="10" HorizontalAlignment="Left" Grid.Column="1" Grid.Row="3" x:Name="email"  TextWrapping="Wrap" 
-                                 Text="{Binding email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Width="140"  
-                                 Validation.ErrorTemplate="{x:Null}">
-                            <TextBox.Style>
-                                <Style TargetType="{x:Type TextBox}">
-                                    <Style.Setters>
-                                        <Setter Property="BorderThickness" Value="0 0 0 1"></Setter>
-
-
-                                    </Style.Setters>
-                                    <Style.Triggers>
-                                        <Trigger Property="IsFocused" Value="True">
-                                            <Setter Property="BorderThickness" Value="0 0 0 2"></Setter>
-
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBox.Style>
-                        </TextBox>
-
-
-
-                        <TextBlock Foreground="LightSlateGray" HorizontalAlignment="Right" Grid.Column="0" Grid.Row="4" x:Name="Text4" Text="Gender" Margin="10"/>
-                        <ComboBox Background="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}" HorizontalAlignment="Left" Style="{StaticResource ComboBoxFlatStyle}" Margin="10" Grid.Column="1" Grid.Row="4" Text="{Binding gender, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" SelectedValuePath="Tag" x:Name="gender" 
+                                <TextBox.Style>
+                                    <Style TargetType="{x:Type TextBox}">
+                                        <Style.Setters>
+                                            <Setter Property="BorderThickness" Value="0 0 0 1"></Setter>
+                                        </Style.Setters>
+                                        <Style.Triggers>
+                                            <Trigger Property="IsFocused" Value="True">
+                                                <Setter Property="BorderThickness" Value="0 0 0 2"></Setter>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBox.Style>
+                            </TextBox>
+                            <Label x:Name="AdornerSite2" Foreground="Red" FontWeight="Bold" FontSize="8" Content="{Binding (Validation.Errors).CurrentItem.ErrorContent, ElementName=lastName}" Margin="5,0,0,0"/>
+                        </StackPanel>
+                        <TextBlock  Foreground="LightSlateGray" HorizontalAlignment="Right" Grid.Column="0" Grid.Row="3" x:Name="Text3" Text="Email" Margin="0,0,10,0"/>
+                        <StackPanel Grid.Column="1" Grid.Row="3">
+                            <TextBox Margin="10,0,0,0" HorizontalAlignment="Left" x:Name="email"  TextWrapping="Wrap" 
+                                     Text="{Binding email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Width="140"  
+                                     Validation.ErrorTemplate="{x:Null}">
+                                <TextBox.Style>
+                                    <Style TargetType="{x:Type TextBox}">
+                                        <Style.Setters>
+                                            <Setter Property="BorderThickness" Value="0 0 0 1"></Setter>
+                                        </Style.Setters>
+                                        <Style.Triggers>
+                                            <Trigger Property="IsFocused" Value="True">
+                                                <Setter Property="BorderThickness" Value="0 0 0 2"></Setter>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBox.Style>
+                            </TextBox>
+                            <Label x:Name="AdornerSite3" Foreground="Red" FontWeight="Bold" FontSize="8" Content="{Binding (Validation.Errors).CurrentItem.ErrorContent, ElementName=email}" Margin="5,0,0,0"/>
+                        </StackPanel>
+                        <TextBlock Foreground="LightSlateGray" HorizontalAlignment="Right" Grid.Column="0" Grid.Row="4" x:Name="Text4" Text="Gender" Margin="0,0,10,0"/>
+                        <StackPanel Grid.Column="1" Grid.Row="4">
+                            <ComboBox Margin="10,0,0,0" Background="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}" HorizontalAlignment="Left" Style="{StaticResource ComboBoxFlatStyle}"   Text="{Binding gender, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"  x:Name="gender" 
                                          Width="140"
                                         Validation.ErrorTemplate="{x:Null}">
-
-                            <ComboBoxItem Content="0"></ComboBoxItem>
-                            <ComboBoxItem Content="1" />
-
-                        </ComboBox>
-
-
-                        <TextBlock Foreground="LightSlateGray" HorizontalAlignment="Right" Grid.Column="0" Grid.Row="5" x:Name="Text5" Text="Date of Birth" Margin="10"/>
-                        <DatePicker Grid.Column="1" Grid.Row="5" Margin="10" HorizontalAlignment="Left" x:Name="birthDate"  Width="140"  DisplayDate="2016-09-29" 
-                         SelectedDate="{Binding birthDate, StringFormat='d', ConverterCulture=en-GB, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
-                        IsTodayHighlighted="False" FirstDayOfWeek="Monday" Validation.ErrorTemplate="{x:Null}" >
-                            <DatePicker.Resources>
-                                <Style TargetType="{x:Type DatePicker}">
-                                    <Style.Setters>
-                                        <Setter Property="BorderThickness" Value="0 0 0 1"></Setter>
-
-
-                                    </Style.Setters>
-                                    <Style.Triggers>
-                                        <Trigger Property="IsFocused" Value="True">
-                                            <Setter Property="BorderThickness" Value="0 0 0 2"></Setter>
-
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </DatePicker.Resources>
-                        </DatePicker>
-
+                                <ComboBoxItem Content="1"></ComboBoxItem>
+                                <ComboBoxItem Content="0" />
+                            </ComboBox>
+                            <Label x:Name="AdornerSite4" Foreground="Red" FontWeight="Bold" FontSize="8" Content="{Binding (Validation.Errors).CurrentItem.ErrorContent, ElementName=gender}" Margin="5,0,0,0"/>
+                        </StackPanel>
+                        <TextBlock Foreground="LightSlateGray" HorizontalAlignment="Right" Grid.Column="0" Grid.Row="5" x:Name="Text5" Text="Date of Birth" Margin="0,0,10,0"/>
+                        <StackPanel Grid.Column="1" Grid.Row="5">
+                            <DatePicker Margin="10,0,0,0" HorizontalAlignment="Left" x:Name="birthDate"  Width="140"  DisplayDate="2016-09-29" 
+                                        SelectedDate="{Binding birthDate, StringFormat='d', ConverterCulture=en-GB, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                                        IsTodayHighlighted="False" FirstDayOfWeek="Monday" Validation.ErrorTemplate="{x:Null}" >
+                                <DatePicker.Resources>
+                                    <Style TargetType="{x:Type DatePicker}">
+                                        <Style.Setters>
+                                            <Setter Property="BorderThickness" Value="0 0 0 1"></Setter>
+                                        </Style.Setters>
+                                        <Style.Triggers>
+                                            <Trigger Property="IsFocused" Value="True">
+                                                <Setter Property="BorderThickness" Value="0 0 0 2"></Setter>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </DatePicker.Resources>
+                            </DatePicker>
+                            <Label x:Name="AdornerSite5" Foreground="Red" FontWeight="Bold" FontSize="8" Content="{Binding (Validation.Errors).CurrentItem.ErrorContent, ElementName=birthDate}" Margin="5,0,0,0"/>
+                        </StackPanel>
                     </Grid>
                     <TextBlock HorizontalAlignment="Center"  VerticalAlignment="Top" x:Name="NoCards" Visibility="Hidden" Grid.Row="1" Grid.Column="0" Grid.RowSpan="5" Grid.ColumnSpan="2"  Foreground="LightSlateGray" FontSize="14">
                         No Cards
                     </TextBlock>
-
                     <Button  Grid.Row="2" Margin="20,20,20,20" x:Name="addStuff" ContextMenuService.IsEnabled="False" Content="+" HorizontalAlignment="Left" VerticalAlignment="Bottom" Click="btn_AddStuff" Height="30" BorderBrush="#FFA2B2BD"  Background="White" FontSize="16"  Width="30">
                         <Button.Resources>
                             <Style TargetType="{x:Type Border}">
@@ -355,29 +324,17 @@
                                 <MenuItem  Header="New group" Click="btn_AddNewGroup"/>
                                 <MenuItem Header="New client" Click="btn_AddNewClient"/>
                             </ContextMenu>
-
                         </Button.ContextMenu>
-
                     </Button>
-
                     <Button Visibility="Hidden" Content="{StaticResource Dustbin}" Padding="6" Grid.Row="2" Margin="20,20,20,20" x:Name="delete" HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="btn_Delete" Height="30" BorderBrush="#FFA2B2BD"  Background="White" FontSize="12"  Width="30">
                         <Button.Resources>
                             <Style TargetType="{x:Type Border}">
                                 <Setter Property="CornerRadius" Value="4"/>
                             </Style>
                         </Button.Resources>
-
-
                     </Button>
-
-
                 </Grid>
-
-
-
-
             </Grid>
-
         </Grid>
     </Border>
 </UserControl>

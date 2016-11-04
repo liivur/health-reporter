@@ -39,6 +39,7 @@ namespace HealthReporter.Controls
 
             groupDataGrid.ItemsSource = groups;
 
+
             NoCards.Visibility = Visibility.Visible;
             search.Visibility = Visibility.Hidden;
 
@@ -120,7 +121,7 @@ namespace HealthReporter.Controls
                         var client = new Client()
                         {
                             firstName = "No Name",
-                            lastName = "",
+                            lastName = "No Name",
                             groupId = this._group.id,
                             email = "",
                             gender = "",
@@ -190,6 +191,8 @@ namespace HealthReporter.Controls
 
         private void groupsDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+
+
             search.Visibility = Visibility.Visible;
             clientDetailDatagrid.Visibility = Visibility.Hidden;
             delete.Visibility = Visibility.Hidden;
@@ -219,6 +222,7 @@ namespace HealthReporter.Controls
 
         private void clientDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+           
             var repo = new ClientRepository();
             int clientCount = 0;
             if (this._group != null)
@@ -235,6 +239,7 @@ namespace HealthReporter.Controls
             }
             else
             {
+
                 delete.Visibility = Visibility.Visible;
                 clientDetailDatagrid.Visibility = Visibility.Visible;
                 NoCards.Visibility = Visibility.Hidden;
@@ -249,17 +254,21 @@ namespace HealthReporter.Controls
                 clientDetailDatagrid.DataContext = this._client;
 
             }
-
+            
 
         }
 
         private void SaveClientInfo(Client client)
         {
+
             if (client != null)
             {
+               
                 var repo = new ClientRepository();
                 DateTime enteredDate = Convert.ToDateTime(client.birthDate.ToString());
                 client.birthDate = String.Format("{0:yyyy-MM-dd}", enteredDate);
+                //MessageBox.Show(client.gender, "Message");
+               
                 repo.Update(client);
             }
 
@@ -358,11 +367,16 @@ namespace HealthReporter.Controls
 
         private void MenuItem_Delete(object sender, RoutedEventArgs e)
         {
-            //Finding the item what we are going to delete.
-            var item = (MenuItem)sender;
+              //Finding the item what we are going to delete.
+                var item = (MenuItem)sender;
             var contextMenu = (ContextMenu)item.Parent;
             var item2 = (DataGrid)contextMenu.PlacementTarget;
             var deleteobj = (Group)item2.SelectedCells[0].Item;
+
+            MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Are you sure you want to delete this?", "Delete Confirmation", System.Windows.MessageBoxButton.YesNo);
+            if (messageBoxResult == MessageBoxResult.Yes)
+            {
+              
 
             var repo = new GroupRepository();
             repo.Delete(deleteobj);
@@ -371,15 +385,38 @@ namespace HealthReporter.Controls
             var repoGroup = new GroupRepository();
             IList<Group> groups = repoGroup.FindAll();
 
-            // Add focus on first row      
+     
             groupDataGrid.ItemsSource = groups;
-            groupDataGrid.SelectedIndex = 0;
+           
 
             // Making clients grids empty
             clientDataGrid.ItemsSource = null;
             clientDetailDatagrid.DataContext = null;
+                }
+        }
+
+
+        private void MenuItem_Rename(object sender, RoutedEventArgs e)
+        {
+
+            //Finding the item what we are going to rename.
+            var item = (MenuItem)sender;
+            var contextMenu = (ContextMenu)item.Parent;
+            var item2 = (DataGrid)contextMenu.PlacementTarget;
+            var renameobj = (Group)item2.SelectedCells[0].Item;
+
+            // Adding focus on the rename obj row
+
+            groupDataGrid.Focus();
+          
+            groupDataGrid.SelectedItem = renameobj;          
+            groupDataGrid.IsReadOnly = false;
+            groupDataGrid.BeginEdit();
+           
+
 
         }
+        
 
         private void filterSearchBox(object sender, TextChangedEventArgs e)
         {
@@ -396,7 +433,8 @@ namespace HealthReporter.Controls
             
           }
 
-        
+     
 
+      
     }
 }
