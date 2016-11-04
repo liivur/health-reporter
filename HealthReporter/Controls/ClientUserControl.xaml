@@ -264,7 +264,7 @@
 
 
                         <TextBlock Foreground="LightSlateGray" HorizontalAlignment="Right" Grid.Column="0" Grid.Row="4" x:Name="Text4" Text="Gender" Margin="10"/>
-                        <ComboBox  HorizontalAlignment="Left" Background="White" Margin="10" Grid.Column="1" Grid.Row="4" Text="{Binding gender, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" SelectedValuePath="Tag" x:Name="gender" 
+                        <ComboBox Background="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}" HorizontalAlignment="Left" Style="{StaticResource ComboBoxFlatStyle}" Margin="10" Grid.Column="1" Grid.Row="4" Text="{Binding gender, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" SelectedValuePath="Tag" x:Name="gender" 
                                          Width="140"
                                         Validation.ErrorTemplate="{x:Null}">
 

@@ -83,7 +83,7 @@
                         <RowDefinition Height="35" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    <TextBlock Margin="10,10,10,5" Foreground="LightSlateGray" FontSize="14">Groups</TextBlock>
+                    <TextBlock Margin="10,10,10,5" Foreground="LightSlateGray" FontSize="14">Categorys</TextBlock>
                     <DataGrid Focusable="True" Grid.Row="1" Grid.Column="0" x:Name="catsDataGrid" HeadersVisibility="None" SelectedValuePath="name"  SelectionMode="Single" CanUserSortColumns="False" IsReadOnly="True" GridLinesVisibility="None" AutoGenerateColumns="False"  SelectionChanged="catsDataGrid_SelectionChanged" Background="{x:Null}" BorderBrush="{x:Null}" FontSize="13" Grid.RowSpan="3">
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding name}" Width="*"/>
