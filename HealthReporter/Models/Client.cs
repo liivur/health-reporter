@@ -58,7 +58,11 @@ namespace HealthReporter.Models
 
         internal IList<Client> FindSearchResult(string searchBy, Group group)
         {
-            return DatabaseUtility.getConnection().QuerySql<Client>("SELECT * FROM clients inner join groups on clients.groupId=groups.id WHERE (clients.firstname LIKE '%" + searchBy + "%' OR clients.lastName LIKE'%" + searchBy + "%') AND groups.name = '" + group.name+ "'" , group);
+            return DatabaseUtility.getConnection().QuerySql<Client>("SELECT * FROM clients inner join groups on clients.groupId=groups.id WHERE (clients.firstname LIKE '%" + searchBy + "%' OR clients.lastName LIKE'%" + searchBy + "%') AND groups.name = '" + group.name+ "' AND groups.id=@id" , group);
+        }
+        internal IList<Client> FindSearchResultAllClients(string searchBy)
+        {
+            return DatabaseUtility.getConnection().QuerySql<Client>("SELECT * FROM clients inner join groups on clients.groupId=groups.id WHERE (clients.firstname LIKE '%" + searchBy + "%' OR clients.lastName LIKE '%" + searchBy + "%' OR groups.name LIKE '%" + searchBy + "%') ");
         }
     }
 
