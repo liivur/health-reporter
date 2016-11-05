@@ -7,6 +7,7 @@
              xmlns:local="clr-namespace:HealthReporter.Controls"
              mc:Ignorable="d" Height="Auto" Width="Auto">
     <UserControl.Resources>
+        <Image x:Key="Dustbin" Source="/Images/dustbin.png" Stretch="Uniform"/>
         <ControlTemplate x:Key="ButtonStyle" TargetType="{x:Type Button}">
             <Border x:Name="button" CornerRadius="100" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}">
                 <ContentPresenter x:Name="content" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
@@ -56,19 +57,36 @@
 
         <Grid Name="grid" Height="auto" Width="auto">
             <Grid.RowDefinitions>
-                <RowDefinition Height="20"></RowDefinition>
+                <RowDefinition Height="70"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
-            <Grid Grid.Row="0" Background="#f5f5f5">
-                <Border BorderBrush="Gainsboro" BorderThickness="0.4">
-                    <StackPanel Orientation="Horizontal" >
-                        <Button x:Name="btnShowClients" Content="Clients" Click="btn_Clients"   VerticalAlignment="Top" BorderBrush="#f5f5f5" Height="20" Background="#f5f5f5" RenderTransformOrigin="0.632,-0.808" Grid.Column="2" HorizontalAlignment="Left" Width="60">
-                        </Button>
-                        <Button x:Name="btnShowTests" Content="Tests" Click="btn_Tests"  VerticalAlignment="Top" BorderBrush="#f5f5f5" Height="20" Background="#f5f5f5" Grid.Column="2" HorizontalAlignment="Left" Width="50">
-                        </Button>
-                    </StackPanel>
-                </Border>
-            </Grid>
+            <Border BorderBrush="LightSkyBlue" BorderThickness="2">
+                <Grid Grid.Row="0" Background="LightSkyBlue" HorizontalAlignment="Stretch" ShowGridLines="False" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="35"/>
+                        <RowDefinition Height="35"/>
+                    </Grid.RowDefinitions>
+                    <Border Grid.Row="0" VerticalAlignment="Bottom">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"  VerticalAlignment="Center">
+                            <Button  Background="White" x:Name="btnShowClients" Content="Clients" Click="btn_Clients"   VerticalAlignment="Top" BorderBrush="LightGray" Height="20"   Grid.Column="2" HorizontalAlignment="Center" Width="90">
+                                <Button.Resources>
+                                    <Style TargetType="{x:Type Border}">
+                                        <Setter Property="CornerRadius" Value="10,0,0,10"/>
+                                    </Style>
+                                </Button.Resources>
+                            </Button>
+                            <Button BorderBrush="LightGray" Width="90" Background="White" x:Name="btnShowTests" Content="Tests" Click="btn_Tests"  VerticalAlignment="Top"  Height="20"  Grid.Column="2" HorizontalAlignment="Center" >
+                                <Button.Resources>
+                                    <Style TargetType="{x:Type Border}">
+                                        <Setter Property="CornerRadius" Value="0,10,10,0"/>
+                                    </Style>
+                                </Button.Resources>
+                            </Button>
+                        </StackPanel>
+                    </Border>
+                    <TextBlock Foreground="DarkSlateGray" Grid.Row="1" x:Name="testTotal" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Grid>
+            </Border>
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="0.75*" />
@@ -125,10 +143,52 @@
                 <GridSplitter Grid.Column="1" Width="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ResizeDirection="Columns"/>
                 <Grid Grid.Column="2">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="35" />
+                        <RowDefinition Height="55" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    <TextBlock Grid.Row="0" Margin="10,10,10,5" Foreground="LightSlateGray" FontSize="14">Search</TextBlock>
+                    <TextBox  x:Name="search" Grid.Row="0" Height="20"  Margin="30,20,30,5" HorizontalAlignment="Stretch"  TextWrapping="Wrap" VerticalAlignment="Top" TextChanged="filterSearchBox">
+                        <TextBox.Resources>
+                            <Style TargetType="{x:Type Border}">
+                                <Setter Property="CornerRadius" Value="4"/>
+                            </Style>
+                        </TextBox.Resources>
+                        <TextBox.Style>
+                            <Style TargetType="TextBox">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=Text}" Value="">
+                                        <Setter Property="Background">
+                                            <Setter.Value>
+                                                <VisualBrush Stretch="None">
+                                                    <VisualBrush.Visual>
+                                                        <TextBlock Text="Search" Foreground="Gray"/>
+                                                    </VisualBrush.Visual>
+                                                </VisualBrush>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=Text}" Value="{x:Null}">
+                                        <Setter Property="Background">
+                                            <Setter.Value>
+                                                <VisualBrush Stretch="None">
+                                                    <VisualBrush.Visual>
+                                                        <TextBlock Text="Search" Foreground="Gray"/>
+                                                    </VisualBrush.Visual>
+                                                </VisualBrush>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsFocused}" Value="True">
+                                        <Setter Property="Background">
+                                            <Setter.Value>
+                                                <VisualBrush Stretch="None">
+                                                </VisualBrush>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBox.Style>
+                    </TextBox>
                     <DataGrid Grid.Row="1" Focusable="True" Grid.Column="0" x:Name="testsDataGrid" SelectionMode="Single" IsReadOnly="True" SelectedValuePath="test.name" CanUserSortColumns="False" HeadersVisibility="None" AutoGenerateColumns="False"  SelectionChanged="testsDataGrid_SelectionChanged" Background="{x:Null}" GridLinesVisibility="None" BorderBrush="{x:Null}" RenderTransformOrigin="0.5,0.5" >
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding test.name}" Width="*"/>
@@ -396,7 +456,12 @@
                         <TextBlock HorizontalAlignment="Right" Foreground="#616666 " Margin="0,10,10,10" TextWrapping="Wrap" RenderTransformOrigin="0.469,-1.188" Width="63" Grid.Row="7" Height="19"><Run Text="Descriptio"/><Run Text="n"/><LineBreak/><Run/></TextBlock>
                         <TextBox x:Name="TestDescriptionText" Margin="10" TextWrapping="Wrap" Text="{Binding description}" Grid.Row="7" Grid.Column="1"/>
                     </Grid>
-                    <Button x:Name="addStuffButton" ContextMenuService.IsEnabled="False" Template="{StaticResource ButtonStyle}" Content="+" Margin="0,15,22,0" VerticalAlignment="Top" Click="btn_AddStuff" Height="40" BorderBrush="#FFA2B2BD"  Background="White" FontWeight="Bold" FontSize="20" HorizontalAlignment="Right" Width="40">
+                    <Button Grid.Row="2" HorizontalAlignment="Left" x:Name="addStuffButton" ContextMenuService.IsEnabled="False"  Content="+" Margin="20,20,20,20" VerticalAlignment="Bottom" Click="btn_AddStuff" Height="30" BorderBrush="#FFA2B2BD"  Background="White"  FontSize="16"  Width="30">
+                        <Button.Resources>
+                            <Style TargetType="{x:Type Border}">
+                                <Setter Property="CornerRadius" Value="4"/>
+                            </Style>
+                        </Button.Resources>
                         <Button.ContextMenu>
                             <ContextMenu >
                                 <MenuItem Header="New test" Click="btn_AddNewTest"/>
@@ -406,7 +471,8 @@
                             </ContextMenu>
                         </Button.ContextMenu>
                     </Button>
-                    <Button x:Name="deleteTestButton" Content="Delete" Margin="10" Width="74" Click="btn_DeleteTest" Background="White" RenderTransformOrigin="-2.595,1" Grid.Row="2" HorizontalAlignment="Right" >
+
+                    <Button x:Name="deleteTestButton" Content="{StaticResource Dustbin}" Padding="6" Margin="10,10,20,10" Width="30" Height="30" Click="btn_DeleteTest" Background="White" RenderTransformOrigin="-2.595,1" Grid.Row="2" HorizontalAlignment="Right" >
                         <Button.Resources>
                             <Style TargetType="{x:Type Border}">
                                 <Setter Property="CornerRadius" Value="4"/>

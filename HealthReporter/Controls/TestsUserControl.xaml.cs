@@ -29,13 +29,24 @@ namespace HealthReporter.Controls
 
             var repo = new TestRepository();
             IList<Test> tests = repo.FindAll();
-            //noOfTests.Text = tests.Count.ToString();
+            
 
             decimalsSelector.ItemsSource = new List<int> { -2, -1, 0, 1, 2 };
 
             categorySelector.ItemsSource = catRep.FindAll();
 
-            btnShowTests.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFF0F0F0"));
+            btnShowTests.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#E0EEEE"));
+
+            findTestTotal();
+        }
+
+        private void findTestTotal()
+        {
+            // Total client amount
+            var repoT = new TestRepository();
+            IList<Test> alltests = repoT.FindAll();
+
+            testTotal.Text = alltests.Count.ToString() + " Tests";
         }
 
         private void btn_AddNewCategory(object sender, RoutedEventArgs e)
@@ -213,6 +224,7 @@ namespace HealthReporter.Controls
             {
                 if (lTest.test.id.SequenceEqual(newTest.id)) testsDataGrid.SelectedItem = lTest;
             }
+            findTestTotal();
         }
 
         private void catsDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e) //is called when a catecory is selected
@@ -560,7 +572,8 @@ namespace HealthReporter.Controls
                 GenderTabsItemssource(null);
 
                 IList<Test> tests = testRepo.FindAll();
-                //noOfTests.Text = tests.Count.ToString();
+                findTestTotal();
+               
             }
         }
 
@@ -626,21 +639,35 @@ namespace HealthReporter.Controls
             btnShowClients.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
         }
 
-        //private void filterSearchBox(object sender, TextChangedEventArgs e)
-        //{
-        //    string searchBy = search.Text;
+        private void filterSearchBox(object sender, TextChangedEventArgs e)
+        {
+            string searchBy = search.Text;
 
-        //    var testRepo = new TestRepository();
-        //    IList<Test> tests = testRepo.FindSearchResult(searchBy);
-
-        //    if (tests.Count != 0)
-        //    {
-        //        var categoryRepo = new TestCategoryRepository();
-        //        IList<TestCategory> categories = categoryRepo.GetCategoryByTest(tests[0]);
-        //        catsDataGrid.SelectedValue = categories[0].name;
-        //        testsDataGrid.SelectedValue = tests[0].name;
-        //    }
+            TestCategory selectedcategory = (TestCategory)catsDataGrid.SelectedItem;
             
-        //}
+            var repo = new TestRepository();
+            IList<Test> result = repo.FindSearchResult(searchBy, selectedcategory);
+            
+
+            IList<LastTest> tests = new List<LastTest>();
+            for (int i = 0; i < result.Count; i++)
+            {
+                if (i + 1 < result.Count)
+                {
+                    if (!result[i].categoryId.SequenceEqual(result[i + 1].categoryId))
+                    {
+                        tests.Add(new LastTest() { isLast = true, test = result[i] });
+                    }
+                    else tests.Add(new LastTest() { isLast = false, test = result[i] });
+                }
+                else tests.Add(new LastTest() { isLast = false, test = result[i] });
+            }
+            testsDataGrid.ItemsSource = tests;
+
+           
+            testsDataGrid.SelectedIndex = 0;
+
+
+        }
     }
 }

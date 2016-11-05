@@ -43,6 +43,21 @@ namespace HealthReporter.Controls
             NoCards.Visibility = Visibility.Visible;
             search.Visibility = Visibility.Hidden;
 
+            btnShowClients.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#E0EEEE"));
+
+            groupDataGrid.SelectedIndex = 0;
+
+            findClientTotal();
+
+        }
+
+        private void findClientTotal()
+        {
+            // Total client amount
+            var repoC = new ClientRepository();
+            IList<Client> allclients = repoC.FindAll();
+
+            clientTotal.Text = allclients.Count.ToString() + " Clients";
         }
 
 
@@ -152,6 +167,8 @@ namespace HealthReporter.Controls
                     Keyboard.Focus(firstName);
                     firstName.SelectAll();
 
+                    findClientTotal();
+
 
                 }
             }
@@ -191,7 +208,7 @@ namespace HealthReporter.Controls
 
         private void groupsDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            
 
             search.Visibility = Visibility.Visible;
             clientDetailDatagrid.Visibility = Visibility.Hidden;
@@ -294,6 +311,8 @@ namespace HealthReporter.Controls
                 int row = clients.Count - 1;
                 clientDetailDatagrid.DataContext = this._client;
                 clientDataGrid.SelectedIndex = row;
+
+                findClientTotal();
             }
         }
 
@@ -304,6 +323,8 @@ namespace HealthReporter.Controls
 
         private void btn_Clients(object sender, RoutedEventArgs e)
         {
+            SaveClientInfo(this._client);
+
             ClientUserControl obj = new ClientUserControl(_parent);
             _parent.stkTest.Children.Clear();
             _parent.stkTest.Children.Add(obj);
@@ -314,6 +335,8 @@ namespace HealthReporter.Controls
 
         private void btn_Tests(object sender, RoutedEventArgs e)
         {
+            SaveClientInfo(this._client);
+
             TestsUserControl obj = new TestsUserControl(_parent);
             _parent.stkTest.Children.Clear();
             _parent.stkTest.Children.Add(obj);
@@ -392,7 +415,9 @@ namespace HealthReporter.Controls
             // Making clients grids empty
             clientDataGrid.ItemsSource = null;
             clientDetailDatagrid.DataContext = null;
-                }
+
+            findClientTotal();
+            }
         }
 
 

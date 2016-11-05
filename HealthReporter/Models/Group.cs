@@ -2,6 +2,7 @@
 using Insight.Database;
 using System;
 using System.Collections.Generic;
+using System.Data.SQLite;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,7 +26,9 @@ namespace HealthReporter.Models
         public void Delete(Group group)
         {
             var connection = DatabaseUtility.getConnection();
-
+            const string sqlString = "PRAGMA foreign_keys = ON;";
+            SQLiteCommand command = new SQLiteCommand(sqlString, connection);
+            command.ExecuteNonQuery();
             var res = connection.InsertSql("DELETE from groups where id=@id", group);
 
         }

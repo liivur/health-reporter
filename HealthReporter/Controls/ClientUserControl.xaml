@@ -29,19 +29,38 @@
         </ControlTemplate>
     </UserControl.Resources>
     <Border>
-        <Grid Name="grid" Height="auto" Width="auto">
+        <Grid Name="grid" Height="auto" Width="auto" >
             <Grid.RowDefinitions>
-                <RowDefinition Height="20"></RowDefinition>
+                <RowDefinition Height="70"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
-            <Grid Grid.Row="0" Background="#f5f5f5">
-                <Border BorderBrush="Gainsboro" BorderThickness="0.4">
-                    <StackPanel Orientation="Horizontal" >
-                        <Button x:Name="btnShowClients" Content="Clients" Click="btn_Clients"   VerticalAlignment="Top" BorderBrush="#f5f5f5" Height="20" Background="#f5f5f5" RenderTransformOrigin="0.632,-0.808" Grid.Column="2" HorizontalAlignment="Left" Width="60"/>
-                        <Button x:Name="btnShowTests" Content="Tests" Click="btn_Tests"  VerticalAlignment="Top" BorderBrush="#f5f5f5" Height="20" Background="#f5f5f5" Grid.Column="2" HorizontalAlignment="Left" Width="50"/>
+            <Border BorderBrush="LightSkyBlue" BorderThickness="2">
+                <Grid Grid.Row="0" Background="LightSkyBlue" HorizontalAlignment="Stretch" ShowGridLines="False" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="35"/>
+                    <RowDefinition Height="35"/>
+                </Grid.RowDefinitions>
+                <Border Grid.Row="0" VerticalAlignment="Bottom">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"  VerticalAlignment="Center">
+                        <Button Background="White" x:Name="btnShowClients" Content="Clients" Click="btn_Clients"   VerticalAlignment="Top" BorderBrush="LightGray" Height="20"   Grid.Column="2" HorizontalAlignment="Center" Width="90">
+                            <Button.Resources>
+                                <Style TargetType="{x:Type Border}">
+                                    <Setter Property="CornerRadius" Value="10,0,0,10"/>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
+                        <Button BorderBrush="LightGray" Width="90" Background="White" x:Name="btnShowTests" Content="Tests" Click="btn_Tests"  VerticalAlignment="Top"  Height="20"  Grid.Column="2" HorizontalAlignment="Center" >
+                            <Button.Resources>
+                                <Style TargetType="{x:Type Border}">
+                                    <Setter Property="CornerRadius" Value="0,10,10,0"/>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
                     </StackPanel>
                 </Border>
-            </Grid>
+                    <TextBlock Grid.Row="1" x:Name="clientTotal" HorizontalAlignment="Center" Foreground="DarkSlateGray" VerticalAlignment="Center"/>
+                </Grid>
+            </Border>
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="0.75*" />
@@ -169,7 +188,7 @@
                             <Style TargetType="{x:Type DataGridCell}">
                                 <Style.Triggers>
                                     <Trigger Property="DataGridCell.IsSelected" Value="True">
-                                        <Setter Property="Background" Value="#eee9e9" />
+                                        <Setter Property="Background" Value="#f5f5f5" />
                                         <Setter Property="Foreground" Value="Black" />
                                         <Setter Property="BorderThickness" Value="0"/>
                                     </Trigger>
@@ -178,7 +197,7 @@
                             <Style TargetType="{x:Type DataGrid}">
                                 <Style.Triggers>
                                     <Trigger Property="IsHitTestVisible" Value="False">
-                                        <Setter Property="Foreground" Value="Gainsboro" />
+                                        <Setter Property="Foreground" Value="#f5f5f5" />
                                         <Setter Property="Margin" Value="15,0,0,0" />
                                     </Trigger>
                                 </Style.Triggers>
@@ -190,7 +209,7 @@
                                 <Setter Property="Margin" Value="15,0,0,0" />
                                 <Style.Triggers>
                                     <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="#eee9e9"/>
+                                        <Setter Property="Background" Value="#f5f5f5"/>
                                         <Setter Property="Margin" Value="15,0,0,0" />
                                     </Trigger>
                                 </Style.Triggers>

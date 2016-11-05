@@ -32,10 +32,16 @@ namespace HealthReporter.Models
             return DatabaseUtility.getConnection().QuerySql<Test>("SELECT * FROM tests WHERE categoryId = @id", cat);
         }
 
-        internal IList<Test> FindSearchResult(string searchBy)
+
+        internal IList<Test> FindSearchResult(string searchBy, TestCategory category)
         {
-            return DatabaseUtility.getConnection().QuerySql<Test>("SELECT * FROM tests WHERE name LIKE '%" + searchBy + "%'");
+ 
+            return DatabaseUtility.getConnection().QuerySql<Test>("SELECT * FROM tests inner join test_categories on tests.categoryId=test_categories.id WHERE (tests.name LIKE '%" + searchBy + "%') AND (test_categories.name = '" + category.name + "'"+ " OR test_categories.parentId=@id)", category);
         }
+        //internal IList<Test> FindSearchResult(string searchBy)
+        //{
+        //    return DatabaseUtility.getConnection().QuerySql<Test>("SELECT * FROM tests WHERE name LIKE '%" + searchBy + "%'");
+        //}
 
         public void Update(Test test)
         {

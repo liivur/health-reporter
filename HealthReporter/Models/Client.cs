@@ -18,6 +18,7 @@ namespace HealthReporter.Models
         {
             var connection = DatabaseUtility.getConnection();
             client.id = System.Guid.NewGuid().ToByteArray();
+            
             var res = connection.InsertSql("INSERT INTO clients (id, firstName, lastName, groupId, email, gender, birthDate) values(@id, @firstName, @lastName, @groupId, @email, @gender, @birthDate)", client);
         }
 
@@ -29,7 +30,9 @@ namespace HealthReporter.Models
         public void Delete(Client client)
         {
             var connection = DatabaseUtility.getConnection();
-
+            const string sqlString = "PRAGMA foreign_keys = ON;";
+            SQLiteCommand command = new SQLiteCommand(sqlString, connection);
+            command.ExecuteNonQuery();
             var res = connection.InsertSql("DELETE from clients where id=@id", client);
 
         }
