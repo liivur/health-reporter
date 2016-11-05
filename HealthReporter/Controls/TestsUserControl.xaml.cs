@@ -16,6 +16,7 @@ namespace HealthReporter.Controls
     public partial class TestsUserControl : UserControl
     {
         private MainWindow _parent;
+        private static Test selectedTest;
         public TestsUserControl(MainWindow parent)
         {          
             InitializeComponent();
@@ -229,8 +230,6 @@ namespace HealthReporter.Controls
 
         private void catsDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e) //is called when a catecory is selected
         {
-            saveChangesToDb((Test)testName.DataContext);
-
             var grid = sender as DataGrid;
             var selected = grid.SelectedItems;
 
@@ -241,11 +240,8 @@ namespace HealthReporter.Controls
             }
         }
         
-
         private void testsDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e) //is called when a test is selected
         {
-            saveChangesToDb((Test)testName.DataContext);
-
             var grid = sender as DataGrid;
             var selected = grid.SelectedItems;
 
@@ -253,8 +249,12 @@ namespace HealthReporter.Controls
             {
                 LastTest ltest = (LastTest)selected[0];
                 Test test = ltest.test;
+                selectedTest = test;
                 updateTestView(test);
+                
+                testDetailDatagrid.Visibility = Visibility.Visible;
             }
+            else testDetailDatagrid.Visibility = Visibility.Hidden;
         }
 
         private void menRatingsDatagrid_Unloaded(object sender, RoutedEventArgs e)
@@ -272,7 +272,6 @@ namespace HealthReporter.Controls
         private void categorySelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             bool catChanged = saveChangesToDb((Test)testName.DataContext);
-
             if (catChanged)
             {
                 TestCategory selected = (TestCategory)categorySelector.SelectedItem;
@@ -325,6 +324,7 @@ namespace HealthReporter.Controls
                 else tests.Add(new LastTest() { isLast = false, test = cat_tests[i] });
             }
             testsDataGrid.ItemsSource = tests;
+            
         }
 
         //updates test fields
@@ -418,8 +418,9 @@ namespace HealthReporter.Controls
             if (test == null) return false;
 
             var repo = new TestRepository();
-            if (repo.Get(test).Count == 0) return false;
-            Test dbTest = repo.Get(test)[0];
+            IList<Test> tests = repo.Get(test);
+            if (tests.Count == 0) return false;
+            Test dbTest = tests[0];
 
             if (!test.categoryId.SequenceEqual(dbTest.categoryId) || test.decimals!=dbTest.decimals || test.description != dbTest.description || test.formulaF != dbTest.formulaF ||
                 test.formulaM != dbTest.formulaM || test.name != dbTest.name || test.units != dbTest.units || test.weight != dbTest.weight || test.position != dbTest.position)
@@ -451,7 +452,6 @@ namespace HealthReporter.Controls
 
         private void btn_AddStuff(object sender, RoutedEventArgs e)
         {
-            saveChangesToDb((Test)testName.DataContext);
             (sender as Button).ContextMenu.IsEnabled = true;
             (sender as Button).ContextMenu.PlacementTarget = (sender as Button);
             (sender as Button).ContextMenu.Placement = System.Windows.Controls.Primitives.PlacementMode.Bottom;
@@ -623,7 +623,6 @@ namespace HealthReporter.Controls
 
         private void btn_Clients(object sender, RoutedEventArgs e)
         {
-            saveChangesToDb((Test)testName.DataContext);
             ClientUserControl obj = new ClientUserControl(_parent);
             _parent.stkTest.Children.Clear();
             _parent.stkTest.Children.Add(obj);
@@ -633,7 +632,6 @@ namespace HealthReporter.Controls
 
         private void btn_Tests(object sender, RoutedEventArgs e)
         {
-            saveChangesToDb((Test)testName.DataContext);
             TestsUserControl obj = new TestsUserControl(_parent);
             _parent.stkTest.Children.Clear();
             _parent.stkTest.Children.Add(obj);
@@ -665,11 +663,13 @@ namespace HealthReporter.Controls
                 else tests.Add(new LastTest() { isLast = false, test = result[i] });
             }
             testsDataGrid.ItemsSource = tests;
-
-           
             testsDataGrid.SelectedIndex = 0;
+        }
 
-
+        private void TextBox_SourceUpdated(object sender, System.Windows.Data.DataTransferEventArgs e)
+        {
+            var rep = new TestRepository();
+            rep.Update((Test)testName.DataContext);
         }
     }
 }

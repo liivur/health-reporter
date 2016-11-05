@@ -36,7 +36,7 @@ namespace HealthReporter.Models
         internal IList<Test> FindSearchResult(string searchBy, TestCategory category)
         {
  
-            return DatabaseUtility.getConnection().QuerySql<Test>("SELECT * FROM tests inner join test_categories on tests.categoryId=test_categories.id WHERE (tests.name LIKE '%" + searchBy + "%') AND (test_categories.name = '" + category.name + "'"+ " OR test_categories.parentId=@id)", category);
+            return DatabaseUtility.getConnection().QuerySql<Test>("SELECT * FROM tests inner join test_categories on tests.categoryId=test_categories.id WHERE (tests.name LIKE '%" + searchBy + "%') AND (test_categories.name = '" + category.name + "'"+ " OR test_categories.parentId=@id) ORDER BY categoryId", category);
         }
         //internal IList<Test> FindSearchResult(string searchBy)
         //{
