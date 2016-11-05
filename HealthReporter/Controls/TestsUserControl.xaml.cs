@@ -359,6 +359,8 @@ namespace HealthReporter.Controls
             }
             GenderTabsItemssource(new System.Collections.ObjectModel.ObservableCollection<TabItem>(tabitems));
 
+            if (tabitems.Count > 0) MenAgesTab.SelectedIndex = 0;
+
             //show subcategory
             var catRep = new TestCategoryRepository();
             foreach (TestCategory cat in categorySelector.Items)
