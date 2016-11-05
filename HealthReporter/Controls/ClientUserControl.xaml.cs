@@ -28,6 +28,7 @@ namespace HealthReporter.Controls
         private Client _client;
         private Group _group;
 
+        private bool allClientsButtonselected;
 
         public ClientUserControl(MainWindow parent)
         {
@@ -45,7 +46,7 @@ namespace HealthReporter.Controls
 
             btnShowClients.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#E0EEEE"));
 
-            groupDataGrid.SelectedIndex = 0;
+           
 
             findClientTotal();
 
@@ -208,13 +209,16 @@ namespace HealthReporter.Controls
 
         private void groupsDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            
+            allClientsButtonselected = false;
+            allClientsButton.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#F0F8FF"));
 
-            search.Visibility = Visibility.Visible;
+            search.Visibility = Visibility.Hidden;
+            searchAllClients.Visibility = Visibility.Hidden;
             clientDetailDatagrid.Visibility = Visibility.Hidden;
             delete.Visibility = Visibility.Hidden;
             NoCards.Visibility = Visibility.Visible;
             SaveClientInfo(this._client);
+            
 
             Group selectedGroup = (Group)groupDataGrid.SelectedItem;
 
@@ -225,8 +229,9 @@ namespace HealthReporter.Controls
             var repo = new ClientRepository();
             if (this._group != null)
             {
+                search.Visibility = Visibility.Visible;
                 IList<Client> clients = repo.GetClientsByGroupName(this._group);
-
+                search.Text = "";
                 clientDataGrid.ItemsSource = clients;
                 if (clients.Count > 0)
                 {
@@ -236,43 +241,68 @@ namespace HealthReporter.Controls
 
             }
         }
+     
 
         private void clientDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-           
-            var repo = new ClientRepository();
-            int clientCount = 0;
-            if (this._group != null)
+
+            // When all clients tab is selected
+            if (this.allClientsButtonselected == true)
             {
-                IList<Client> clients = repo.GetClientsByGroupName(this._group);
-                clientCount = clients.Count;
-                SaveClientInfo(this._client);
-            }
-            if (clientCount <= 0)
-            {
-                clientDetailDatagrid.Visibility = Visibility.Hidden;
-                delete.Visibility = Visibility.Hidden;
-                NoCards.Visibility = Visibility.Visible;
+                allClientsButton.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#ADD8E6"));
+                Client selClient = (Client)clientDataGrid.SelectedItem;
+                searchAllClients.Visibility = Visibility.Visible;
+                search.Visibility = Visibility.Hidden;
+                //MessageBox.Show(selClient.firstName.ToString(), "");
+                if (selClient != null)
+                {
+                    
+                    SaveClientInfo(this._client);
+                    this._client = selClient;
+                    NoCards.Visibility = Visibility.Hidden;
+                    clientDetailDatagrid.Visibility = Visibility.Visible;
+                    
+                    clientDetailDatagrid.DataContext = selClient;
+                }
+
             }
             else
             {
 
-                delete.Visibility = Visibility.Visible;
-                clientDetailDatagrid.Visibility = Visibility.Visible;
-                NoCards.Visibility = Visibility.Hidden;
+                var repo = new ClientRepository();
+                int clientCount = 0;
+                if (this._group != null)
+                {
+                    IList<Client> clients = repo.GetClientsByGroupName(this._group);
+                    clientCount = clients.Count;
+                    SaveClientInfo(this._client);
+                }
+                if (clientCount <= 0)
+                {
+                    clientDetailDatagrid.Visibility = Visibility.Hidden;
+                    delete.Visibility = Visibility.Hidden;
+                    NoCards.Visibility = Visibility.Visible;
+                }
+                else
+                {
 
-                SaveClientInfo(this._client);
+                    delete.Visibility = Visibility.Visible;
+                    clientDetailDatagrid.Visibility = Visibility.Visible;
+                    NoCards.Visibility = Visibility.Hidden;
+
+                    SaveClientInfo(this._client);
 
 
-                Client selectedClient = (Client)clientDataGrid.SelectedItem;
-                this._client = selectedClient;
+                    Client selectedClient = (Client)clientDataGrid.SelectedItem;
+                    this._client = selectedClient;
 
 
-                clientDetailDatagrid.DataContext = this._client;
+                    clientDetailDatagrid.DataContext = this._client;
+
+                }
+
 
             }
-            
-
         }
 
         private void SaveClientInfo(Client client)
@@ -336,6 +366,8 @@ namespace HealthReporter.Controls
         private void btn_Tests(object sender, RoutedEventArgs e)
         {
             SaveClientInfo(this._client);
+            allClientsButtonselected = false;
+            allClientsButton.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#F0F8FF"));
 
             TestsUserControl obj = new TestsUserControl(_parent);
             _parent.stkTest.Children.Clear();
@@ -430,6 +462,7 @@ namespace HealthReporter.Controls
             var item2 = (DataGrid)contextMenu.PlacementTarget;
             var renameobj = (Group)item2.SelectedCells[0].Item;
 
+           
             // Adding focus on the rename obj row
 
             groupDataGrid.Focus();
@@ -458,8 +491,45 @@ namespace HealthReporter.Controls
             
           }
 
-     
+        private void filterSearchBoxAllClients(object sender, TextChangedEventArgs e)
+        {
 
-      
+            string searchBy = searchAllClients.Text;
+
+            var repo = new ClientRepository();
+            IList<Client> clients = repo.FindSearchResultAllClients(searchBy);
+
+
+            clientDataGrid.ItemsSource = clients;
+            clientDataGrid.SelectedIndex = 0;
+
+
+        }
+
+        private void search_GotFocus(object sender, RoutedEventArgs e)
+        {
+            SaveClientInfo(this._client);
+           
+        }
+
+        private void btn_ShowAllClients(object sender, RoutedEventArgs e)
+        {
+            
+            var repo = new ClientRepository();
+            groupDataGrid.SelectedItem = null;
+
+
+            allClientsButtonselected = true;
+
+        IList<Client> clients = repo.FindAll();
+               
+            clientDataGrid.ItemsSource = clients;
+            clientDataGrid.SelectedIndex = 0;
+
+            allClientsButton.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#ADD8E6"));
+
+
+        }
+        }
     }
-}
+
