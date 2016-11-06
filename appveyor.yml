@@ -5,9 +5,9 @@ before_build:
 build:
   verbosity: detailed
 after_build:
-- cmd: 7z a release.zip %APPVEYOR_BUILD_FOLDER%\HealthReporter\bin\Release\*
+- cmd: 7z a release2.zip %APPVEYOR_BUILD_FOLDER%\HealthReporter\bin\Release\*
 artifacts:
-- path: release.zip
+- path: release2.zip
   name: release
 deploy:
 - provider: FTP
