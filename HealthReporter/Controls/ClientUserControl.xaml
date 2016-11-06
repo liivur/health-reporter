@@ -384,8 +384,8 @@
                         </Button.Resources>
                         <Button.ContextMenu>
                             <ContextMenu>
-                                <MenuItem  Header="New group" Click="btn_AddNewGroup"/>
-                                <MenuItem Header="New client" Click="btn_AddNewClient"/>
+                                <MenuItem Header="New group" Click="btn_AddNewGroup" x:Name="newGroup"/>
+                                <MenuItem Header="New client" Click="btn_AddNewClient" x:Name="newClient"/>
                             </ContextMenu>
                         </Button.ContextMenu>
                     </Button>
