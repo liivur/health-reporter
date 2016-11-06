@@ -7,7 +7,7 @@ build:
 after_build:
 - cmd: 7z a release2.zip %APPVEYOR_BUILD_FOLDER%\HealthReporter\bin\Release\*
 before_test:
-- cmd: cp %APPVEYOR_BUILD_FOLDER%\HealthReporter\bin\Release\* %APPVEYOR_BUILD_FOLDER%\HealthReporter\bin\Debug\
+- cmd: cp -R %APPVEYOR_BUILD_FOLDER%\HealthReporter\bin\Release %APPVEYOR_BUILD_FOLDER%\HealthReporter\bin\Debug
 artifacts:
 - path: release2.zip
   name: release
