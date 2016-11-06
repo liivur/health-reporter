@@ -60,8 +60,8 @@
                 <RowDefinition Height="70"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
-            <Border BorderBrush="LightSkyBlue" BorderThickness="2">
-                <Grid Grid.Row="0" Background="LightSkyBlue" HorizontalAlignment="Stretch" ShowGridLines="False" >
+            <Border BorderBrush="#FFF0F0F0" BorderThickness="2">
+                <Grid Grid.Row="0" Background="White" HorizontalAlignment="Stretch" ShowGridLines="False" >
                     <Grid.RowDefinitions>
                         <RowDefinition Height="35"/>
                         <RowDefinition Height="35"/>
@@ -101,7 +101,7 @@
                         <RowDefinition Height="35" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    <TextBlock Margin="10,10,10,5" Foreground="LightSlateGray" FontSize="14">Categorys</TextBlock>
+                    <TextBlock Margin="10,10,10,5" Foreground="LightSlateGray" FontSize="14">Categories</TextBlock>
                     <DataGrid Focusable="True" Grid.Row="1" Grid.Column="0" x:Name="catsDataGrid" HeadersVisibility="None" SelectedValuePath="name"  SelectionMode="Single" CanUserSortColumns="False" IsReadOnly="True" GridLinesVisibility="None" AutoGenerateColumns="False"  SelectionChanged="catsDataGrid_SelectionChanged" Background="{x:Null}" BorderBrush="{x:Null}" FontSize="13" Grid.RowSpan="3">
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding name}" Width="*"/>
