@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -16,6 +17,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.ComponentModel;
 
 namespace HealthReporter.Controls
 {
@@ -26,7 +28,7 @@ namespace HealthReporter.Controls
     {
         private MainWindow _parent;
         private Client _client;
-        private Group _group;
+        private Models.Group _group;
 
         private bool allClientsButtonselected;
 
@@ -36,7 +38,7 @@ namespace HealthReporter.Controls
             this._parent = parent;
 
             var repo = new GroupRepository();
-            IList<Group> groups = repo.FindAll();
+            IList<Models.Group> groups = repo.FindAll();
 
             groupDataGrid.ItemsSource = groups;
 
@@ -64,6 +66,11 @@ namespace HealthReporter.Controls
 
         private void btn_AddStuff(object sender, RoutedEventArgs e)
         {
+            if (this._client != null && validationCheck() == false)
+            {
+                MessageBox.Show("Please fill required fields");
+                return;
+            }
             SaveClientInfo(this._client);
             (sender as Button).ContextMenu.IsEnabled = true;
             (sender as Button).ContextMenu.PlacementTarget = (sender as Button);
@@ -76,7 +83,7 @@ namespace HealthReporter.Controls
         {
             try
             {
-                var group = new Group()
+                var group = new Models.Group()
                 {
                     name = "untitled group",
                 };
@@ -92,7 +99,7 @@ namespace HealthReporter.Controls
 
             // Updating Group menu
             var repo = new GroupRepository();
-            IList<Group> groups = repo.FindAll();
+            IList<Models.Group> groups = repo.FindAll();
 
             // Add focus on new added row, put row into editable mode          
             int row = groups.Count - 1;
@@ -122,7 +129,7 @@ namespace HealthReporter.Controls
 
                 //Cheking if there is any groups in the database
                 var groupRepo = new GroupRepository();
-                IList<Group> groups = groupRepo.FindAll();
+                IList<Models.Group> groups = groupRepo.FindAll();
                 if (groups.Count == 0)
                 {
                     MessageBox.Show("Please enter group first.", "Message");
@@ -140,7 +147,7 @@ namespace HealthReporter.Controls
                             lastName = "No Name",
                             groupId = this._group.id,
                             email = "",
-                            gender = "",
+                            gender = "1",
                             birthDate = String.Format("{0:yyyy-MM-dd}", enteredDate)
                         };
 
@@ -182,7 +189,7 @@ namespace HealthReporter.Controls
 
             try
             {
-                var group = new Group()
+                var group = new Models.Group()
                 {
                     name = "untitled group",
                 };
@@ -197,18 +204,46 @@ namespace HealthReporter.Controls
 
             //updating values in groups menu
             var repo = new GroupRepository();
-            IList<Group> groups = repo.FindAll();
+            IList<Models.Group> groups = repo.FindAll();
 
             groupDataGrid.ItemsSource = groups;
 
 
 
-
-
         }
+
+        private bool messageShown=false;
 
         private void groupsDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+
+            if (allClientsButtonselected == true && this._client != null && validationCheck() == false)
+            {
+                groupDataGrid.IsEnabled = false;
+                if (messageShown == false)
+                {
+                    MessageBox.Show("Please fill required fields");
+                    messageShown = true;
+                }
+                else
+                {
+                    messageShown = false;
+                }
+
+                Dispatcher.BeginInvoke(new Action(delegate {
+                    groupDataGrid.SelectedItem = this._group;
+                }), System.Windows.Threading.DispatcherPriority.Normal, null);
+                groupDataGrid.IsEnabled = false;
+                groupDataGrid.IsEnabled = true;
+                clientDetailDatagrid.Visibility = Visibility.Visible;
+                NoCards.Visibility = Visibility.Hidden;
+                search.Visibility = Visibility.Visible;
+                search.Visibility = Visibility.Hidden;
+                allClientsButton.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#ADD8E6"));
+
+                return;
+            }
+
             allClientsButtonselected = false;
             allClientsButton.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#F0F8FF"));
 
@@ -217,10 +252,37 @@ namespace HealthReporter.Controls
             clientDetailDatagrid.Visibility = Visibility.Hidden;
             delete.Visibility = Visibility.Hidden;
             NoCards.Visibility = Visibility.Visible;
-            SaveClientInfo(this._client);
+
             
 
-            Group selectedGroup = (Group)groupDataGrid.SelectedItem;
+            if (this._group!=null && this._client != null && validationCheck() == false)
+            {
+                groupDataGrid.IsEnabled = false;
+                if (messageShown == false)
+                {
+                    MessageBox.Show("Please fill required fields");
+                    messageShown = true;
+                }else
+                {
+                    messageShown = false;
+                }
+               
+                Dispatcher.BeginInvoke(new Action(delegate {
+                    groupDataGrid.SelectedItem = this._group;
+                }), System.Windows.Threading.DispatcherPriority.Normal, null);
+                groupDataGrid.IsEnabled = false;
+                groupDataGrid.IsEnabled = true;
+                clientDetailDatagrid.Visibility = Visibility.Visible;
+                NoCards.Visibility = Visibility.Hidden;
+                search.Visibility = Visibility.Visible;
+
+                return;
+            }
+            SaveClientInfo(this._client);
+
+
+            Models.Group selectedGroup = (Models.Group)groupDataGrid.SelectedItem;
+
 
             this._group = selectedGroup;
 
@@ -241,19 +303,44 @@ namespace HealthReporter.Controls
 
             }
         }
-     
+        
 
         private void clientDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (this._client != null && validationCheck() == false)
+            {
+                clientDataGrid.IsEnabled = false;
+                if (messageShown == false)
+                {
+                    MessageBox.Show("Please fill required fields");
+                    messageShown = true;
+                }
+                else
+                {
+                    messageShown = false;
+                }
+                Dispatcher.BeginInvoke(new Action(delegate {
+                    clientDataGrid.SelectedItem = this._client;
+                }), System.Windows.Threading.DispatcherPriority.Normal, null);
+                clientDataGrid.IsEnabled = false;
+                clientDataGrid.IsEnabled = true;
+
+               
+
+
+                return;
+            }
 
             // When all clients tab is selected
             if (this.allClientsButtonselected == true)
             {
+
                 allClientsButton.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#ADD8E6"));
                 Client selClient = (Client)clientDataGrid.SelectedItem;
                 searchAllClients.Visibility = Visibility.Visible;
                 search.Visibility = Visibility.Hidden;
-                //MessageBox.Show(selClient.firstName.ToString(), "");
+
+ 
                 if (selClient != null)
                 {
                     
@@ -266,17 +353,23 @@ namespace HealthReporter.Controls
                 }
 
             }
+            //Otherwise some group is selected
             else
             {
 
                 var repo = new ClientRepository();
                 int clientCount = 0;
+
+                //If we have group
                 if (this._group != null)
                 {
                     IList<Client> clients = repo.GetClientsByGroupName(this._group);
                     clientCount = clients.Count;
+                    
                     SaveClientInfo(this._client);
                 }
+
+                //Checking if we have clients under selected group
                 if (clientCount <= 0)
                 {
                     clientDetailDatagrid.Visibility = Visibility.Hidden;
@@ -289,7 +382,7 @@ namespace HealthReporter.Controls
                     delete.Visibility = Visibility.Visible;
                     clientDetailDatagrid.Visibility = Visibility.Visible;
                     NoCards.Visibility = Visibility.Hidden;
-
+                   
                     SaveClientInfo(this._client);
 
 
@@ -304,6 +397,17 @@ namespace HealthReporter.Controls
 
             }
         }
+        private bool validationCheck()
+        {
+            if (String.IsNullOrWhiteSpace(this._client.firstName) || String.IsNullOrWhiteSpace(this._client.lastName) ||
+              String.IsNullOrWhiteSpace(this._client.gender) || String.IsNullOrWhiteSpace(this._client.birthDate) ||
+              (!String.IsNullOrWhiteSpace(this._client.email) && !Regex.IsMatch(this._client.email, @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$")))
+            {
+                return false;
+            }
+            return true;
+        }
+
 
         private void SaveClientInfo(Client client)
         {
@@ -332,7 +436,7 @@ namespace HealthReporter.Controls
                 var repo = new ClientRepository();
                 repo.Delete(client);
 
-
+                
                 //updating values in clients menu
                 var repoClient = new ClientRepository();
                 IList<Client> clients = repoClient.GetClientsByGroupName(this._group);
@@ -353,6 +457,11 @@ namespace HealthReporter.Controls
 
         private void btn_Clients(object sender, RoutedEventArgs e)
         {
+            if (this._client != null && validationCheck() == false)
+            {
+                MessageBox.Show("Please fill required fields");
+                return;
+            }
             SaveClientInfo(this._client);
 
             ClientUserControl obj = new ClientUserControl(_parent);
@@ -365,6 +474,11 @@ namespace HealthReporter.Controls
 
         private void btn_Tests(object sender, RoutedEventArgs e)
         {
+            if (this._client != null && validationCheck() == false)
+            {
+                MessageBox.Show("Please fill required fields");
+                return;
+            }
             SaveClientInfo(this._client);
             allClientsButtonselected = false;
             allClientsButton.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#F0F8FF"));
@@ -384,9 +498,9 @@ namespace HealthReporter.Controls
             {
                 if (groupDataGrid.SelectedItem != null)
                 {
-                    if (groupDataGrid.SelectedItem is Group)
+                    if (groupDataGrid.SelectedItem is Models.Group)
                     {
-                        var row = (Group)groupDataGrid.SelectedItem;
+                        var row = (Models.Group)groupDataGrid.SelectedItem;
 
                         if (row != null)
                         {
@@ -426,7 +540,7 @@ namespace HealthReporter.Controls
                 var item = (MenuItem)sender;
             var contextMenu = (ContextMenu)item.Parent;
             var item2 = (DataGrid)contextMenu.PlacementTarget;
-            var deleteobj = (Group)item2.SelectedCells[0].Item;
+            var deleteobj = (Models.Group)item2.SelectedCells[0].Item;
 
             MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Are you sure you want to delete this?", "Delete Confirmation", System.Windows.MessageBoxButton.YesNo);
             if (messageBoxResult == MessageBoxResult.Yes)
@@ -438,7 +552,7 @@ namespace HealthReporter.Controls
 
             // Updating Group menu
             var repoGroup = new GroupRepository();
-            IList<Group> groups = repoGroup.FindAll();
+            IList<Models.Group> groups = repoGroup.FindAll();
 
      
             groupDataGrid.ItemsSource = groups;
@@ -460,7 +574,7 @@ namespace HealthReporter.Controls
             var item = (MenuItem)sender;
             var contextMenu = (ContextMenu)item.Parent;
             var item2 = (DataGrid)contextMenu.PlacementTarget;
-            var renameobj = (Group)item2.SelectedCells[0].Item;
+            var renameobj = (Models.Group)item2.SelectedCells[0].Item;
 
            
             // Adding focus on the rename obj row
@@ -508,13 +622,24 @@ namespace HealthReporter.Controls
 
         private void search_GotFocus(object sender, RoutedEventArgs e)
         {
+            if (this._client != null && validationCheck() == false)
+            {
+                MessageBox.Show("Please fill required fields");
+                return;
+            }
             SaveClientInfo(this._client);
            
         }
 
         private void btn_ShowAllClients(object sender, RoutedEventArgs e)
         {
-            
+
+            if (this._client != null && validationCheck() == false)
+            {
+                MessageBox.Show("Please fill required fields");
+                return;
+            }
+            SaveClientInfo(this._client);
             var repo = new ClientRepository();
             groupDataGrid.SelectedItem = null;
 
