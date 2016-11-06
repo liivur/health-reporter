@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthReporter", "HealthRep
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthReporterUnitTests", "HealthReporterUnitTests\HealthReporterUnitTests.csproj", "{2BA3C765-7569-451D-B045-DEF1A7985729}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthReporterUITests", "HealthReporterUITests\HealthReporterUITests.csproj", "{F76EBDB6-9800-437C-9F31-FFADCA9E69BA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{2BA3C765-7569-451D-B045-DEF1A7985729}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2BA3C765-7569-451D-B045-DEF1A7985729}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2BA3C765-7569-451D-B045-DEF1A7985729}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F76EBDB6-9800-437C-9F31-FFADCA9E69BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F76EBDB6-9800-437C-9F31-FFADCA9E69BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F76EBDB6-9800-437C-9F31-FFADCA9E69BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F76EBDB6-9800-437C-9F31-FFADCA9E69BA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
