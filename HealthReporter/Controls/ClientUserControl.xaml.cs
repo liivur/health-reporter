@@ -592,7 +592,20 @@ namespace HealthReporter.Controls
 
         private void filterSearchBox(object sender, TextChangedEventArgs e)
         {
-
+            if (this._client != null && validationCheck() == false)
+            {
+                if (messageShown == false)
+                {
+                    MessageBox.Show("Please fill required fields");
+                    messageShown = true;
+                }
+                else
+                {
+                    messageShown = false;
+                }
+                search.Text = "";
+                return;
+            }
             string searchBy = search.Text;
 
             var repo = new ClientRepository();
@@ -607,7 +620,20 @@ namespace HealthReporter.Controls
 
         private void filterSearchBoxAllClients(object sender, TextChangedEventArgs e)
         {
-
+            if (this._client != null && validationCheck() == false)
+            {
+                if (messageShown == false)
+                {
+                    MessageBox.Show("Please fill required fields");
+                    messageShown = true;
+                }
+                else
+                {
+                    messageShown = false;
+                }
+                searchAllClients.Text = "";
+                return;
+            }
             string searchBy = searchAllClients.Text;
 
             var repo = new ClientRepository();
@@ -624,7 +650,7 @@ namespace HealthReporter.Controls
         {
             if (this._client != null && validationCheck() == false)
             {
-                MessageBox.Show("Please fill required fields");
+               
                 return;
             }
             SaveClientInfo(this._client);
