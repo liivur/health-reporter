@@ -5,10 +5,29 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HealthReporter"
         mc:Ignorable="d"
-        Title="MainWindow" Height="550" Width="525">
+        Title="MainWindow" Height="Auto" Width="Auto">
+    <Window.Resources>
+        <ControlTemplate x:Key="ButtonStyle" TargetType="{x:Type Button}">
+            <Border x:Name="button" CornerRadius="8" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}">
+                <ContentPresenter x:Name="content" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="BorderBrush" TargetName="button" Value="#FFC2C5C7"/>
+                    <Setter Property="Background" TargetName="button" Value="#FFF0F0F0"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="BorderBrush" TargetName="button" Value="#FFC2C5C7"/>
+                    <Setter Property="Background" TargetName="button" Value="#FFF0F0F0"/>
+                </Trigger>
+                <Trigger Property="IsFocused" Value="True">
+                    <Setter Property="BorderBrush" TargetName="button" Value="#FFC2C5C7"/>
+                    <Setter Property="Background" TargetName="button" Value="#FFF0F0F0"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+    </Window.Resources>
     <Grid Name="grid1">
-        <Button x:Name="btnShowClients" Content="Clients" Click="btn_Clients" HorizontalAlignment="Left" Margin="177,55,0,0" VerticalAlignment="Top" Width="76"/>
-        <Button x:Name="btnShowTests" Content="Tests" Click="btn_Tests" HorizontalAlignment="Left" Margin="274,55,0,0" VerticalAlignment="Top" Width="75"/>
-        <StackPanel Name="stkTest" Margin="20,93,21,22"/>
+        <Grid Name="stkTest"/>
     </Grid>
 </Window>

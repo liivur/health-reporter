@@ -3,11 +3,505 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:local="clr-namespace:HealthReporter.Controls"
-             mc:Ignorable="d" Height="350" Width="350">
-    <Border BorderBrush="Black" BorderThickness="2">
-        <Grid>
-            <Label Content="Siia tuleb testide osa" Name="Label1"/>
+             mc:Ignorable="d" Height="Auto" Width="Auto">
+    <UserControl.Resources>
+        <Image x:Key="Dustbin" Source="/Images/dustbin.png" Stretch="Uniform"/>
+        <ControlTemplate x:Key="ButtonStyle" TargetType="{x:Type Button}">
+            <Border x:Name="button" CornerRadius="100" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}">
+                <ContentPresenter x:Name="content" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="BorderBrush" TargetName="button" Value="#FFC2C5C7"/>
+                    <Setter Property="Background" TargetName="button" Value="#FFF0F0F0"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="BorderBrush" TargetName="button" Value="#FFC2C5C7"/>
+                    <Setter Property="Background" TargetName="button" Value="#FFF0F0F0"/>
+                </Trigger>
+                <Trigger Property="IsFocused" Value="True">
+                    <Setter Property="BorderBrush" TargetName="button" Value="#FFC2C5C7"/>
+                    <Setter Property="Background" TargetName="button" Value="#FFF0F0F0"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+        <LinearGradientBrush x:Key="WindowBackgroundBrush">
+            <GradientStop Offset="0" Color="Silver"/>
+            <GradientStop Offset="1" Color="Gray"/>
+        </LinearGradientBrush>
+        <x:Array x:Key="ComboBoxItems" Type="sys:String">
+            <sys:String>Needs Improvement</sys:String>
+            <sys:String>Fair</sys:String>
+            <sys:String>Good</sys:String>
+            <sys:String>Very Good</sys:String>
+            <sys:String>Excellent</sys:String>
+            <sys:String>Potential Risk</sys:String>
+            <sys:String>Optimal</sys:String>
+            <sys:String>Healthy</sys:String>
+            <sys:String>Considerable Risk</sys:String>
+            <sys:String>High Risk</sys:String>
+            <sys:String>Uhealthy</sys:String>
+            <sys:String>Healthy</sys:String>
+        </x:Array>
+        <x:Array x:Key="RatingColors" Type="Brush">
+            <Brush>Red</Brush>
+            <Brush>Orange</Brush>
+            <Brush>Yellow</Brush>
+            <Brush>Green</Brush>
+            <Brush>Blue</Brush>
+        </x:Array>
+    </UserControl.Resources>
+    <Border>
+
+        <Grid Name="grid" Height="auto" Width="auto">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="70"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Border BorderBrush="#FFF0F0F0" BorderThickness="2">
+                <Grid Grid.Row="0" Background="White" HorizontalAlignment="Stretch" ShowGridLines="False" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="35"/>
+                        <RowDefinition Height="35"/>
+                    </Grid.RowDefinitions>
+                    <Border Grid.Row="0" VerticalAlignment="Bottom">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"  VerticalAlignment="Center">
+                            <Button  Background="White" x:Name="btnShowClients" Content="Clients" Click="btn_Clients"   VerticalAlignment="Top" BorderBrush="LightGray" Height="20"   Grid.Column="2" HorizontalAlignment="Center" Width="90">
+                                <Button.Resources>
+                                    <Style TargetType="{x:Type Border}">
+                                        <Setter Property="CornerRadius" Value="10,0,0,10"/>
+                                    </Style>
+                                </Button.Resources>
+                            </Button>
+                            <Button BorderBrush="LightGray" Width="90" Background="White" x:Name="btnShowTests" Content="Tests" Click="btn_Tests"  VerticalAlignment="Top"  Height="20"  Grid.Column="2" HorizontalAlignment="Center" >
+                                <Button.Resources>
+                                    <Style TargetType="{x:Type Border}">
+                                        <Setter Property="CornerRadius" Value="0,10,10,0"/>
+                                    </Style>
+                                </Button.Resources>
+                            </Button>
+                        </StackPanel>
+                    </Border>
+                    <TextBlock Foreground="DarkSlateGray" Grid.Row="1" x:Name="testTotal" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Grid>
+            </Border>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.75*" />
+                    <ColumnDefinition Width="5" />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="5" />
+                    <ColumnDefinition Width="3*" />
+                </Grid.ColumnDefinitions>
+                <Border Grid.Row="1" Grid.Column="0"  Background="AliceBlue" />
+                <Grid >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="35" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <TextBlock Margin="10,10,10,5" Foreground="LightSlateGray" FontSize="14">Categories</TextBlock>
+                    <DataGrid Focusable="True" Grid.Row="1" Grid.Column="0" x:Name="catsDataGrid" HeadersVisibility="None" SelectedValuePath="name"  SelectionMode="Single" CanUserSortColumns="False" IsReadOnly="True" GridLinesVisibility="None" AutoGenerateColumns="False"  SelectionChanged="catsDataGrid_SelectionChanged" Background="{x:Null}" BorderBrush="{x:Null}" FontSize="13" Grid.RowSpan="3">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding name}" Width="*"/>
+                        </DataGrid.Columns>
+                        <DataGrid.Resources>
+                            <Style TargetType="{x:Type DataGridCell}">
+                                <Style.Triggers>
+                                    <Trigger Property="DataGridCell.IsSelected" Value="True">
+                                        <Setter Property="Background" Value="LightBlue" />
+                                        <Setter Property="Foreground" Value="Black" />
+                                        <Setter Property="BorderThickness" Value="0"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                            <Style TargetType="{x:Type DataGrid}">
+                                <Style.Triggers>
+                                    <Trigger Property="IsHitTestVisible" Value="False">
+                                        <Setter Property="Foreground" Value="Gray" />
+                                        <Setter Property="Margin" Value="15,0,0,0" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGrid.Resources>
+                        <DataGrid.RowStyle>
+                            <Style TargetType="DataGridRow">
+                                <Setter Property="Height" Value="23"/>
+                                <Setter Property="Background" Value="AliceBlue"/>
+                                <Setter Property="Margin" Value="15,0,0,0" />
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="LightBlue"/>
+                                        <Setter Property="Margin" Value="15,0,0,0" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGrid.RowStyle>
+                    </DataGrid>
+                </Grid>
+                <GridSplitter Grid.Column="1" Width="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ResizeDirection="Columns"/>
+                <Grid Grid.Column="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="55" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <TextBox  x:Name="search" Grid.Row="0" Height="20"  Margin="30,20,30,5" HorizontalAlignment="Stretch"  TextWrapping="Wrap" VerticalAlignment="Top" TextChanged="filterSearchBox">
+                        <TextBox.Resources>
+                            <Style TargetType="{x:Type Border}">
+                                <Setter Property="CornerRadius" Value="4"/>
+                            </Style>
+                        </TextBox.Resources>
+                        <TextBox.Style>
+                            <Style TargetType="TextBox">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=Text}" Value="">
+                                        <Setter Property="Background">
+                                            <Setter.Value>
+                                                <VisualBrush Stretch="None">
+                                                    <VisualBrush.Visual>
+                                                        <TextBlock Text="Search" Foreground="Gray"/>
+                                                    </VisualBrush.Visual>
+                                                </VisualBrush>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=Text}" Value="{x:Null}">
+                                        <Setter Property="Background">
+                                            <Setter.Value>
+                                                <VisualBrush Stretch="None">
+                                                    <VisualBrush.Visual>
+                                                        <TextBlock Text="Search" Foreground="Gray"/>
+                                                    </VisualBrush.Visual>
+                                                </VisualBrush>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsFocused}" Value="True">
+                                        <Setter Property="Background">
+                                            <Setter.Value>
+                                                <VisualBrush Stretch="None">
+                                                </VisualBrush>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBox.Style>
+                    </TextBox>
+                    <DataGrid Grid.Row="1" Focusable="True" Grid.Column="0" x:Name="testsDataGrid" SelectionMode="Single" IsReadOnly="True" SelectedValuePath="test.name" CanUserSortColumns="False" HeadersVisibility="None" AutoGenerateColumns="False"  SelectionChanged="testsDataGrid_SelectionChanged" Background="{x:Null}" GridLinesVisibility="None" BorderBrush="{x:Null}" RenderTransformOrigin="0.5,0.5" >
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding test.name}" Width="*"/>
+                        </DataGrid.Columns>
+                        <DataGrid.Resources>
+                            <Style TargetType="{x:Type DataGridCell}">
+                                <Style.Triggers>
+                                    <Trigger Property="DataGridCell.IsSelected" Value="True">
+                                        <Setter Property="Background" Value="#eee9e9" />
+                                        <Setter Property="Foreground" Value="Black" />
+                                        <Setter Property="BorderThickness" Value="0"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                            <Style TargetType="{x:Type DataGrid}">
+                                <Style.Triggers>
+                                    <Trigger Property="IsHitTestVisible" Value="False">
+                                        <Setter Property="Foreground" Value="Gainsboro" />
+                                        <Setter Property="Margin" Value="15,0,0,0" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGrid.Resources>
+                        <DataGrid.RowStyle>
+                            <Style TargetType="DataGridRow">
+                                <Setter Property="Height" Value="23"/>
+                                <Setter Property="Margin" Value="15,0,0,0" />
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#eee9e9"/>
+                                        <Setter Property="Margin" Value="15,0,0,0" />
+                                    </Trigger>
+                                    <DataTrigger Binding="{Binding isLast}" Value="true">
+                                        <Setter Property="BorderThickness" Value="0, 0, 0, 2"/>
+                                        <Setter Property="BorderBrush" Value="#606464"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGrid.RowStyle>
+                    </DataGrid>
+                </Grid>
+                <GridSplitter Grid.Column="3" Width="3" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" ResizeDirection="Columns" />
+                <Grid Grid.Column="4"  x:Name="testDetailMain" ShowGridLines="False" Margin="0,0,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40" />
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+                    <Grid Visibility="Hidden" Grid.Row="1" x:Name="testDetailDatagrid" HorizontalAlignment="Stretch">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="0.7*"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock x:Name="Text1" Foreground="#575C5C" Margin="10" TextWrapping="Wrap" Text="Name" RenderTransformOrigin="0.469,-1.188" HorizontalAlignment="Right" Width="32" Grid.Column="0" Grid.Row="0" Height="16"/>
+                        <TextBlock x:Name="Text2" Foreground="#575C5C" Margin="0,10,10,0" TextWrapping="Wrap" Text="Units" RenderTransformOrigin="-0.48,0.627" HorizontalAlignment="Right" Width="30" Grid.Row="2" Height="16" VerticalAlignment="Bottom"/>
+                        <TextBlock x:Name="Text3" Foreground="#575C5C" Margin="67,13,0,0" TextWrapping="Wrap" Text="Decimals" RenderTransformOrigin="0.146,1.25" Grid.Row="2" Grid.Column="1" Height="16" HorizontalAlignment="Left" Width="48" VerticalAlignment="Bottom"/>
+                        <TextBox x:Name="testName" Height="23" TextWrapping="Wrap" Style="{StaticResource TextBoxStyle}" Text="{Binding name, Mode=TwoWay, UpdateSourceTrigger=LostFocus, NotifyOnSourceUpdated=True}" SourceUpdated="TextBox_SourceUpdated" HorizontalAlignment="Left" Width="160" Margin="10" Grid.Column="1" Grid.Row="0"/>
+                        <TextBox x:Name="units" Height="23" Margin="10,15,0,0" TextWrapping="Wrap" Style="{StaticResource TextBoxStyle}" Text="{Binding units, Mode=TwoWay, UpdateSourceTrigger=LostFocus, NotifyOnSourceUpdated=True}" SourceUpdated="TextBox_SourceUpdated" RenderTransformOrigin="0.179,0.522" HorizontalAlignment="Left" Width="40" Grid.Column="1" Grid.Row="2" VerticalAlignment="Bottom"/>
+                        <ComboBox x:Name="decimalsSelector" SelectedIndex="2" Margin="130,0,0,0"  SelectedValue="{Binding decimals, Mode=TwoWay, UpdateSourceTrigger=LostFocus, NotifyOnSourceUpdated=True}" SourceUpdated="TextBox_SourceUpdated" RenderTransformOrigin="1.076,0.676" Background="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}" BorderBrush="Black" Style="{StaticResource ComboBoxFlatStyle}" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" Width="40" Height="22" VerticalAlignment="Bottom"/>
+                        <TextBlock Margin="0,10,10,10" Foreground="#575C5C" TextWrapping="Wrap" RenderTransformOrigin="0.469,-1.188" HorizontalAlignment="Right" Width="69" Text="Subcategory" Grid.Row="1"/>
+                        <ComboBox x:Name="categorySelector" SelectionChanged="categorySelector_SelectionChanged" SelectedValue="{Binding categoryId, Mode=TwoWay}" SelectedIndex="0" DisplayMemberPath="name" SelectedValuePath="id" Margin="10,10,0,10" RenderTransformOrigin="0.963,0.571" Style="{StaticResource ComboBoxFlatStyle}" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" Width="160"/>
+
+                        <Grid Grid.Row="4" Grid.RowSpan="3" Grid.ColumnSpan="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="1*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Foreground="#575C5C" HorizontalAlignment="Right" TextWrapping="Wrap" RenderTransformOrigin="0.469,-1.188" Width="48" Height="16" Margin="10" Grid.Row="1" VerticalAlignment="Bottom"><Run Text="Formula"/><LineBreak/><Run/></TextBlock>
+                            <TextBlock Foreground="#575C5C" HorizontalAlignment="Right" Margin="0,30,10,0" TextWrapping="Wrap" RenderTransformOrigin="0.469,-1.188" Width="46" Text="Ratings" Height="19" VerticalAlignment="Top"/>
+                            <TabControl Name="GenderTab" Grid.Column="1" Grid.RowSpan="2" Margin="10,0,10,10" BorderThickness="0" >
+                                <TabControl.Resources>
+                                    <Style TargetType="TabPanel">
+                                        <Setter Property="HorizontalAlignment" Value="Right"/>
+                                    </Style>
+                                </TabControl.Resources>
+                                <TabItem Header="Men"  Style="{DynamicResource MenTabItemStyle}">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="39*"/>
+                                            <ColumnDefinition Width="29*"/>
+                                            <ColumnDefinition Width="30*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="8*" />
+                                            <RowDefinition Height="1*" />
+                                            <RowDefinition Height="1*" />
+                                        </Grid.RowDefinitions>
+                                        <TabControl Name="MenAgesTab" ItemContainerStyle="{StaticResource AgeGroupTabItemStyle}" BorderThickness="0" SelectedValuePath="interval.rating.age" Grid.ColumnSpan="3">
+                                            <TabControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock VerticalAlignment="Top" Text="{Binding interval.interval}"></TextBlock>
+                                                </DataTemplate>
+                                            </TabControl.ItemTemplate>
+                                            <TabControl.ContentTemplate>
+                                                <DataTemplate>
+                                                    <DataGrid x:Name="menRatingsDatagrid" Style="{DynamicResource DataGridStyle}" HorizontalGridLinesBrush="LightBlue" VerticalGridLinesBrush="LightBlue" SelectionUnit="FullRow" Unloaded="menRatingsDatagrid_Unloaded" SelectionMode="Single" RowDetailsVisibilityMode="Collapsed" PreviewKeyDown="KeyDownHandler" RowEditEnding="RatingsDataGrid_RowEditEnding" ItemsSource = "{Binding Path=rowitems}" IsReadOnly="False" HeadersVisibility="Column" AutoGenerateColumns="False" Background="{x:Null}" BorderBrush="{x:Null}" RowHeight="25">
+                                                        <DataGrid.Columns>
+                                                            <DataGridTextColumn Header="Score" Binding="{Binding normM, UpdateSourceTrigger = PropertyChanged}"  Width="0.5*" CanUserSort="False"/>
+                                                            <DataGridTemplateColumn Header="Rating">
+                                                                <DataGridTemplateColumn.CellTemplate>
+                                                                    <DataTemplate>
+                                                                        <ComboBox Name="cmbColors" ItemsSource="{StaticResource RatingColors}" IsEnabled="False" Style="{StaticResource ComboBoxFlatStyle}" SelectedItem="{Binding Path=rating}" >
+                                                                            <ComboBox.ItemTemplate>
+                                                                                <DataTemplate>
+                                                                                    <StackPanel Orientation="Horizontal">
+                                                                                        <Rectangle Fill="{Binding}" Width="16" Height="16" Margin="0,2,5,2" />
+                                                                                    </StackPanel>
+                                                                                </DataTemplate>
+                                                                            </ComboBox.ItemTemplate>
+                                                                        </ComboBox>
+                                                                    </DataTemplate>
+                                                                </DataGridTemplateColumn.CellTemplate>
+                                                                <DataGridTemplateColumn.CellEditingTemplate>
+                                                                    <DataTemplate>
+                                                                        <ComboBox Name="cmbColors" ItemsSource="{StaticResource RatingColors}" IsDropDownOpen="True" Style="{StaticResource ComboBoxFlatStyle}" SelectedItem="{Binding Path=rating, Mode=TwoWay, UpdateSourceTrigger =PropertyChanged}" >
+                                                                            <ComboBox.ItemTemplate>
+                                                                                <DataTemplate>
+                                                                                    <StackPanel Orientation="Horizontal">
+                                                                                        <Rectangle Fill="{Binding}" Width="16" Height="16" Margin="0,2,5,2" />
+                                                                                    </StackPanel>
+                                                                                </DataTemplate>
+                                                                            </ComboBox.ItemTemplate>
+                                                                        </ComboBox>
+                                                                    </DataTemplate>
+                                                                </DataGridTemplateColumn.CellEditingTemplate>
+                                                            </DataGridTemplateColumn>
+                                                            <DataGridTemplateColumn Header="Meaning">
+                                                                <DataGridTemplateColumn.CellTemplate>
+                                                                    <DataTemplate>
+                                                                        <ComboBox ItemsSource="{StaticResource ComboBoxItems}" IsEnabled="False" Style="{StaticResource ComboBoxFlatStyle}" SelectedItem="{Binding name}" />
+                                                                    </DataTemplate>
+                                                                </DataGridTemplateColumn.CellTemplate>
+                                                                <DataGridTemplateColumn.CellEditingTemplate>
+                                                                    <DataTemplate>
+                                                                        <ComboBox ItemsSource="{StaticResource ComboBoxItems}" IsDropDownOpen="True" Style="{StaticResource ComboBoxFlatStyle}" SelectedItem="{Binding name, UpdateSourceTrigger=PropertyChanged}" />
+                                                                    </DataTemplate>
+                                                                </DataGridTemplateColumn.CellEditingTemplate>
+                                                            </DataGridTemplateColumn>
+                                                            <DataGridTextColumn Header="Description" Binding="{Binding interpretation, UpdateSourceTrigger = PropertyChanged}"  Width="5*" CanUserSort="False"/>
+                                                        </DataGrid.Columns>
+                                                        <DataGrid.RowDetailsTemplate>
+                                                            <DataTemplate>
+                                                                <TextBox Height="80"  Width="390" AcceptsReturn="True" TextWrapping="Wrap" Text="{Binding interpretation,  UpdateSourceTrigger = PropertyChanged}"/>
+                                                            </DataTemplate>
+                                                        </DataGrid.RowDetailsTemplate>
+                                                        <DataGrid.Resources>
+                                                            <Style TargetType="{x:Type DataGridCell}">
+                                                                <Style.Triggers>
+                                                                    <Trigger Property="DataGridCell.IsSelected" Value="True">
+                                                                        <Setter Property="Background" Value="White" />
+                                                                        <Setter Property="Foreground" Value="Black" />
+                                                                        <Setter Property="BorderBrush" Value="Black" />
+                                                                        <Setter Property="BorderThickness" Value="0.7" />
+                                                                    </Trigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </DataGrid.Resources>
+                                                    </DataGrid>
+                                                </DataTemplate>
+                                            </TabControl.ContentTemplate>
+                                        </TabControl>
+                                        <TextBox Grid.Row="2" x:Name="FormulaTextM" Style="{StaticResource TextBoxStyle}" Margin="0,0,0,-0.08" TextWrapping="Wrap" Text="{Binding formulaM, Mode=TwoWay, UpdateSourceTrigger=LostFocus, NotifyOnSourceUpdated=True}" SourceUpdated="TextBox_SourceUpdated" Grid.ColumnSpan="3"/>
+                                    </Grid>
+                                </TabItem>
+                                <TabItem Header="Women" Style="{DynamicResource WomenTabItemStyle}">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="8*" />
+                                            <RowDefinition Height="1*" />
+                                            <RowDefinition Height="1*" />
+                                        </Grid.RowDefinitions>
+                                        <TabControl Name="WomenAgesTab" ItemContainerStyle="{StaticResource AgeGroupTabItemStyle}" BorderThickness="0" SelectedIndex="{Binding ElementName=MenAgesTab, Path=SelectedIndex}"  SelectedValue="{Binding Path=rowitems.age}" SelectedValuePath="interval.rating.age">
+                                            <TabControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock VerticalAlignment="Top" Text="{Binding interval.interval}"></TextBlock>
+                                                </DataTemplate>
+                                            </TabControl.ItemTemplate>
+                                            <TabControl.ContentTemplate>
+                                                <DataTemplate>
+                                                    <DataGrid x:Name="WomenRatingsDatagrid" Style="{DynamicResource DataGridStyle}" HorizontalGridLinesBrush="LightBlue" VerticalGridLinesBrush="LightBlue" SelectionMode="Single" Unloaded="WomenRatingsDatagrid_Unloaded" RowDetailsVisibilityMode="Collapsed" IsReadOnly="False" RowEditEnding="RatingsDataGrid_RowEditEnding" ItemsSource = "{Binding Path=rowitems}"  HeadersVisibility="Column" AutoGenerateColumns="False" Background="{x:Null}" BorderBrush="{x:Null}" RowHeight="25">
+                                                        <DataGrid.Columns>
+                                                            <DataGridTextColumn Header="Score" Binding="{Binding normF, UpdateSourceTrigger = PropertyChanged}"  Width="0.5*" CanUserSort="False"/>
+                                                            <DataGridTemplateColumn Header="Rating">
+                                                                <DataGridTemplateColumn.CellTemplate>
+                                                                    <DataTemplate>
+                                                                        <ComboBox Name="cmbColors" ItemsSource="{StaticResource RatingColors}" IsEnabled="False" Style="{StaticResource ComboBoxFlatStyle}" SelectedItem="{Binding rating}" >
+                                                                            <ComboBox.ItemTemplate>
+                                                                                <DataTemplate>
+                                                                                    <StackPanel Orientation="Horizontal">
+                                                                                        <Rectangle Fill="{Binding}" Width="16" Height="16" Margin="0,2,5,2" />
+                                                                                    </StackPanel>
+                                                                                </DataTemplate>
+                                                                            </ComboBox.ItemTemplate>
+                                                                        </ComboBox>
+                                                                    </DataTemplate>
+                                                                </DataGridTemplateColumn.CellTemplate>
+                                                                <DataGridTemplateColumn.CellEditingTemplate>
+                                                                    <DataTemplate>
+                                                                        <ComboBox Name="cmbColors" ItemsSource="{StaticResource RatingColors}" IsDropDownOpen="True" Style="{StaticResource ComboBoxFlatStyle}" SelectedItem="{Binding Path=rating, Mode=TwoWay, UpdateSourceTrigger =PropertyChanged}" >
+                                                                            <ComboBox.ItemTemplate>
+                                                                                <DataTemplate>
+                                                                                    <StackPanel Orientation="Horizontal">
+                                                                                        <Rectangle Fill="{Binding}" Width="16" Height="16" Margin="0,2,5,2" />
+                                                                                    </StackPanel>
+                                                                                </DataTemplate>
+                                                                            </ComboBox.ItemTemplate>
+                                                                        </ComboBox>
+                                                                    </DataTemplate>
+                                                                </DataGridTemplateColumn.CellEditingTemplate>
+                                                            </DataGridTemplateColumn>
+                                                            <DataGridTemplateColumn Header="Meaning">
+                                                                <DataGridTemplateColumn.CellTemplate>
+                                                                    <DataTemplate>
+                                                                        <ComboBox ItemsSource="{StaticResource ComboBoxItems}" Style="{StaticResource ComboBoxFlatStyle}" IsEnabled="False" SelectedItem="{Binding name,  NotifyOnTargetUpdated=True}" />
+                                                                    </DataTemplate>
+                                                                </DataGridTemplateColumn.CellTemplate>
+                                                                <DataGridTemplateColumn.CellEditingTemplate>
+                                                                    <DataTemplate>
+                                                                        <ComboBox ItemsSource="{StaticResource ComboBoxItems}" IsDropDownOpen="True" Style="{StaticResource ComboBoxFlatStyle}" SelectedItem="{Binding name, UpdateSourceTrigger=PropertyChanged}" />
+                                                                    </DataTemplate>
+                                                                </DataGridTemplateColumn.CellEditingTemplate>
+                                                            </DataGridTemplateColumn>
+                                                            <DataGridTextColumn Header="Description" Binding="{Binding interpretation, UpdateSourceTrigger = PropertyChanged}"  Width="5*" CanUserSort="False"/>
+                                                        </DataGrid.Columns>
+                                                        <DataGrid.RowDetailsTemplate>
+                                                            <DataTemplate>
+                                                                <TextBox Height="80"  Width="390" AcceptsReturn="True" TextWrapping="Wrap" Text="{Binding interpretation,  UpdateSourceTrigger = PropertyChanged}"/>
+                                                            </DataTemplate>
+                                                        </DataGrid.RowDetailsTemplate>
+                                                        <DataGrid.Resources>
+                                                            <Style TargetType="{x:Type DataGridCell}">
+                                                                <Style.Triggers>
+                                                                    <Trigger Property="DataGridCell.IsSelected" Value="True">
+                                                                        <Setter Property="Background" Value="White" />
+                                                                        <Setter Property="Foreground" Value="Black" />
+                                                                        <Setter Property="BorderBrush" Value="Black" />
+                                                                        <Setter Property="BorderThickness" Value="0.7" />
+                                                                    </Trigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </DataGrid.Resources>
+                                                    </DataGrid>
+                                                </DataTemplate>
+                                            </TabControl.ContentTemplate>
+                                        </TabControl>
+                                        <TextBox Grid.Row="2" x:Name="FormulaTextF" Style="{StaticResource TextBoxStyle}" Margin="0" TextWrapping="Wrap" Text="{Binding formulaF, Mode=TwoWay, UpdateSourceTrigger=LostFocus, NotifyOnSourceUpdated=True}" SourceUpdated="TextBox_SourceUpdated" Grid.Column="2"/>
+                                    </Grid>
+                                </TabItem>
+                            </TabControl>
+                        </Grid>
+                        <TextBlock HorizontalAlignment="Right" Foreground="#616666 " Margin="0,10,10,10" TextWrapping="Wrap" RenderTransformOrigin="0.469,-1.188" Width="63" Grid.Row="7" Height="19"><Run Text="Descriptio"/><Run Text="n"/><LineBreak/><Run/></TextBlock>
+                        <TextBox x:Name="TestDescriptionText" Margin="10" TextWrapping="Wrap" Text="{Binding description, Mode=TwoWay, UpdateSourceTrigger=LostFocus, NotifyOnSourceUpdated=True}" SourceUpdated="TextBox_SourceUpdated" Grid.Row="7" Grid.Column="1"/>
+                    </Grid>
+                    <Button Grid.Row="2" HorizontalAlignment="Left" x:Name="addStuffButton" ContextMenuService.IsEnabled="False"  Content="+" Margin="20,20,20,20" VerticalAlignment="Bottom" Click="btn_AddStuff" Height="30" BorderBrush="#FFA2B2BD"  Background="White"  FontSize="16"  Width="30">
+                        <Button.Resources>
+                            <Style TargetType="{x:Type Border}">
+                                <Setter Property="CornerRadius" Value="4"/>
+                            </Style>
+                        </Button.Resources>
+                        <Button.ContextMenu>
+                            <ContextMenu >
+                                <MenuItem Header="New test" Click="btn_AddNewTest"/>
+                                <MenuItem Header="New category" Click="btn_AddNewCategory"/>
+                                <MenuItem Header="New age group" Click="btn_AddNewAge"/>
+                                <MenuItem Header="Delete last age group" Click="btn_DeleteRating" HorizontalAlignment="Right"/>
+                            </ContextMenu>
+                        </Button.ContextMenu>
+                    </Button>
+
+                    <Button x:Name="deleteTestButton" Content="{StaticResource Dustbin}" Padding="6" Margin="10,10,20,10" Width="30" Height="30" Click="btn_DeleteTest" Background="White" RenderTransformOrigin="-2.595,1" Grid.Row="2" HorizontalAlignment="Right" >
+                        <Button.Resources>
+                            <Style TargetType="{x:Type Border}">
+                                <Setter Property="CornerRadius" Value="4"/>
+                            </Style>
+                        </Button.Resources>
+                        <Button.Style>
+                            <Style>
+                                <Style.Triggers>
+                                    <DataTrigger 
+                     Binding ="{Binding ElementName=testsDataGrid, Path=SelectedIndex}" Value="-1">
+                                        <Setter Property="Button.Visibility" Value="Hidden"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                    <!--<TextBlock x:Name="searchTests" HorizontalAlignment="Left" Margin="60,60,0,0" TextWrapping="Wrap" Text="Search tests" VerticalAlignment="Top" Grid.ColumnSpan="2" Grid.Column="0"/>-->
+                    <!--<TextBox x:Name="search" HorizontalAlignment="Left" Height="23" Margin="20,27,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" TextChanged="filterSearchBox" Grid.ColumnSpan="2" Grid.Column="0">
+                            <TextBox.Resources>
+                                <Style TargetType="{x:Type Border}">
+                                    <Setter Property="CornerRadius" Value="4"/>
+                                </Style>
+                            </TextBox.Resources>
+                        </TextBox>-->
+                    <!--<TextBlock x:Name="noOfTests" HorizontalAlignment="Left" Margin="68,63,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188" Width="17" Grid.Column="2"/>-->
+                    <!--<TextBlock x:Name="Text0" HorizontalAlignment="Left" Margin="95,63,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.469,-1.188" Width="31" Text="Tests" Grid.Column="2"/>-->
+
+                </Grid>
+            </Grid>
         </Grid>
     </Border>
 </UserControl>

@@ -49,6 +49,7 @@ namespace HealthReporter.Utilities
         static public string getDbCommand()
         {
             return @"
+PRAGMA foreign_keys = ON; 
 CREATE TABLE 'presets'(
   'id' BLOB PRIMARY KEY NOT NULL,
   'name' TEXT,
@@ -121,17 +122,17 @@ CREATE TABLE 'clients'(
   'id' BLOB PRIMARY KEY NOT NULL,
   'firstName' TEXT,
   'lastName' TEXT,
-  'groupId' INTEGER CHECK('groupId'>=0),
+  'groupId' BLOB NOT NULL,
   'email' TEXT,
   'gender' INTEGER,
   'birthDate' DATE,
   'updated' DATETIME DEFAULT CURRENT_TIMESTAMP,
   'uploaded' DATETIME,
   CONSTRAINT 'id_UNIQUE'
-    UNIQUE('id'),
+    UNIQUE('id')
   CONSTRAINT 'clients_to_groups'
     FOREIGN KEY('groupId')
-    REFERENCES 'groups'('id')
+    REFERENCES 'groups' ('id')
     ON DELETE CASCADE
     ON UPDATE CASCADE
 );

@@ -109,26 +109,77 @@
     <Compile Include="Controls\AddNewClientControl.xaml.cs">
       <DependentUpon>AddNewClientControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\AddNewTestCategoryControl.xaml.cs">
+      <DependentUpon>AddNewTestCategoryControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CAH_AddNewAppraisalControl.xaml.cs">
+      <DependentUpon>CAH_AddNewAppraisalControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CAH_SelectTestControl.xaml.cs">
+      <DependentUpon>CAH_SelectTestControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CAH.xaml.cs">
+      <DependentUpon>CAH.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ClientUserControl.xaml.cs">
       <DependentUpon>ClientUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\UpdateClientControl.xaml.cs">
+      <DependentUpon>UpdateClientControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\TestsUserControl.xaml.cs">
       <DependentUpon>TestsUserControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\Appraisal.cs" />
+    <Compile Include="Models\Appraisal_tests.cs" />
+    <Compile Include="Models\Appraiser.cs" />
     <Compile Include="Models\Client.cs" />
+    <Compile Include="Models\Group.cs" />
+    <Compile Include="Models\Preset.cs" />
+    <Compile Include="Models\PresetTest.cs" />
+    <Compile Include="Models\Rating.cs" />
+    <Compile Include="Models\RatingLabel.cs" />
+    <Compile Include="Models\Test.cs" />
+    <Compile Include="Models\TestCategory.cs" />
     <Compile Include="Utilities\DatabaseUtility.cs" />
+    <Compile Include="Utilities\Helpers.cs" />
+    <Compile Include="ViewModels\InputDialog.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Page Include="Controls\AddNewClientControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Controls\AddNewTestCategoryControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\CAH_AddNewAppraisalControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\CAH_SelectTestControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\CAH.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\ClientUserControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Controls\UpdateClientControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\TestsUserControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\InputDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -186,6 +237,9 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\dustbin.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.103\build\net46\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.103\build\net46\System.Data.SQLite.Core.targets')" />
